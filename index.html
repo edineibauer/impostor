@@ -34,7 +34,6 @@
             overflow-x: hidden;
         }
         
-        /* Animated Background */
         .bg-pattern {
             position: fixed;
             top: 0;
@@ -60,7 +59,6 @@
                 repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255,255,255,0.02) 50px, rgba(255,255,255,0.02) 51px);
         }
         
-        /* Container */
         .container {
             max-width: 480px;
             margin: 0 auto;
@@ -68,7 +66,6 @@
             min-height: 100vh;
         }
         
-        /* Logo */
         .logo {
             text-align: center;
             padding: 40px 0 30px;
@@ -99,7 +96,6 @@
             50% { filter: brightness(1.2); }
         }
         
-        /* Cards */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -128,8 +124,7 @@
             color: var(--text);
         }
         
-        /* Inputs */
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             width: 100%;
             padding: 16px 20px;
             background: rgba(255,255,255,0.05);
@@ -142,7 +137,7 @@
             margin-bottom: 12px;
         }
         
-        input[type="text"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 20px var(--accent-glow);
@@ -152,7 +147,6 @@
             color: var(--text-dim);
         }
         
-        /* Buttons */
         .btn {
             width: 100%;
             padding: 18px 24px;
@@ -202,120 +196,71 @@
             margin-top: 12px;
         }
         
-        /* Room Code Display */
-        .room-code {
-            text-align: center;
-            padding: 30px;
-            background: rgba(255, 51, 102, 0.1);
-            border: 2px dashed var(--accent);
-            border-radius: 16px;
-            margin: 20px 0;
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
-        .room-code-label {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-        
-        .room-code-value {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3.5rem;
-            letter-spacing: 12px;
-            color: var(--accent);
-            text-shadow: 0 0 30px var(--accent-glow);
-        }
-        
-        /* Players List */
-        .players-list {
-            list-style: none;
-        }
-        
-        .player-item {
+        .player-config {
             display: flex;
             align-items: center;
-            padding: 16px;
+            gap: 12px;
+            padding: 12px;
             background: rgba(255,255,255,0.03);
             border-radius: 12px;
             margin-bottom: 8px;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
         }
         
-        .player-item.is-you {
-            border-color: var(--accent);
-            background: rgba(255, 51, 102, 0.1);
-        }
-        
-        .player-item.is-host::after {
-            content: 'HOST';
-            font-size: 0.6rem;
-            padding: 4px 8px;
-            background: var(--warning);
-            color: var(--bg-dark);
-            border-radius: 4px;
-            margin-left: auto;
-            letter-spacing: 1px;
-        }
-        
-        .player-avatar {
-            width: 40px;
-            height: 40px;
+        .player-config .player-number {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            background: var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            margin-right: 12px;
-            background: linear-gradient(135deg, #333 0%, #222 100%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
         }
         
-        .player-name {
-            font-size: 0.9rem;
+        .player-config input {
+            flex: 1;
+            margin-bottom: 0;
         }
         
-        .player-status {
-            margin-left: auto;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: status-pulse 2s ease-in-out infinite;
+        .game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
         }
         
-        @keyframes status-pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .info-box {
+            background: rgba(255,255,255,0.03);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
         }
         
-        /* Word Reveal */
+        .info-label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text);
+        }
+        
         .word-container {
             text-align: center;
             padding: 40px 20px;
-        }
-        
-        .word-hidden {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            color: var(--text-dim);
-            letter-spacing: 4px;
-            padding: 40px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            border: 2px solid var(--border);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .word-hidden:hover {
-            border-color: var(--accent);
-            background: rgba(255, 51, 102, 0.05);
-        }
-        
-        .word-revealed {
-            animation: reveal-word 0.5s ease-out;
         }
         
         .word-text {
@@ -349,36 +294,28 @@
             100% { transform: scale(1); opacity: 1; }
         }
         
-        /* Game Info */
-        .game-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
-        }
-        
-        .info-box {
-            background: rgba(255,255,255,0.03);
-            padding: 16px;
-            border-radius: 12px;
+        .player-turn-card {
             text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(255,51,102,0.1) 0%, rgba(0,0,0,0) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            margin-bottom: 20px;
         }
         
-        .info-label {
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        
-        .info-value {
+        .player-turn-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            color: var(--text);
+            font-size: 2.5rem;
+            color: var(--accent);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
         }
         
-        /* Screens */
+        .player-turn-instruction {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
         .screen {
             display: none;
             animation: fade-in 0.4s ease-out;
@@ -393,30 +330,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Waiting Animation */
-        .waiting-dots {
-            display: inline-flex;
-            gap: 4px;
-        }
-        
-        .waiting-dots span {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: bounce 1.4s ease-in-out infinite;
-        }
-        
-        .waiting-dots span:nth-child(1) { animation-delay: 0s; }
-        .waiting-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .waiting-dots span:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes bounce {
-            0%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-        }
-        
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 100px;
@@ -437,29 +350,6 @@
             opacity: 1;
         }
         
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 24px 0;
-            color: var(--text-dim);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        
-        .divider span {
-            padding: 0 16px;
-        }
-        
-        /* Round indicator */
         .round-badge {
             display: inline-block;
             padding: 8px 16px;
@@ -472,37 +362,121 @@
             margin-bottom: 20px;
         }
         
-        /* Loading */
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        .players-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .player-chip {
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
         }
         
-        /* Mobile optimizations */
+        .player-chip.current {
+            border-color: var(--accent);
+            background: rgba(255, 51, 102, 0.15);
+        }
+        
+        .player-chip.seen {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .number-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        
+        .number-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: var(--text);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .number-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .number-btn.selected {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+        
         @media (max-width: 380px) {
             .logo h1 {
                 font-size: 3rem;
             }
             
-            .room-code-value {
-                font-size: 2.5rem;
-                letter-spacing: 8px;
+            .word-text {
+                font-size: 2.2rem;
+            }
+            
+            .player-turn-name {
+                font-size: 2rem;
             }
         }
         
-        /* Prevent text selection on game elements */
         .word-hidden, .btn {
             -webkit-user-select: none;
             user-select: none;
+        }
+        
+        .confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .confirm-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 350px;
+            text-align: center;
+            animation: reveal-word 0.3s ease-out;
+        }
+        
+        .confirm-box h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+        
+        .confirm-box p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        
+        .word-reveal-animation {
+            animation: reveal-word 0.5s ease-out;
         }
     </style>
 </head>
@@ -518,89 +492,104 @@
             </div>
             
             <div class="card">
-                <h2 class="card-title">👤 Seu Nome</h2>
-                <input type="text" id="player-name" placeholder="Digite seu nome..." maxlength="20">
+                <h2 class="card-title">👥 Quantos Jogadores?</h2>
+                <div class="number-selector">
+                    <button class="number-btn" data-num="3">3</button>
+                    <button class="number-btn selected" data-num="4">4</button>
+                    <button class="number-btn" data-num="5">5</button>
+                    <button class="number-btn" data-num="6">6</button>
+                    <button class="number-btn" data-num="7">7</button>
+                    <button class="number-btn" data-num="8">8</button>
+                </div>
             </div>
-            
-            <button class="btn btn-primary" onclick="createRoom()">
-                CRIAR SALA
-            </button>
-            
-            <div class="divider"><span>OU</span></div>
             
             <div class="card">
-                <h2 class="card-title">🔑 Entrar em Sala</h2>
-                <input type="text" id="room-code-input" placeholder="Código da sala (4 letras)" maxlength="4" style="text-transform: uppercase;">
-                <button class="btn btn-secondary" onclick="joinRoom()">
-                    ENTRAR
-                </button>
+                <h2 class="card-title">📝 Nomes dos Jogadores</h2>
+                <div id="player-inputs">
+                    <!-- Generated dynamically -->
+                </div>
             </div>
+            
+            <button class="btn btn-primary" onclick="startGame()">
+                🎮 INICIAR JOGO
+            </button>
             
             <div class="card" style="margin-top: 30px; opacity: 0.8;">
                 <h2 class="card-title">📖 Como Jogar</h2>
                 <p style="font-size: 0.8rem; line-height: 1.8; color: var(--text-dim);">
-                    <strong style="color: var(--text);">1.</strong> 4 jogadores entram na sala<br>
-                    <strong style="color: var(--text);">2.</strong> 3 recebem a mesma palavra<br>
-                    <strong style="color: var(--text);">3.</strong> 1 é o <span style="color: var(--accent);">IMPOSTOR</span> (sem palavra)<br>
+                    <strong style="color: var(--text);">1.</strong> Cada jogador vê sua palavra em segredo<br>
+                    <strong style="color: var(--text);">2.</strong> Todos recebem a mesma palavra...<br>
+                    <strong style="color: var(--text);">3.</strong> ...exceto o <span style="color: var(--accent);">IMPOSTOR</span>!<br>
                     <strong style="color: var(--text);">4.</strong> Conversem e descubram quem é!
                 </p>
             </div>
         </div>
         
-        <!-- LOBBY SCREEN -->
-        <div id="screen-lobby" class="screen">
+        <!-- PLAYER TURN SCREEN -->
+        <div id="screen-turn" class="screen">
             <div class="logo" style="padding: 20px 0;">
                 <h1 style="font-size: 2.5rem;">IMPOSTOR</h1>
             </div>
             
-            <div class="room-code">
-                <div class="room-code-label">Código da Sala</div>
-                <div class="room-code-value" id="display-room-code">----</div>
-                <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 12px;">
-                    Compartilhe este código com seus amigos
-                </p>
+            <div class="round-badge" id="round-badge">RODADA 1</div>
+            
+            <div class="player-turn-card">
+                <div class="player-turn-name" id="current-player-name">JOGADOR 1</div>
+                <p class="player-turn-instruction">Passe o celular para este jogador</p>
             </div>
             
             <div class="card">
-                <h2 class="card-title">
-                    👥 Jogadores 
-                    <span style="color: var(--text-dim); font-family: 'Space Mono'; font-size: 0.9rem;">
-                        (<span id="player-count">0</span>/4)
-                    </span>
-                </h2>
-                <ul class="players-list" id="players-list">
-                    <!-- Players will be added here -->
-                </ul>
-                
-                <div id="waiting-message" style="text-align: center; padding: 20px; color: var(--text-dim);">
-                    <p style="margin-bottom: 12px;">Aguardando jogadores</p>
-                    <div class="waiting-dots">
-                        <span></span><span></span><span></span>
+                <h2 class="card-title">📋 Progresso</h2>
+                <div class="players-summary" id="players-progress">
+                    <!-- Generated dynamically -->
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showWord()">
+                👁️ VER MINHA PALAVRA
+            </button>
+            
+            <button class="btn btn-secondary" onclick="backToHome()" style="margin-top: 20px;">
+                ← VOLTAR AO INÍCIO
+            </button>
+        </div>
+        
+        <!-- WORD REVEAL SCREEN -->
+        <div id="screen-word" class="screen">
+            <div class="logo" style="padding: 20px 0;">
+                <h1 style="font-size: 2.5rem;">IMPOSTOR</h1>
+            </div>
+            
+            <div class="card">
+                <div class="word-container">
+                    <div id="word-display" class="word-reveal-animation">
+                        <div class="word-text" id="word-text"></div>
+                        <p class="word-hint" id="word-hint"></p>
                     </div>
                 </div>
             </div>
             
-            <button class="btn btn-primary" id="btn-start" onclick="startGame()" style="display: none;">
-                🎮 INICIAR JOGO
-            </button>
+            <p style="text-align: center; color: var(--text-dim); font-size: 0.8rem; margin-bottom: 20px;">
+                Memorize sua palavra e passe o celular
+            </p>
             
-            <button class="btn btn-secondary" onclick="leaveLobby()">
-                SAIR DA SALA
+            <button class="btn btn-success" onclick="nextPlayer()">
+                ✓ ENTENDI, PRÓXIMO
             </button>
         </div>
         
         <!-- GAME SCREEN -->
         <div id="screen-game" class="screen">
-            <div class="logo" style="padding: 15px 0;">
-                <h1 style="font-size: 2rem;">IMPOSTOR</h1>
+            <div class="logo" style="padding: 20px 0;">
+                <h1 style="font-size: 2.5rem;">IMPOSTOR</h1>
             </div>
             
-            <div class="round-badge" id="round-badge">RODADA 1</div>
+            <div class="round-badge" id="game-round-badge">RODADA 1</div>
             
             <div class="game-info">
                 <div class="info-box">
                     <div class="info-label">Jogadores</div>
-                    <div class="info-value">4</div>
+                    <div class="info-value" id="total-players">4</div>
                 </div>
                 <div class="info-box">
                     <div class="info-label">Impostores</div>
@@ -609,85 +598,76 @@
             </div>
             
             <div class="card">
-                <h2 class="card-title">🎭 Sua Missão</h2>
+                <h2 class="card-title">🎭 Hora de Jogar!</h2>
+                <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.7;">
+                    Todos viram suas palavras. Agora conversem!<br><br>
+                    <strong style="color: var(--text);">Dica:</strong> Cada um fala uma palavra relacionada. O impostor precisa se camuflar!
+                </p>
                 
-                <div class="word-container" id="word-container">
-                    <div class="word-hidden" id="word-hidden" onclick="revealWord()">
-                        TOQUE PARA REVELAR
-                    </div>
-                    
-                    <div id="word-revealed" style="display: none;">
-                        <div class="word-text" id="word-text"></div>
-                        <p class="word-hint" id="word-hint"></p>
-                    </div>
+                <div class="players-summary" id="game-players" style="margin-top: 20px;">
+                    <!-- Generated dynamically -->
                 </div>
             </div>
             
             <div class="card">
-                <h2 class="card-title">📋 Jogadores</h2>
-                <ul class="players-list" id="game-players-list">
-                    <!-- Players will be shown here -->
-                </ul>
+                <h2 class="card-title">🔍 Revelação</h2>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 16px;">
+                    Quando descobrirem o impostor:
+                </p>
+                <button class="btn btn-secondary" onclick="revealImpostor()">
+                    REVELAR IMPOSTOR
+                </button>
             </div>
             
-            <button class="btn btn-secondary" id="btn-new-round" onclick="newRound()" style="display: none;">
+            <button class="btn btn-primary" onclick="newRound()" style="margin-top: 12px;">
                 🔄 NOVA RODADA
             </button>
             
-            <button class="btn btn-secondary" onclick="backToLobby()" style="margin-top: 12px;">
-                ← VOLTAR AO LOBBY
+            <button class="btn btn-secondary" onclick="backToHome()">
+                ← NOVO JOGO
             </button>
         </div>
     </div>
     
     <div class="toast" id="toast"></div>
+    <div id="overlay-container"></div>
 
     <script>
         // =====================
         // GAME STATE
         // =====================
         const state = {
-            playerId: null,
-            playerName: '',
-            roomCode: null,
-            isHost: false,
+            playerCount: 4,
             players: [],
-            gameStarted: false,
-            myWord: null,
-            isImpostor: false,
-            round: 1
+            currentPlayerIndex: 0,
+            word: null,
+            category: null,
+            impostorIndex: null,
+            round: 1,
+            seenPlayers: []
         };
         
         // Word categories
         const wordCategories = [
-            { words: ['BANANA', 'MAÇÃ', 'LARANJA', 'ABACAXI', 'MORANGO', 'UVA', 'MANGA', 'MELANCIA'], category: 'Frutas' },
-            { words: ['CACHORRO', 'GATO', 'ELEFANTE', 'LEÃO', 'TIGRE', 'URSO', 'MACACO', 'GIRAFA'], category: 'Animais' },
-            { words: ['BRASIL', 'JAPÃO', 'ITÁLIA', 'FRANÇA', 'ALEMANHA', 'ARGENTINA', 'ESPANHA', 'PORTUGAL'], category: 'Países' },
-            { words: ['FUTEBOL', 'BASQUETE', 'TÊNIS', 'NATAÇÃO', 'VÔLEI', 'GOLFE', 'BOXE', 'SURF'], category: 'Esportes' },
-            { words: ['PIZZA', 'HAMBÚRGUER', 'SUSHI', 'CHURRASCO', 'LASANHA', 'TACOS', 'FEIJOADA', 'RISOTO'], category: 'Comidas' },
-            { words: ['VIOLÃO', 'PIANO', 'BATERIA', 'GUITARRA', 'FLAUTA', 'SAXOFONE', 'VIOLINO', 'TROMPETE'], category: 'Instrumentos' },
-            { words: ['MÉDICO', 'PROFESSOR', 'ENGENHEIRO', 'ADVOGADO', 'CHEF', 'PILOTO', 'BOMBEIRO', 'DENTISTA'], category: 'Profissões' },
-            { words: ['CARRO', 'AVIÃO', 'NAVIO', 'TREM', 'BICICLETA', 'MOTO', 'HELICÓPTERO', 'ÔNIBUS'], category: 'Transportes' },
-            { words: ['PRAIA', 'MONTANHA', 'FLORESTA', 'DESERTO', 'CACHOEIRA', 'LAGO', 'VULCÃO', 'CAVERNA'], category: 'Lugares' },
-            { words: ['NATAL', 'PÁSCOA', 'CARNAVAL', 'HALLOWEEN', 'ANO NOVO', 'DIA DAS MÃES', 'FESTA JUNINA', 'CASAMENTO'], category: 'Celebrações' }
+            { words: ['BANANA', 'MAÇÃ', 'LARANJA', 'ABACAXI', 'MORANGO', 'UVA', 'MANGA', 'MELANCIA', 'PÊRA', 'KIWI'], category: 'Frutas' },
+            { words: ['CACHORRO', 'GATO', 'ELEFANTE', 'LEÃO', 'TIGRE', 'URSO', 'MACACO', 'GIRAFA', 'ZEBRA', 'PINGUIM'], category: 'Animais' },
+            { words: ['BRASIL', 'JAPÃO', 'ITÁLIA', 'FRANÇA', 'ALEMANHA', 'ARGENTINA', 'ESPANHA', 'PORTUGAL', 'CANADÁ', 'AUSTRÁLIA'], category: 'Países' },
+            { words: ['FUTEBOL', 'BASQUETE', 'TÊNIS', 'NATAÇÃO', 'VÔLEI', 'GOLFE', 'BOXE', 'SURF', 'CORRIDA', 'CICLISMO'], category: 'Esportes' },
+            { words: ['PIZZA', 'HAMBÚRGUER', 'SUSHI', 'CHURRASCO', 'LASANHA', 'TACOS', 'FEIJOADA', 'RISOTO', 'PASTEL', 'COXINHA'], category: 'Comidas' },
+            { words: ['VIOLÃO', 'PIANO', 'BATERIA', 'GUITARRA', 'FLAUTA', 'SAXOFONE', 'VIOLINO', 'TROMPETE', 'HARPA', 'UKULELE'], category: 'Instrumentos' },
+            { words: ['MÉDICO', 'PROFESSOR', 'ENGENHEIRO', 'ADVOGADO', 'CHEF', 'PILOTO', 'BOMBEIRO', 'DENTISTA', 'ARQUITETO', 'VETERINÁRIO'], category: 'Profissões' },
+            { words: ['CARRO', 'AVIÃO', 'NAVIO', 'TREM', 'BICICLETA', 'MOTO', 'HELICÓPTERO', 'ÔNIBUS', 'METRÔ', 'FOGUETE'], category: 'Transportes' },
+            { words: ['PRAIA', 'MONTANHA', 'FLORESTA', 'DESERTO', 'CACHOEIRA', 'LAGO', 'VULCÃO', 'CAVERNA', 'ILHA', 'GELEIRA'], category: 'Lugares Naturais' },
+            { words: ['NATAL', 'PÁSCOA', 'CARNAVAL', 'HALLOWEEN', 'ANO NOVO', 'CASAMENTO', 'ANIVERSÁRIO', 'FORMATURA', 'CHURRASCO', 'FESTA JUNINA'], category: 'Celebrações' },
+            { words: ['CADEIRA', 'MESA', 'SOFÁ', 'CAMA', 'GELADEIRA', 'TELEVISÃO', 'COMPUTADOR', 'FOGÃO', 'MICROONDAS', 'VENTILADOR'], category: 'Objetos de Casa' },
+            { words: ['SUPERMAN', 'BATMAN', 'HOMEM-ARANHA', 'HULK', 'THOR', 'CAPITÃO AMÉRICA', 'MULHER MARAVILHA', 'FLASH', 'AQUAMAN', 'WOLVERINE'], category: 'Super-heróis' },
+            { words: ['VERMELHO', 'AZUL', 'VERDE', 'AMARELO', 'ROXO', 'LARANJA', 'ROSA', 'PRETO', 'BRANCO', 'DOURADO'], category: 'Cores' },
+            { words: ['WHATSAPP', 'INSTAGRAM', 'YOUTUBE', 'TIKTOK', 'FACEBOOK', 'TWITTER', 'NETFLIX', 'SPOTIFY', 'GOOGLE', 'AMAZON'], category: 'Apps/Sites' }
         ];
         
         // =====================
         // UTILITIES
         // =====================
-        function generateId() {
-            return Math.random().toString(36).substring(2, 9);
-        }
-        
-        function generateRoomCode() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-            let code = '';
-            for (let i = 0; i < 4; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
-        
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -700,418 +680,193 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
         
-        function getRandomEmoji() {
-            const emojis = ['😀', '😎', '🤠', '🥳', '😈', '👻', '🤖', '👽', '🦊', '🐱', '🐶', '🦁', '🐸', '🐧', '🦄', '🎃'];
-            return emojis[Math.floor(Math.random() * emojis.length)];
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
         
         // =====================
-        // STORAGE (Polling-based multiplayer)
+        // PLAYER COUNT SELECTOR
         // =====================
-        async function saveRoom(roomData) {
-            try {
-                await window.storage.set(`room:${roomData.code}`, JSON.stringify(roomData), true);
-                return true;
-            } catch (e) {
-                console.error('Error saving room:', e);
-                return false;
-            }
-        }
-        
-        async function loadRoom(code) {
-            try {
-                const result = await window.storage.get(`room:${code}`, true);
-                return result ? JSON.parse(result.value) : null;
-            } catch (e) {
-                console.error('Error loading room:', e);
-                return null;
-            }
-        }
-        
-        async function deleteRoom(code) {
-            try {
-                await window.storage.delete(`room:${code}`, true);
-            } catch (e) {
-                console.error('Error deleting room:', e);
-            }
-        }
-        
-        // =====================
-        // ROOM MANAGEMENT
-        // =====================
-        async function createRoom() {
-            const name = document.getElementById('player-name').value.trim();
-            if (!name) {
-                showToast('Digite seu nome!');
-                return;
-            }
-            
-            state.playerName = name;
-            state.playerId = generateId();
-            state.roomCode = generateRoomCode();
-            state.isHost = true;
-            
-            const roomData = {
-                code: state.roomCode,
-                hostId: state.playerId,
-                players: [{
-                    id: state.playerId,
-                    name: state.playerName,
-                    emoji: getRandomEmoji(),
-                    isHost: true
-                }],
-                gameStarted: false,
-                round: 1,
-                wordData: null,
-                impostorId: null,
-                createdAt: Date.now()
-            };
-            
-            const saved = await saveRoom(roomData);
-            if (saved) {
-                document.getElementById('display-room-code').textContent = state.roomCode;
-                showScreen('screen-lobby');
-                updateLobbyUI(roomData);
-                startPolling();
-                showToast('Sala criada!');
-            } else {
-                showToast('Erro ao criar sala');
-            }
-        }
-        
-        async function joinRoom() {
-            const name = document.getElementById('player-name').value.trim();
-            const code = document.getElementById('room-code-input').value.trim().toUpperCase();
-            
-            if (!name) {
-                showToast('Digite seu nome!');
-                return;
-            }
-            
-            if (code.length !== 4) {
-                showToast('Código deve ter 4 letras');
-                return;
-            }
-            
-            const roomData = await loadRoom(code);
-            
-            if (!roomData) {
-                showToast('Sala não encontrada');
-                return;
-            }
-            
-            if (roomData.players.length >= 4) {
-                showToast('Sala cheia!');
-                return;
-            }
-            
-            if (roomData.gameStarted) {
-                showToast('Jogo já iniciado');
-                return;
-            }
-            
-            state.playerName = name;
-            state.playerId = generateId();
-            state.roomCode = code;
-            state.isHost = false;
-            
-            roomData.players.push({
-                id: state.playerId,
-                name: state.playerName,
-                emoji: getRandomEmoji(),
-                isHost: false
+        document.querySelectorAll('.number-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                state.playerCount = parseInt(this.dataset.num);
+                generatePlayerInputs();
             });
-            
-            await saveRoom(roomData);
-            
-            document.getElementById('display-room-code').textContent = code;
-            showScreen('screen-lobby');
-            updateLobbyUI(roomData);
-            startPolling();
-            showToast('Entrou na sala!');
-        }
+        });
         
-        function updateLobbyUI(roomData) {
-            const list = document.getElementById('players-list');
-            list.innerHTML = '';
+        function generatePlayerInputs() {
+            const container = document.getElementById('player-inputs');
+            container.innerHTML = '';
             
-            roomData.players.forEach(player => {
-                const isYou = player.id === state.playerId;
-                const li = document.createElement('li');
-                li.className = `player-item ${isYou ? 'is-you' : ''} ${player.isHost ? 'is-host' : ''}`;
-                li.innerHTML = `
-                    <div class="player-avatar">${player.emoji}</div>
-                    <span class="player-name">${player.name}${isYou ? ' (você)' : ''}</span>
-                    <div class="player-status"></div>
+            for (let i = 1; i <= state.playerCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-config';
+                div.innerHTML = `
+                    <div class="player-number">${i}</div>
+                    <input type="text" id="player-${i}" placeholder="Nome do jogador ${i}" maxlength="15">
                 `;
-                list.appendChild(li);
-            });
-            
-            document.getElementById('player-count').textContent = roomData.players.length;
-            
-            // Show/hide start button (only for host when 4 players)
-            const btnStart = document.getElementById('btn-start');
-            const waitingMsg = document.getElementById('waiting-message');
-            
-            if (state.isHost && roomData.players.length >= 3) {
-                btnStart.style.display = 'block';
-                waitingMsg.style.display = 'none';
-            } else if (roomData.players.length >= 4) {
-                btnStart.style.display = 'none';
-                waitingMsg.innerHTML = '<p>Aguardando host iniciar...</p>';
-                waitingMsg.style.display = 'block';
-            } else {
-                btnStart.style.display = 'none';
-                waitingMsg.innerHTML = `
-                    <p style="margin-bottom: 12px;">Aguardando jogadores</p>
-                    <div class="waiting-dots">
-                        <span></span><span></span><span></span>
-                    </div>
-                `;
-                waitingMsg.style.display = 'block';
-            }
-            
-            // Check if game started
-            if (roomData.gameStarted) {
-                state.gameStarted = true;
-                state.round = roomData.round;
-                
-                // Determine if I'm the impostor
-                state.isImpostor = roomData.impostorId === state.playerId;
-                state.myWord = state.isImpostor ? null : roomData.wordData.word;
-                state.wordCategory = roomData.wordData.category;
-                
-                showGameScreen(roomData);
+                container.appendChild(div);
             }
         }
         
         // =====================
         // GAME LOGIC
         // =====================
-        async function startGame() {
-            const roomData = await loadRoom(state.roomCode);
-            
-            if (!roomData || roomData.players.length < 3) {
-                showToast('Mínimo 3 jogadores!');
-                return;
+        function startGame() {
+            // Collect player names
+            state.players = [];
+            for (let i = 1; i <= state.playerCount; i++) {
+                const name = document.getElementById(`player-${i}`).value.trim() || `Jogador ${i}`;
+                state.players.push(name);
             }
+            
+            // Shuffle player order
+            state.players = shuffle(state.players);
             
             // Select random word
             const categoryData = wordCategories[Math.floor(Math.random() * wordCategories.length)];
-            const word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+            state.word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+            state.category = categoryData.category;
             
             // Select random impostor
-            const impostorIndex = Math.floor(Math.random() * roomData.players.length);
-            const impostorId = roomData.players[impostorIndex].id;
+            state.impostorIndex = Math.floor(Math.random() * state.players.length);
             
-            roomData.gameStarted = true;
-            roomData.wordData = { word, category: categoryData.category };
-            roomData.impostorId = impostorId;
-            roomData.round = state.round;
+            // Reset state
+            state.currentPlayerIndex = 0;
+            state.seenPlayers = [];
             
-            await saveRoom(roomData);
-            
-            state.gameStarted = true;
-            state.isImpostor = impostorId === state.playerId;
-            state.myWord = state.isImpostor ? null : word;
-            state.wordCategory = categoryData.category;
-            
-            showGameScreen(roomData);
+            // Show first player turn
+            showPlayerTurn();
         }
         
-        function showGameScreen(roomData) {
-            showScreen('screen-game');
+        function showPlayerTurn() {
+            document.getElementById('round-badge').textContent = `RODADA ${state.round}`;
+            document.getElementById('current-player-name').textContent = state.players[state.currentPlayerIndex];
             
-            document.getElementById('round-badge').textContent = `RODADA ${roomData.round}`;
+            // Update progress
+            const progress = document.getElementById('players-progress');
+            progress.innerHTML = state.players.map((name, idx) => {
+                let cls = 'player-chip';
+                if (idx === state.currentPlayerIndex) cls += ' current';
+                else if (state.seenPlayers.includes(idx)) cls += ' seen';
+                return `<span class="${cls}">${name}</span>`;
+            }).join('');
             
-            // Reset word reveal
-            document.getElementById('word-hidden').style.display = 'block';
-            document.getElementById('word-revealed').style.display = 'none';
-            
-            // Update players list
-            const list = document.getElementById('game-players-list');
-            list.innerHTML = '';
-            
-            roomData.players.forEach(player => {
-                const isYou = player.id === state.playerId;
-                const li = document.createElement('li');
-                li.className = `player-item ${isYou ? 'is-you' : ''}`;
-                li.innerHTML = `
-                    <div class="player-avatar">${player.emoji}</div>
-                    <span class="player-name">${player.name}${isYou ? ' (você)' : ''}</span>
-                `;
-                list.appendChild(li);
-            });
-            
-            // Show new round button for host
-            const btnNewRound = document.getElementById('btn-new-round');
-            btnNewRound.style.display = state.isHost ? 'block' : 'none';
+            showScreen('screen-turn');
         }
         
-        function revealWord() {
-            const hidden = document.getElementById('word-hidden');
-            const revealed = document.getElementById('word-revealed');
+        function showWord() {
+            const isImpostor = state.currentPlayerIndex === state.impostorIndex;
             const wordText = document.getElementById('word-text');
             const wordHint = document.getElementById('word-hint');
+            const wordDisplay = document.getElementById('word-display');
             
-            hidden.style.display = 'none';
-            revealed.style.display = 'block';
-            revealed.classList.add('word-revealed');
+            // Re-trigger animation
+            wordDisplay.classList.remove('word-reveal-animation');
+            void wordDisplay.offsetWidth; // Force reflow
+            wordDisplay.classList.add('word-reveal-animation');
             
-            if (state.isImpostor) {
+            if (isImpostor) {
                 wordText.textContent = '🎭 IMPOSTOR';
                 wordText.className = 'word-text is-impostor';
-                wordHint.textContent = `Você NÃO recebeu a palavra! Tente descobrir qual é e se misture aos outros. Categoria: ${state.wordCategory}`;
+                wordHint.textContent = `Você é o IMPOSTOR! Não recebeu a palavra. Categoria: ${state.category}. Tente se misturar!`;
             } else {
-                wordText.textContent = state.myWord;
+                wordText.textContent = state.word;
                 wordText.className = 'word-text is-word';
-                wordHint.textContent = `Esta é a palavra secreta! Descreva-a sem falar diretamente. Descubra quem é o impostor!`;
+                wordHint.textContent = `Esta é a palavra secreta! Categoria: ${state.category}. Descubra quem é o impostor!`;
+            }
+            
+            showScreen('screen-word');
+        }
+        
+        function nextPlayer() {
+            state.seenPlayers.push(state.currentPlayerIndex);
+            state.currentPlayerIndex++;
+            
+            if (state.currentPlayerIndex >= state.players.length) {
+                // All players have seen their words
+                showGameScreen();
+            } else {
+                showPlayerTurn();
             }
         }
         
-        async function newRound() {
-            if (!state.isHost) return;
+        function showGameScreen() {
+            document.getElementById('game-round-badge').textContent = `RODADA ${state.round}`;
+            document.getElementById('total-players').textContent = state.players.length;
             
-            const roomData = await loadRoom(state.roomCode);
-            if (!roomData) return;
+            // Show all players
+            const gamePlayers = document.getElementById('game-players');
+            gamePlayers.innerHTML = state.players.map(name => 
+                `<span class="player-chip">${name}</span>`
+            ).join('');
             
+            showScreen('screen-game');
+        }
+        
+        function revealImpostor() {
+            const overlay = document.getElementById('overlay-container');
+            overlay.innerHTML = `
+                <div class="confirm-overlay" onclick="closeOverlay(event)">
+                    <div class="confirm-box" onclick="event.stopPropagation()">
+                        <h3>🎭 O IMPOSTOR ERA...</h3>
+                        <p style="font-size: 1.5rem; color: var(--accent); margin: 20px 0; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">
+                            ${state.players[state.impostorIndex]}
+                        </p>
+                        <p>A palavra era: <strong style="color: var(--success);">${state.word}</strong></p>
+                        <button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top: 20px;">
+                            FECHAR
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function closeOverlay(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('overlay-container').innerHTML = '';
+        }
+        
+        function newRound() {
             state.round++;
             
-            // Select new word
+            // New word
             const categoryData = wordCategories[Math.floor(Math.random() * wordCategories.length)];
-            const word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+            state.word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+            state.category = categoryData.category;
             
-            // Select new impostor
-            const impostorIndex = Math.floor(Math.random() * roomData.players.length);
-            const impostorId = roomData.players[impostorIndex].id;
+            // Shuffle players again
+            state.players = shuffle(state.players);
             
-            roomData.wordData = { word, category: categoryData.category };
-            roomData.impostorId = impostorId;
-            roomData.round = state.round;
+            // New impostor
+            state.impostorIndex = Math.floor(Math.random() * state.players.length);
             
-            await saveRoom(roomData);
+            // Reset
+            state.currentPlayerIndex = 0;
+            state.seenPlayers = [];
             
-            state.isImpostor = impostorId === state.playerId;
-            state.myWord = state.isImpostor ? null : word;
-            state.wordCategory = categoryData.category;
-            
-            showGameScreen(roomData);
+            showPlayerTurn();
             showToast('Nova rodada!');
         }
         
-        async function backToLobby() {
-            if (state.isHost) {
-                const roomData = await loadRoom(state.roomCode);
-                if (roomData) {
-                    roomData.gameStarted = false;
-                    roomData.wordData = null;
-                    roomData.impostorId = null;
-                    await saveRoom(roomData);
-                }
-            }
-            
-            state.gameStarted = false;
-            showScreen('screen-lobby');
-        }
-        
-        async function leaveLobby() {
-            const roomData = await loadRoom(state.roomCode);
-            
-            if (roomData) {
-                roomData.players = roomData.players.filter(p => p.id !== state.playerId);
-                
-                if (roomData.players.length === 0) {
-                    await deleteRoom(state.roomCode);
-                } else {
-                    // If host leaves, assign new host
-                    if (state.isHost && roomData.players.length > 0) {
-                        roomData.players[0].isHost = true;
-                        roomData.hostId = roomData.players[0].id;
-                    }
-                    await saveRoom(roomData);
-                }
-            }
-            
-            stopPolling();
-            resetState();
-            showScreen('screen-home');
-        }
-        
-        function resetState() {
-            state.playerId = null;
-            state.playerName = '';
-            state.roomCode = null;
-            state.isHost = false;
-            state.players = [];
-            state.gameStarted = false;
-            state.myWord = null;
-            state.isImpostor = false;
+        function backToHome() {
             state.round = 1;
-        }
-        
-        // =====================
-        // POLLING
-        // =====================
-        let pollInterval = null;
-        
-        function startPolling() {
-            stopPolling();
-            pollInterval = setInterval(async () => {
-                if (!state.roomCode) return;
-                
-                const roomData = await loadRoom(state.roomCode);
-                if (roomData) {
-                    // Check if I'm still in the room
-                    const stillInRoom = roomData.players.some(p => p.id === state.playerId);
-                    if (!stillInRoom) {
-                        stopPolling();
-                        resetState();
-                        showScreen('screen-home');
-                        showToast('Você foi removido da sala');
-                        return;
-                    }
-                    
-                    updateLobbyUI(roomData);
-                } else {
-                    // Room was deleted
-                    stopPolling();
-                    resetState();
-                    showScreen('screen-home');
-                    showToast('Sala encerrada');
-                }
-            }, 1500);
-        }
-        
-        function stopPolling() {
-            if (pollInterval) {
-                clearInterval(pollInterval);
-                pollInterval = null;
-            }
+            state.players = [];
+            state.seenPlayers = [];
+            showScreen('screen-home');
         }
         
         // =====================
         // INIT
         // =====================
-        document.getElementById('room-code-input').addEventListener('input', function(e) {
-            this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '');
-        });
-        
-        // Try to restore name from previous session
-        (async function init() {
-            try {
-                const savedName = await window.storage.get('player-name', false);
-                if (savedName) {
-                    document.getElementById('player-name').value = savedName.value;
-                }
-            } catch (e) {}
-        })();
-        
-        // Save name when changed
-        document.getElementById('player-name').addEventListener('change', async function() {
-            try {
-                await window.storage.set('player-name', this.value.trim(), false);
-            } catch (e) {}
-        });
+        generatePlayerInputs();
     </script>
 </body>
 </html>
