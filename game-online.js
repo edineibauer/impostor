@@ -380,37 +380,81 @@ function checkAllVoted() {
 }
 
 function processVotes() {
-    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
-    var counts = {};
-    active.forEach(function(vid) { var t = onlineState.votes[vid]; if (t) counts[t] = (counts[t] || 0) + 1; });
-    var maxV = 0, mostV = [];
-    Object.entries(counts).forEach(function(entry) { var id = entry[0], c = entry[1]; if (c > maxV) { maxV = c; mostV = [id]; } else if (c === maxV) mostV.push(id); });
-    if (mostV.length > 1) {
+    // Get fresh data from gameState
+    roomRef.child('gameState').once('value').then(function(gsSnap) {
+        var gs = gsSnap.val() || {};
+        var impostorIds = gs.impostorIds || [];
+        var eliminated = gs.eliminated || [];
+        var votingRound = gs.votingRound || 1;
+        
+        var active = Object.keys(onlineState.players).filter(function(id) { return !eliminated.includes(id); });
+        var counts = {};
+        active.forEach(function(vid) { var t = onlineState.votes[vid]; if (t) counts[t] = (counts[t] || 0) + 1; });
+        var maxV = 0, mostV = [];
+        Object.entries(counts).forEach(function(entry) { var id = entry[0], c = entry[1]; if (c > maxV) { maxV = c; mostV = [id]; } else if (c === maxV) mostV.push(id); });
+        
+        if (mostV.length > 1) {
+            roomRef.child('votes').remove();
+            roomRef.child('gameState/lastResult').set({ type: 'tie', tiedPlayers: mostV.map(function(id) { return onlineState.players[id] ? onlineState.players[id].name : '?'; }) });
+            roomRef.child('gameState/phase').set('result');
+            return;
+        }
+        
+        var elim = mostV[0];
+        var isImp = impostorIds.includes(elim);
+        var elimName = onlineState.players[elim] ? onlineState.players[elim].name : '?';
+        var newElim = eliminated.slice(); newElim.push(elim);
+        var isFirst = votingRound === 1;
+        var changes = {};
+        
+        // Players who voted for the eliminated person
+        active.forEach(function(vid) {
+            if (onlineState.votes[vid] === elim) {
+                changes[vid] = (changes[vid] || 0) + (isImp ? 1 : -1);
+            }
+        });
+        
+        // Impostor caught in first round loses 1 point
+        if (isImp && isFirst) {
+            changes[elim] = (changes[elim] || 0) - 1;
+        }
+        
+        // Innocent eliminated - all surviving impostors gain 1 point
+        if (!isImp) {
+            impostorIds.forEach(function(iid) { 
+                if (!newElim.includes(iid)) {
+                    changes[iid] = (changes[iid] || 0) + 1;
+                }
+            });
+        }
+        
+        // Apply score changes
+        Object.entries(changes).forEach(function(entry) { 
+            roomRef.child('players/' + entry[0] + '/score').transaction(function(c) { return (c || 0) + entry[1]; }); 
+        });
+        
+        // Check game end conditions
+        var remImp = impostorIds.filter(function(id) { return !newElim.includes(id); });
+        var remPlayers = Object.keys(onlineState.players).filter(function(id) { return !newElim.includes(id); });
+        var remInn = remPlayers.filter(function(id) { return !impostorIds.includes(id); });
+        var gameEnd = null;
+        
+        if (remImp.length === 0) gameEnd = 'innocentsWin';
+        else if (remInn.length <= remImp.length) gameEnd = 'impostorsWin';
+        
+        roomRef.child('gameState/eliminated').set(newElim);
+        roomRef.child('gameState/lastResult').set({ 
+            type: isImp ? 'correct' : 'wrong', 
+            eliminatedId: elim, 
+            eliminatedName: elimName, 
+            wasImpostor: isImp, 
+            scoreChanges: changes, 
+            remainingImpostors: remImp.length, 
+            gameEnd: gameEnd 
+        });
         roomRef.child('votes').remove();
-        roomRef.child('gameState/lastResult').set({ type: 'tie', tiedPlayers: mostV.map(function(id) { return onlineState.players[id] ? onlineState.players[id].name : '?'; }) });
         roomRef.child('gameState/phase').set('result');
-        return;
-    }
-    var elim = mostV[0], isImp = onlineState.impostorIds.includes(elim), elimName = onlineState.players[elim] ? onlineState.players[elim].name : '?';
-    var newElim = onlineState.eliminated.slice(); newElim.push(elim);
-    var isFirst = (onlineState.votingRound || 1) === 1;
-    var changes = {};
-    active.forEach(function(vid) {
-        if (onlineState.votes[vid] === elim) changes[vid] = (changes[vid] || 0) + (isImp ? 1 : -1);
     });
-    if (isImp && isFirst) changes[elim] = (changes[elim] || 0) - 1;
-    if (!isImp) onlineState.impostorIds.forEach(function(iid) { if (!newElim.includes(iid)) changes[iid] = (changes[iid] || 0) + 1; });
-    Object.entries(changes).forEach(function(entry) { roomRef.child('players/' + entry[0] + '/score').transaction(function(c) { return (c || 0) + entry[1]; }); });
-    var remImp = onlineState.impostorIds.filter(function(id) { return !newElim.includes(id); });
-    var remPlayers = Object.keys(onlineState.players).filter(function(id) { return !newElim.includes(id); });
-    var remInn = remPlayers.filter(function(id) { return !onlineState.impostorIds.includes(id); });
-    var gameEnd = null;
-    if (remImp.length === 0) gameEnd = 'innocentsWin';
-    else if (remInn.length <= remImp.length) gameEnd = 'impostorsWin';
-    roomRef.child('gameState/eliminated').set(newElim);
-    roomRef.child('gameState/lastResult').set({ type: isImp ? 'correct' : 'wrong', eliminatedId: elim, eliminatedName: elimName, wasImpostor: isImp, scoreChanges: changes, remainingImpostors: remImp.length, gameEnd: gameEnd });
-    roomRef.child('votes').remove();
-    roomRef.child('gameState/phase').set('result');
 }
 
 function showOnlineResult(r) {
