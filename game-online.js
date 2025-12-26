@@ -112,7 +112,8 @@ function confirmCreateRoom() {
         settings: { maxImpostors: onlineState.maxImpostors, impostorKnows: onlineState.impostorKnows, maxPoints: onlineState.maxPoints, allCategories: onlineState.allCategories, selectedCategories: onlineState.selectedCategories, roomLang: onlineState.roomLang },
         players: { [playerId]: { name: playerName, score: 0, isHost: true, online: true, joinedAt: firebase.database.ServerValue.TIMESTAMP } },
         gameState: { phase: 'lobby', round: 0 },
-        createdAt: firebase.database.ServerValue.TIMESTAMP
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        lastActivity: firebase.database.ServerValue.TIMESTAMP
     }).then(() => { 
         currentRoom = onlineState.roomCode; 
         localStorage.setItem('impostor_active_room', onlineState.roomCode);
@@ -243,6 +244,7 @@ function startOnlineGame() {
     // Save active players for this round
     roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
+    roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
     // Clear isNew flag for all players
     pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
 }
@@ -363,7 +365,11 @@ function showOnlineVoting() {
     showScreen('screen-online-vote');
 }
 
-function castVote(tid) { if (onlineState.eliminated.includes(playerId)) return; roomRef.child('votes/' + playerId).set(tid); }
+function castVote(tid) { 
+    if (onlineState.eliminated.includes(playerId)) return; 
+    roomRef.child('votes/' + playerId).set(tid);
+    roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
+}
 
 function updateVotesProgress() {
     var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
@@ -401,26 +407,43 @@ function processVotes() {
         }
         
         var elim = mostV[0];
-        var isImp = impostorIds.includes(elim);
+        var isElimImpostor = impostorIds.includes(elim);
         var elimName = onlineState.players[elim] ? onlineState.players[elim].name : '?';
         var newElim = eliminated.slice(); newElim.push(elim);
         var isFirst = votingRound === 1;
         var changes = {};
         
-        // Players who voted for the eliminated person
+        // SCORING RULES:
+        // 1. Innocent votes for impostor: +1 (correct)
+        // 2. Innocent votes for innocent: -1 (wrong)
+        // 3. Impostor votes: 0 (no points for voting)
+        // 4. Impostor survives (innocent eliminated): +1
+        // 5. Impostor caught in 1st round: -1
+        
+        // Process votes from INNOCENTS only
         active.forEach(function(vid) {
-            if (onlineState.votes[vid] === elim) {
-                changes[vid] = (changes[vid] || 0) + (isImp ? 1 : -1);
+            var votedFor = onlineState.votes[vid];
+            var voterIsImpostor = impostorIds.includes(vid);
+            
+            // Only innocents gain/lose points for voting
+            if (!voterIsImpostor && votedFor === elim) {
+                if (isElimImpostor) {
+                    // Innocent correctly voted for impostor: +1
+                    changes[vid] = (changes[vid] || 0) + 1;
+                } else {
+                    // Innocent wrongly voted for innocent: -1
+                    changes[vid] = (changes[vid] || 0) - 1;
+                }
             }
         });
         
         // Impostor caught in first round loses 1 point
-        if (isImp && isFirst) {
+        if (isElimImpostor && isFirst) {
             changes[elim] = (changes[elim] || 0) - 1;
         }
         
         // Innocent eliminated - all surviving impostors gain 1 point
-        if (!isImp) {
+        if (!isElimImpostor) {
             impostorIds.forEach(function(iid) { 
                 if (!newElim.includes(iid)) {
                     changes[iid] = (changes[iid] || 0) + 1;
@@ -444,10 +467,10 @@ function processVotes() {
         
         roomRef.child('gameState/eliminated').set(newElim);
         roomRef.child('gameState/lastResult').set({ 
-            type: isImp ? 'correct' : 'wrong', 
+            type: isElimImpostor ? 'correct' : 'wrong', 
             eliminatedId: elim, 
             eliminatedName: elimName, 
-            wasImpostor: isImp, 
+            wasImpostor: isElimImpostor, 
             scoreChanges: changes, 
             remainingImpostors: remImp.length, 
             gameEnd: gameEnd 
@@ -563,6 +586,7 @@ function startNextOnlineRound() {
     roomRef.child('readyPlayers').remove();
     roomRef.child('votes').remove();
     roomRef.child('voteRequests').remove();
+    roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
     // Clear isNew flag for all players
     pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
 }
