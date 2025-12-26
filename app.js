@@ -2,6 +2,81 @@
 
 let gameMode = null; // 'local' or 'online'
 
+// Check internet connection
+function isOnline() {
+    return navigator.onLine;
+}
+
+function showNoInternetModal() {
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                <h3>📡 Sem Internet</h3>
+                <p style="color:var(--text-dim);font-size:.85rem;margin:16px 0;line-height:1.5">
+                    Não foi possível conectar ao servidor.<br>
+                    Verifique sua conexão e tente novamente.
+                </p>
+                <button class="btn btn-primary" onclick="closeOverlay();retryOnlineConnection()" style="margin-bottom:8px">🔄 TENTAR NOVAMENTE</button>
+                <button class="btn btn-secondary" onclick="closeOverlay();selectMode('local')">🎮 JOGAR OFFLINE</button>
+            </div>
+        </div>
+    `;
+}
+
+function retryOnlineConnection() {
+    if (isOnline()) {
+        const pendingRoom = localStorage.getItem('retry_room');
+        if (pendingRoom) {
+            localStorage.removeItem('retry_room');
+            localStorage.setItem('pending_room', pendingRoom);
+            init();
+        } else {
+            selectMode('online');
+        }
+    } else {
+        showNoInternetModal();
+    }
+}
+
+// ROOM CLEANUP - Remove inactive rooms (older than 24 hours)
+function cleanupInactiveRooms() {
+    if (!db) return;
+    
+    const cutoffTime = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
+    
+    db.ref('rooms').once('value').then(snapshot => {
+        if (!snapshot.exists()) return;
+        
+        const rooms = snapshot.val();
+        const deletePromises = [];
+        
+        Object.entries(rooms).forEach(([roomCode, roomData]) => {
+            // Check lastActivity or createdAt
+            const lastActivity = roomData.lastActivity || roomData.createdAt || 0;
+            
+            if (lastActivity < cutoffTime) {
+                console.log('Cleaning up inactive room:', roomCode);
+                deletePromises.push(db.ref('rooms/' + roomCode).remove());
+            }
+        });
+        
+        if (deletePromises.length > 0) {
+            Promise.all(deletePromises).then(() => {
+                console.log('Cleaned up', deletePromises.length, 'inactive rooms');
+            });
+        }
+    }).catch(e => {
+        console.log('Cleanup error:', e);
+    });
+}
+
+// Update room activity timestamp
+function updateRoomActivity() {
+    if (roomRef) {
+        roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
+    }
+}
+
 // UTILITIES
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -176,6 +251,8 @@ function init() {
         // Init Firebase and join directly
         if (initFirebase()) {
             playerId = pid;
+            // Run cleanup in background
+            setTimeout(cleanupInactiveRooms, 2000);
             autoJoinRoom(pendingRoom);
         } else {
             // Firebase not configured
@@ -200,6 +277,8 @@ function init() {
         
         if (initFirebase()) {
             playerId = pid;
+            // Run cleanup in background
+            setTimeout(cleanupInactiveRooms, 2000);
             reconnectToRoom(activeRoom);
         } else {
             localStorage.removeItem('impostor_active_room');
@@ -215,6 +294,13 @@ function init() {
 
 // Reconnect to room after page reload
 function reconnectToRoom(code) {
+    // Check internet connection first
+    if (!isOnline()) {
+        localStorage.setItem('retry_room', code);
+        showNoInternetModal();
+        return;
+    }
+    
     const playerName = localStorage.getItem('impostor_player_name') || generateRandomName();
     
     roomRef = db.ref('rooms/' + code);
@@ -284,13 +370,25 @@ function reconnectToRoom(code) {
         
     }).catch(e => {
         console.error(e);
-        localStorage.removeItem('impostor_active_room');
-        showScreen('screen-mode');
+        if (!isOnline()) {
+            localStorage.setItem('retry_room', code);
+            showNoInternetModal();
+        } else {
+            localStorage.removeItem('impostor_active_room');
+            showScreen('screen-mode');
+        }
     });
 }
 
 // Auto join room directly (from QR code)
 function autoJoinRoom(code) {
+    // Check internet connection first
+    if (!isOnline()) {
+        localStorage.setItem('retry_room', code);
+        showNoInternetModal();
+        return;
+    }
+    
     const playerName = localStorage.getItem('impostor_player_name');
     
     roomRef = db.ref('rooms/' + code);
@@ -349,8 +447,14 @@ function autoJoinRoom(code) {
         
     }).catch(e => {
         console.error(e);
-        applyTranslations();
-        showScreen('screen-mode');
+        if (!isOnline()) {
+            localStorage.setItem('retry_room', code);
+            showNoInternetModal();
+        } else {
+            showToast('Erro ao conectar');
+            applyTranslations();
+            showScreen('screen-mode');
+        }
     });
 }
 

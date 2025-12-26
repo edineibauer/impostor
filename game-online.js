@@ -135,6 +135,14 @@ function joinRoom() {
     if (!code || code.length !== 4) { showToast(t('roomCode')); return; }
     const playerName = localStorage.getItem('impostor_player_name');
     if (!playerName) { showToast(t('nameRequired')); showScreen('screen-online-menu'); return; }
+    
+    // Check internet
+    if (!isOnline()) {
+        localStorage.setItem('retry_room', code);
+        showNoInternetModal();
+        return;
+    }
+    
     updateConnectionStatus('connecting');
     roomRef = db.ref('rooms/' + code);
     roomRef.once('value').then(snap => {
@@ -153,7 +161,11 @@ function joinRoom() {
             if (data.gameState && data.gameState.phase !== 'lobby') handleGameStateChange(data.gameState);
             else showLobby();
         });
-    }).catch(e => { showToast('Error'); updateConnectionStatus(''); console.error(e); });
+    }).catch(e => { 
+        showToast('Erro ao conectar'); 
+        updateConnectionStatus(''); 
+        console.error(e); 
+    });
 }
 
 function setupRoomListeners() {
@@ -204,14 +216,18 @@ function updateRoomHeaders() {
 function updateLobbyPlayers() {
     const c = document.getElementById('lobby-players'); if (!c) return;
     const count = Object.keys(onlineState.players).length;
-    document.getElementById('player-count').textContent = count;
+    const playerCountEl = document.getElementById('player-count');
+    if (playerCountEl) playerCountEl.textContent = count;
     c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
         var id = entry[0], p = entry[1];
+        if (!p || !p.name) return ''; // Skip invalid players
+        var playerName = p.name || 'Jogador';
         var isYou = id === playerId, isH = p.isHost;
         var badges = isH ? '<span class="player-badge">' + t('host') + '</span>' : '';
         badges += isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '';
-        var kick = isHost && !isYou ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + p.name.replace(/'/g, "\\'") + '\')">✕</button>' : '';
-        return '<div class="player-item ' + (isH ? 'host' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar">' + p.name.charAt(0).toUpperCase() + '</div><span class="player-name">' + p.name + '</span>' + badges + '<div class="status-indicator ' + (p.online ? '' : 'offline') + '"></div>' + kick + '</div>';
+        var safeName = playerName.replace(/'/g, "\\'");
+        var kick = isHost && !isYou ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + safeName + '\')">✕</button>' : '';
+        return '<div class="player-item ' + (isH ? 'host' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar">' + playerName.charAt(0).toUpperCase() + '</div><span class="player-name">' + playerName + '</span>' + badges + '<div class="status-indicator ' + (p.online ? '' : 'offline') + '"></div>' + kick + '</div>';
     }).join('');
     var btn = document.getElementById('start-online-btn');
     if (btn) { btn.disabled = count < 3; btn.textContent = count < 3 ? t('minPlayers') : t('startGame'); }
@@ -256,6 +272,12 @@ function findSimilarWordOnline(word, catData) {
 }
 
 function handleGameStateChange(gs) {
+    // Check if we're still in a valid room
+    if (!onlineState.roomCode || !roomRef) {
+        showScreen('screen-mode');
+        return;
+    }
+    
     onlineState.phase = gs.phase; onlineState.round = gs.round || 1; onlineState.word = gs.word; onlineState.category = gs.category;
     onlineState.impostorIds = gs.impostorIds || []; onlineState.eliminated = gs.eliminated || []; onlineState.votingRound = gs.votingRound || 0;
     switch(gs.phase) {
@@ -345,9 +367,12 @@ function updateOnlinePlayersStatus() {
     var c = document.getElementById('online-players-status'); if (!c) return;
     c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
         var id = entry[0], p = entry[1];
+        if (!p || !p.name) return ''; // Skip invalid players
+        var playerName = p.name || 'Jogador';
         var elim = onlineState.eliminated.includes(id), isYou = id === playerId;
-        var kick = isHost && !isYou && !elim ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + p.name.replace(/'/g, "\\'") + '\')">✕</button>' : '';
-        return '<div class="player-item ' + (elim ? 'eliminated' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar" style="' + (elim ? 'opacity:0.4' : '') + '">' + p.name.charAt(0).toUpperCase() + '</div><span class="player-name" style="' + (elim ? 'text-decoration:line-through;opacity:0.4' : '') + '">' + p.name + '</span>' + (isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '') + (elim ? '<span class="vote-status">' + t('eliminated') + '</span>' : '') + kick + '</div>';
+        var safeName = playerName.replace(/'/g, "\\'");
+        var kick = isHost && !isYou && !elim ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + safeName + '\')">✕</button>' : '';
+        return '<div class="player-item ' + (elim ? 'eliminated' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar" style="' + (elim ? 'opacity:0.4' : '') + '">' + playerName.charAt(0).toUpperCase() + '</div><span class="player-name" style="' + (elim ? 'text-decoration:line-through;opacity:0.4' : '') + '">' + playerName + '</span>' + (isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '') + (elim ? '<span class="vote-status">' + t('eliminated') + '</span>' : '') + kick + '</div>';
     }).join('');
 }
 
@@ -357,8 +382,10 @@ function showOnlineVoting() {
     var amElim = onlineState.eliminated.includes(playerId);
     c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
         var id = entry[0], p = entry[1];
+        if (!p || !p.name) return '';
         if (id === playerId || onlineState.eliminated.includes(id)) return '';
-        return '<button class="player-vote-btn ' + (myVote === id ? 'selected' : '') + '" onclick="castVote(\'' + id + '\')" ' + (amElim ? 'disabled' : '') + '>' + p.name + (myVote === id ? ' ✓' : '') + '</button>';
+        var playerName = p.name || 'Jogador';
+        return '<button class="player-vote-btn ' + (myVote === id ? 'selected' : '') + '" onclick="castVote(\'' + id + '\')" ' + (amElim ? 'disabled' : '') + '>' + playerName + (myVote === id ? ' ✓' : '') + '</button>';
     }).join('');
     document.getElementById('vote-waiting').style.display = myVote || amElim ? 'block' : 'none';
     updateRoomHeaders();
@@ -528,7 +555,10 @@ function showOnlineRoundEnd(gs) {
 }
 
 function updateOnlineRanking() {
-    var sorted = Object.entries(onlineState.players).map(function(entry) { return { name: entry[1].name, score: entry[1].score || 0 }; }).sort(function(a, b) { return b.score - a.score; });
+    var sorted = Object.entries(onlineState.players)
+        .filter(function(entry) { return entry[1] && entry[1].name; })
+        .map(function(entry) { return { name: entry[1].name || 'Jogador', score: entry[1].score || 0 }; })
+        .sort(function(a, b) { return b.score - a.score; });
     document.getElementById('online-ranking-list').innerHTML = sorted.map(function(p, i) {
         var cls = 'ranking-item';
         if (i === 0 && p.score > 0) cls += ' gold'; else if (i === 1 && p.score > 0) cls += ' silver'; else if (i === 2 && p.score > 0) cls += ' bronze';
@@ -592,8 +622,11 @@ function startNextOnlineRound() {
 }
 
 function showOnlineGameOver(winner) {
-    document.getElementById('winner-name').textContent = winner.name;
-    var sorted = Object.entries(onlineState.players).map(function(entry) { return { name: entry[1].name, score: entry[1].score || 0 }; }).sort(function(a, b) { return b.score - a.score; });
+    document.getElementById('winner-name').textContent = winner ? (winner.name || 'Vencedor') : 'Vencedor';
+    var sorted = Object.entries(onlineState.players)
+        .filter(function(entry) { return entry[1] && entry[1].name; })
+        .map(function(entry) { return { name: entry[1].name || 'Jogador', score: entry[1].score || 0 }; })
+        .sort(function(a, b) { return b.score - a.score; });
     document.getElementById('final-ranking-list').innerHTML = sorted.map(function(p, i) {
         var cls = 'ranking-item';
         if (i === 0) cls += ' gold'; else if (i === 1) cls += ' silver'; else if (i === 2) cls += ' bronze';
@@ -614,7 +647,20 @@ function restartOnlineGame() {
 }
 
 function leaveRoom() {
-    if (roomRef) { roomRef.child('players/' + playerId).remove(); roomRef.off(); }
+    if (roomRef) { 
+        // Remove player first
+        roomRef.child('players/' + playerId).remove();
+        
+        // Check if room is empty and delete if so
+        roomRef.child('players').once('value').then(function(snap) {
+            if (!snap.exists() || Object.keys(snap.val() || {}).length === 0) {
+                // Room is empty, delete it
+                roomRef.remove();
+            }
+        });
+        
+        roomRef.off(); 
+    }
     roomRef = null; currentRoom = null; isHost = false;
     localStorage.removeItem('impostor_active_room');
     onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {} };
