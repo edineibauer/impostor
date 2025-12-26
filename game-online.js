@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 // Check if Firebase is configured
 function isFirebaseConfigured() {
-    return firebaseConfig.apiKey !== "AIzaSyA3CHzkPfT-2FNOPQ1Up0HxSSiGpGZ1epM";
+    return firebaseConfig.apiKey !== "1";
 }
 
 let db = null;
