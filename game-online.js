@@ -163,8 +163,8 @@ function setupRoomListeners() {
 
 function showQRModal() {
     const url = 'https://edineibauer.github.io/impostor/?room=' + onlineState.roomCode;
-    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>📱 Compartilhar Sala</h3><div class="room-code" style="font-size:2.5rem;margin:16px 0">' + onlineState.roomCode + '</div><div id="qr-modal-container" style="display:flex;justify-content:center;margin:16px 0"></div><p style="font-size:.65rem;color:var(--text-dim);word-break:break-all">' + url + '</p><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button></div></div>';
-    if (typeof QRCode !== 'undefined') new QRCode(document.getElementById('qr-modal-container'), { text: url, width: 150, height: 150, colorDark: '#fff', colorLight: '#12121a' });
+    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>📱 Compartilhar Sala</h3><div class="room-code" style="font-size:2.5rem;margin:16px 0">' + onlineState.roomCode + '</div><div style="display:flex;justify-content:center;margin:16px 0"><div class="qr-wrapper" id="qr-modal-container"></div></div><p style="font-size:.65rem;color:var(--text-dim);word-break:break-all">' + url + '</p><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button></div></div>';
+    if (typeof QRCode !== 'undefined') new QRCode(document.getElementById('qr-modal-container'), { text: url, width: 150, height: 150, colorDark: '#000', colorLight: '#fff' });
 }
 
 function confirmLeaveRoom() {
@@ -173,12 +173,25 @@ function confirmLeaveRoom() {
 
 function showLobby() {
     document.getElementById('lobby-room-code').textContent = onlineState.roomCode;
-    const qc = document.getElementById('qr-container');
-    qc.innerHTML = '';
-    if (typeof QRCode !== 'undefined') new QRCode(qc, { text: 'https://edineibauer.github.io/impostor/?room=' + onlineState.roomCode, width: 150, height: 150, colorDark: '#fff', colorLight: '#12121a' });
+    var qc = document.getElementById('qr-wrapper');
+    if (qc) {
+        qc.innerHTML = '';
+        if (typeof QRCode !== 'undefined') new QRCode(qc, { text: 'https://edineibauer.github.io/impostor/?room=' + onlineState.roomCode, width: 150, height: 150, colorDark: '#000', colorLight: '#fff' });
+    }
     document.getElementById('host-controls').style.display = isHost ? 'block' : 'none';
     document.getElementById('guest-waiting').style.display = isHost ? 'none' : 'block';
+    updateRoomHeaders();
     showScreen('screen-lobby');
+}
+
+function updateRoomHeaders() {
+    var headers = ['room-header-lobby', 'room-header-word', 'room-header-vote', 'room-header-result', 'room-header-round-end'];
+    headers.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.innerHTML = '<div class="room-header-left"><div class="room-header-code" onclick="showQRModal()">🎮 ' + onlineState.roomCode + ' <span style="font-size:.7rem">📱</span></div></div><div class="room-header-right"><button class="profile-btn" onclick="showProfileModal()">👤</button><button class="leave-btn" onclick="confirmLeaveRoom()">✕</button></div>';
+        }
+    });
 }
 
 function updateLobbyPlayers() {
@@ -205,7 +218,10 @@ function kickPlayer(pid) { if (!isHost) return; roomRef.child('kicked/' + pid).s
 
 function startOnlineGame() {
     if (!isHost) return;
-    var pids = Object.keys(onlineState.players);
+    // Get only players that are not marked as new (mid-game joiners)
+    var pids = Object.keys(onlineState.players).filter(function(id) {
+        return !onlineState.players[id].isNew;
+    });
     if (pids.length < 3) { showToast(t('minPlayers')); return; }
     var maxP = Math.floor((pids.length - 1) / 2);
     var actMax = Math.min(onlineState.maxImpostors, maxP);
@@ -218,8 +234,11 @@ function startOnlineGame() {
     var impIds = shuffled.slice(0, impCount);
     var simWords = {};
     if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
-    roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0 });
+    // Save active players for this round
+    roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
+    // Clear isNew flag for all players
+    pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
 }
 
 function findSimilarWordOnline(word, catData) {
@@ -245,17 +264,36 @@ function showOnlineWord(gs) {
     document.getElementById('online-round-num').textContent = onlineState.round;
     var wt = document.getElementById('online-word-text');
     var ct = document.getElementById('online-category-tag');
-    var isImp = onlineState.impostorIds.includes(playerId);
-    if (isImp) {
-        if (gs.impostorKnows) { wt.textContent = t('impostor'); wt.className = 'word-text is-impostor'; }
-        else { wt.textContent = (gs.similarWords && gs.similarWords[playerId]) || onlineState.word; wt.className = 'word-text is-word'; }
-    } else { wt.textContent = onlineState.word; wt.className = 'word-text is-word'; }
-    ct.textContent = 'Categoria: ' + onlineState.category;
-    document.getElementById('online-word-display').style.display = 'block';
-    document.getElementById('hide-word-btn').style.display = 'block';
-    document.getElementById('word-hidden-container').style.display = 'none';
-    document.getElementById('request-vote-control').style.display = 'block';
+    
+    // Check if player is participating in this round
+    var roundPlayers = gs.roundPlayers || Object.keys(onlineState.players);
+    var isParticipating = roundPlayers.includes(playerId);
+    
+    if (!isParticipating) {
+        // New player - show waiting message
+        wt.textContent = '⏳ AGUARDANDO';
+        wt.className = 'word-text';
+        wt.style.color = 'var(--warning)';
+        ct.textContent = 'Você entrará na próxima rodada';
+        document.getElementById('online-word-display').style.display = 'block';
+        document.getElementById('hide-word-btn').style.display = 'none';
+        document.getElementById('word-hidden-container').style.display = 'none';
+        document.getElementById('request-vote-control').style.display = 'none';
+    } else {
+        wt.style.color = '';
+        var isImp = onlineState.impostorIds.includes(playerId);
+        if (isImp) {
+            if (gs.impostorKnows) { wt.textContent = t('impostor'); wt.className = 'word-text is-impostor'; }
+            else { wt.textContent = (gs.similarWords && gs.similarWords[playerId]) || onlineState.word; wt.className = 'word-text is-word'; }
+        } else { wt.textContent = onlineState.word; wt.className = 'word-text is-word'; }
+        ct.textContent = 'Categoria: ' + onlineState.category;
+        document.getElementById('online-word-display').style.display = 'block';
+        document.getElementById('hide-word-btn').style.display = 'block';
+        document.getElementById('word-hidden-container').style.display = 'none';
+        document.getElementById('request-vote-control').style.display = 'block';
+    }
     updateVoteRequestStatus(); updateOnlinePlayersStatus();
+    updateRoomHeaders();
     showScreen('screen-online-word');
 }
 
@@ -315,6 +353,7 @@ function showOnlineVoting() {
         return '<button class="player-vote-btn ' + (myVote === id ? 'selected' : '') + '" onclick="castVote(\'' + id + '\')" ' + (amElim ? 'disabled' : '') + '>' + p.name + (myVote === id ? ' ✓' : '') + '</button>';
     }).join('');
     document.getElementById('vote-waiting').style.display = myVote || amElim ? 'block' : 'none';
+    updateRoomHeaders();
     showScreen('screen-online-vote');
 }
 
@@ -391,6 +430,7 @@ function showOnlineResult(r) {
         if (r.gameEnd) { btn.style.display = 'none'; setTimeout(function() { if (isHost) roomRef.child('gameState/phase').set('roundEnd'); }, 3000); }
         else { btn.style.display = 'block'; btn.textContent = t('continueVoting'); }
     }
+    updateRoomHeaders();
     showScreen('screen-online-result');
 }
 
@@ -410,6 +450,7 @@ function showOnlineRoundEnd(gs) {
     updateOnlineRanking();
     document.getElementById('ready-next-btn').disabled = false;
     document.getElementById('ready-next-btn').textContent = t('ready');
+    updateRoomHeaders();
     showScreen('screen-online-round-end');
 }
 
@@ -459,6 +500,7 @@ function startNextOnlineRound() {
     var avail = onlineState.allCategories ? cats : onlineState.selectedCategories.map(function(i) { return cats[i]; });
     var catData = avail[Math.floor(Math.random() * avail.length)];
     var word = catData.words[Math.floor(Math.random() * catData.words.length)];
+    // All players participate in new round (including those who joined mid-game)
     var pids = Object.keys(onlineState.players);
     var maxP = Math.floor((pids.length - 1) / 2);
     var actMax = Math.min(onlineState.maxImpostors, maxP);
@@ -467,10 +509,12 @@ function startNextOnlineRound() {
     var impIds = shuffled.slice(0, impCount);
     var simWords = {};
     if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
-    roomRef.child('gameState').set({ phase: 'playing', round: nr, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0 });
+    roomRef.child('gameState').set({ phase: 'playing', round: nr, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('readyPlayers').remove();
     roomRef.child('votes').remove();
     roomRef.child('voteRequests').remove();
+    // Clear isNew flag for all players
+    pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
 }
 
 function showOnlineGameOver(winner) {

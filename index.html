@@ -160,12 +160,17 @@
         .countdown{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--accent);text-align:center;margin:20px 0}
         .kick-btn{width:24px;height:24px;border-radius:50%;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.8rem;cursor:pointer;margin-left:8px;opacity:.6;transition:all .2s}
         .kick-btn:hover{opacity:1;background:rgba(255,68,68,0.2)}
-        .room-header{display:none;position:absolute;top:10px;left:0;right:0;padding:0 15px;z-index:100}
-        .room-header-content{display:flex;align-items:center;justify-content:center;gap:10px}
-        .room-code-small{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--accent);cursor:pointer;padding:6px 12px;background:rgba(255,51,102,0.1);border-radius:8px;border:1px solid var(--accent)}
-        .room-code-small:hover{background:rgba(255,51,102,0.2)}
-        .leave-room-btn{position:absolute;right:15px;width:32px;height:32px;border-radius:8px;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.9rem;cursor:pointer}
-        .leave-room-btn:hover{background:rgba(255,68,68,0.2)}
+        .room-header{position:fixed;top:0;left:0;right:0;height:50px;background:var(--bg-dark);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:100}
+        .room-header-left{display:flex;align-items:center;gap:10px}
+        .room-header-code{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--accent);cursor:pointer;padding:6px 12px;background:rgba(255,51,102,0.1);border-radius:8px;border:1px solid var(--accent);display:flex;align-items:center;gap:6px}
+        .room-header-code:hover{background:rgba(255,51,102,0.2)}
+        .room-header-right{display:flex;align-items:center;gap:10px}
+        .profile-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+        .profile-btn:hover{border-color:var(--accent);color:var(--accent)}
+        .leave-btn{width:36px;height:36px;border-radius:8px;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.9rem;cursor:pointer}
+        .leave-btn:hover{background:rgba(255,68,68,0.2)}
+        .qr-wrapper{background:#fff;padding:15px;border-radius:12px;display:inline-block}
+        .screen-with-header{padding-top:60px!important}
         @media(max-width:380px){.logo h1{font-size:2.6rem}.logo-icon{width:60px;height:60px}.word-text{font-size:1.9rem}.player-turn-name{font-size:1.9rem}.container{padding:15px}.number-btn{width:36px;height:36px;font-size:1rem}.room-code{font-size:2.5rem;letter-spacing:6px}}
         .install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border);padding:14px 18px;display:none;align-items:center;gap:10px;z-index:999}
         .install-banner.show{display:flex}
@@ -357,10 +362,11 @@
         </div>
 
         <!-- ONLINE MODE: LOBBY -->
-        <div id="screen-lobby" class="screen">
+        <div id="screen-lobby" class="screen screen-with-header">
+            <div id="room-header-lobby" class="room-header"></div>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="lobby">SALA DE ESPERA</h1></div>
             <div class="room-code" id="lobby-room-code">ABCD</div>
-            <div class="qr-container" id="qr-container"></div>
+            <div class="qr-container" id="qr-container"><div class="qr-wrapper" id="qr-wrapper"></div></div>
             <p style="text-align:center;font-size:.7rem;color:var(--text-dim);margin-bottom:16px" data-i18n="shareCode">Compartilhe o código ou QR Code com seus amigos</p>
             <div class="card">
                 <h2 class="card-title"><span data-i18n="playersInRoom">Jogadores na Sala</span> (<span id="player-count">0</span>)</h2>
@@ -376,7 +382,8 @@
         </div>
 
         <!-- ONLINE MODE: WORD SCREEN -->
-        <div id="screen-online-word" class="screen">
+        <div id="screen-online-word" class="screen screen-with-header">
+            <div id="room-header-word" class="room-header"></div>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1><span data-i18n="round">RODADA</span> <span id="online-round-num">1</span></h1></div>
             <div class="card">
                 <div class="word-container">
@@ -403,7 +410,8 @@
         </div>
 
         <!-- ONLINE MODE: VOTING SCREEN -->
-        <div id="screen-online-vote" class="screen">
+        <div id="screen-online-vote" class="screen screen-with-header">
+            <div id="room-header-vote" class="room-header"></div>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="voting">🗳️ VOTAÇÃO</h1></div>
             <div class="card">
                 <h2 class="card-title" data-i18n="whoIsImpostor">Quem é o Impostor?</h2>
@@ -416,14 +424,16 @@
         </div>
 
         <!-- ONLINE MODE: VOTE RESULT -->
-        <div id="screen-online-result" class="screen">
+        <div id="screen-online-result" class="screen screen-with-header">
+            <div id="room-header-result" class="room-header"></div>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="result">📊 RESULTADO</h1></div>
             <div id="online-result-content" class="card"></div>
             <button class="btn btn-warning" onclick="continueOnlineVoting()" id="continue-voting-btn" data-i18n="continueVoting">🗳️ CONTINUAR VOTANDO</button>
         </div>
 
         <!-- ONLINE MODE: ROUND END -->
-        <div id="screen-online-round-end" class="screen">
+        <div id="screen-online-round-end" class="screen screen-with-header">
+            <div id="room-header-round-end" class="room-header"></div>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="roundEnd">🏁 FIM DA RODADA</h1></div>
             <div id="online-round-summary" class="card"></div>
             <div class="card">
