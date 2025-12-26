@@ -149,8 +149,11 @@ function init() {
     const hasPendingRoom = checkUrlForRoom();
     const hasLang = loadLanguage();
     
+    // Check for active room (page reload)
+    const activeRoom = localStorage.getItem('impostor_active_room');
+    
     if (hasPendingRoom || localStorage.getItem('pending_room')) {
-        // Auto-join room - skip language selection
+        // Auto-join room from QR code - skip language selection
         const pendingRoom = localStorage.getItem('pending_room');
         localStorage.removeItem('pending_room');
         
@@ -183,6 +186,25 @@ function init() {
                 showScreen('screen-mode');
             }
         }
+    } else if (activeRoom) {
+        // Reconnect to active room (page reload)
+        applyTranslations();
+        
+        let pid = localStorage.getItem('impostor_player_id');
+        if (!pid) {
+            pid = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('impostor_player_id', pid);
+        }
+        
+        gameMode = 'online';
+        
+        if (initFirebase()) {
+            playerId = pid;
+            reconnectToRoom(activeRoom);
+        } else {
+            localStorage.removeItem('impostor_active_room');
+            showScreen('screen-mode');
+        }
     } else if (!hasLang) {
         showScreen('screen-lang');
     } else {
@@ -191,7 +213,83 @@ function init() {
     }
 }
 
-// Auto join room directly
+// Reconnect to room after page reload
+function reconnectToRoom(code) {
+    const playerName = localStorage.getItem('impostor_player_name') || generateRandomName();
+    
+    roomRef = db.ref('rooms/' + code);
+    roomRef.once('value').then(snap => {
+        if (!snap.exists()) {
+            // Room no longer exists
+            localStorage.removeItem('impostor_active_room');
+            showToast('Sala não encontrada');
+            showScreen('screen-mode');
+            return;
+        }
+        
+        const data = snap.val();
+        onlineState.roomCode = code;
+        currentRoom = code;
+        isHost = data.host === playerId;
+        
+        // Apply room settings including language
+        if (data.settings) {
+            onlineState.maxImpostors = data.settings.maxImpostors;
+            onlineState.impostorKnows = data.settings.impostorKnows;
+            onlineState.maxPoints = data.settings.maxPoints;
+            onlineState.allCategories = data.settings.allCategories;
+            onlineState.selectedCategories = data.settings.selectedCategories || [];
+            onlineState.roomLang = data.settings.roomLang || 'pt';
+            
+            currentLang = onlineState.roomLang;
+            localStorage.setItem('impostor_lang', currentLang);
+            applyTranslations();
+        }
+        
+        // Check if player still exists in room
+        if (data.players && data.players[playerId]) {
+            // Player exists - just reconnect
+            roomRef.child('players/' + playerId + '/online').set(true);
+            setupRoomListeners();
+            
+            // Restore game state
+            if (data.gameState) {
+                handleGameStateChange(data.gameState);
+            } else {
+                showLobby();
+            }
+            
+            showToast('Reconectado!');
+        } else {
+            // Player was removed or left - rejoin
+            roomRef.child('players/' + playerId).set({
+                name: playerName,
+                score: 0,
+                isHost: false,
+                online: true,
+                joinedAt: firebase.database.ServerValue.TIMESTAMP,
+                isNew: data.gameState && data.gameState.phase !== 'lobby'
+            }).then(() => {
+                setupRoomListeners();
+                
+                if (data.gameState && data.gameState.phase !== 'lobby') {
+                    handleGameStateChange(data.gameState);
+                } else {
+                    showLobby();
+                }
+                
+                showToast('Bem-vindo de volta!');
+            });
+        }
+        
+    }).catch(e => {
+        console.error(e);
+        localStorage.removeItem('impostor_active_room');
+        showScreen('screen-mode');
+    });
+}
+
+// Auto join room directly (from QR code)
 function autoJoinRoom(code) {
     const playerName = localStorage.getItem('impostor_player_name');
     
@@ -208,6 +306,9 @@ function autoJoinRoom(code) {
         onlineState.roomCode = code;
         currentRoom = code;
         isHost = data.host === playerId;
+        
+        // Save active room
+        localStorage.setItem('impostor_active_room', code);
         
         // Apply room settings including language
         if (data.settings) {
@@ -231,7 +332,7 @@ function autoJoinRoom(code) {
             isHost: false,
             online: true,
             joinedAt: firebase.database.ServerValue.TIMESTAMP,
-            isNew: true // Mark as new player for mid-game joins
+            isNew: data.gameState && data.gameState.phase !== 'lobby'
         }).then(() => {
             setupRoomListeners();
             

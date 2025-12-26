@@ -113,7 +113,12 @@ function confirmCreateRoom() {
         players: { [playerId]: { name: playerName, score: 0, isHost: true, online: true, joinedAt: firebase.database.ServerValue.TIMESTAMP } },
         gameState: { phase: 'lobby', round: 0 },
         createdAt: firebase.database.ServerValue.TIMESTAMP
-    }).then(() => { currentRoom = onlineState.roomCode; setupRoomListeners(); showLobby(); }).catch(e => { showToast('Error'); console.error(e); });
+    }).then(() => { 
+        currentRoom = onlineState.roomCode; 
+        localStorage.setItem('impostor_active_room', onlineState.roomCode);
+        setupRoomListeners(); 
+        showLobby(); 
+    }).catch(e => { showToast('Error'); console.error(e); });
 }
 
 function showJoinRoom() {
@@ -135,6 +140,7 @@ function joinRoom() {
         if (!snap.exists()) { showToast(t('roomNotFound')); updateConnectionStatus(''); return; }
         const data = snap.val();
         onlineState.roomCode = code; currentRoom = code; isHost = data.host === playerId;
+        localStorage.setItem('impostor_active_room', code);
         if (data.settings) {
             onlineState.maxImpostors = data.settings.maxImpostors; onlineState.impostorKnows = data.settings.impostorKnows;
             onlineState.maxPoints = data.settings.maxPoints; onlineState.allCategories = data.settings.allCategories;
@@ -542,6 +548,7 @@ function restartOnlineGame() {
 function leaveRoom() {
     if (roomRef) { roomRef.child('players/' + playerId).remove(); roomRef.off(); }
     roomRef = null; currentRoom = null; isHost = false;
+    localStorage.removeItem('impostor_active_room');
     onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {} };
     updateConnectionStatus('');
     showScreen('screen-mode');
