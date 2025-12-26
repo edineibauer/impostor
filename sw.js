@@ -1,9 +1,12 @@
-const CACHE_NAME = 'impostor-v1';
+const CACHE_NAME = 'impostor-v2';
 const urlsToCache = [
     './',
     './index.html',
     './game.js',
-    './words.js',
+    './i18n.js',
+    './words-pt.js',
+    './words-en.js',
+    './words-es.js',
     './manifest.json',
     './icon-192.png',
     './icon-512.png',

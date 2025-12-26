@@ -1,8 +1,8 @@
 {
-    "name": "Impostor - Jogo de Dedução",
-    "short_name": "Impostor",
-    "description": "Jogo de dedução social - Descubra quem é o impostor!",
-    "start_url": "/impostor/",
+    "name": "O Impostor - Jogo de Dedução",
+    "short_name": "O Impostor",
+    "description": "Jogo de dedução social por palavras - Descubra quem é o impostor!",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#0a0a0f",
     "theme_color": "#0a0a0f",
