@@ -322,34 +322,38 @@ function votePlayer(playerIndex) {
     saveState();
     
     // Check if impostors won (only impostors remain)
-    const remainingPlayers = state.players.filter((_, idx) => !state.eliminatedPlayers.includes(idx));
-    const remainingImpostors = state.impostorIndices.filter(idx => !state.eliminatedPlayers.includes(idx));
-    
-    // Impostors win if all remaining players are impostors
-    const impostorsWon = remainingPlayers.length > 0 && 
-                         remainingPlayers.every((_, i) => {
-                             const originalIdx = state.players.findIndex((p, idx) => 
-                                 !state.eliminatedPlayers.includes(idx) && 
-                                 state.players.filter((_, j) => !state.eliminatedPlayers.includes(j)).indexOf(p) === i
-                             );
-                             // Find actual remaining indices
-                             const remainingIndices = state.players.map((_, idx) => idx).filter(idx => !state.eliminatedPlayers.includes(idx));
-                             return remainingIndices.every(idx => state.impostorIndices.includes(idx));
-                         });
-    
-    // Simpler check: remaining non-eliminated indices that are impostors
     const remainingIndices = state.players.map((_, idx) => idx).filter(idx => !state.eliminatedPlayers.includes(idx));
     const allRemainingAreImpostors = remainingIndices.length > 0 && remainingIndices.every(idx => state.impostorIndices.includes(idx));
     
     if (allRemainingAreImpostors && !isImpostor) {
         // Wrong vote and only impostors remain - impostors win!
-        showImpostorWins(playerName);
+        // Show scoring screen first, then victory screen
+        showVoteResultWithImpostorWin(playerName);
     } else {
         showVoteResult(playerName, isImpostor, playerIndex);
     }
 }
 
-function showImpostorWins(eliminatedPlayerName) {
+function showVoteResultWithImpostorWin(playerName) {
+    let resultHTML = `<div class="result-icon">❌</div><h3 style="color:#ff4444">${t('wrong')}</h3>
+        <p style="font-size:1.1rem;margin:14px 0"><strong>${playerName}</strong> ${t('wasInnocent')}</p>
+        <p style="color:var(--warning);font-size:.85rem;margin-top:10px">🎭 ${t('impostorWins')}</p>`;
+    
+    let scoreControlsHTML = buildScoreControls();
+    
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                ${resultHTML}
+                <div class="section-title">${t('adjustPoints')}</div>
+                <div class="score-controls">${scoreControlsHTML}</div>
+                <button class="btn btn-primary" onclick="closeOverlay();showImpostorWins();" style="margin-top:14px">${t('seeRoundSummary')}</button>
+            </div>
+        </div>
+    `;
+}
+
+function showImpostorWins() {
     const impostorNames = state.impostorIndices.map(i => state.players[i]);
     const impostorLabel = state.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
     
