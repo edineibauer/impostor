@@ -1,12 +1,13 @@
 // GAME-ONLINE.JS - Online Game Logic with Firebase
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyA3CHzkPfT-2FNOPQ1Up0HxSSiGpGZ1epM",
+    authDomain: "impostor-1bd7a.firebaseapp.com",
+    databaseURL: "https://impostor-1bd7a-default-rtdb.firebaseio.com",
+    projectId: "impostor-1bd7a",
+    storageBucket: "impostor-1bd7a.firebasestorage.app",
+    messagingSenderId: "629463705730",
+    appId: "1:629463705730:web:bf3521149f90dc5d77ac9b",
+    measurementId: "G-VKN15517B9"
 };
 
 function isFirebaseConfigured() { return firebaseConfig.apiKey !== "YOUR_API_KEY"; }
