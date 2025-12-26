@@ -61,7 +61,8 @@ const translations = {
         settings: "⚙️ CONFIGURAÇÕES",
         language: "Idioma",
         saveSettings: "SALVAR",
-        similarWord: "Palavra similar - você pode ser o impostor!"
+        similarWord: "Palavra similar - você pode ser o impostor!",
+        impostorWords: "Palavras dos impostores"
     },
     en: {
         title: "THE IMPOSTOR",
@@ -124,7 +125,8 @@ const translations = {
         settings: "⚙️ SETTINGS",
         language: "Language",
         saveSettings: "SAVE",
-        similarWord: "Similar word - you might be the impostor!"
+        similarWord: "Similar word - you might be the impostor!",
+        impostorWords: "Impostor words"
     },
     es: {
         title: "EL IMPOSTOR",
@@ -187,7 +189,8 @@ const translations = {
         settings: "⚙️ CONFIGURACIÓN",
         language: "Idioma",
         saveSettings: "GUARDAR",
-        similarWord: "Palabra similar - ¡podrías ser el impostor!"
+        similarWord: "Palabra similar - ¡podrías ser el impostor!",
+        impostorWords: "Palabras de los impostores"
     }
 };
 
@@ -214,6 +217,9 @@ function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('impostor_lang', lang);
     applyTranslations();
+    if (typeof initHomeScreen === 'function') {
+        initHomeScreen();
+    }
     showScreen('screen-home');
 }
 

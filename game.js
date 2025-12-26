@@ -239,9 +239,10 @@ function showWord() {
             categoryTag.textContent = state.category;
         } else {
             // Impostor gets similar word (doesn't know they're impostor)
+            // Same color as normal word so they don't know
             const similarWord = state.similarWords[state.currentPlayerIndex] || state.word;
             wordText.textContent = similarWord;
-            wordText.className = 'word-text is-similar';
+            wordText.className = 'word-text is-word';
             categoryTag.textContent = state.category;
         }
     } else {
@@ -350,8 +351,8 @@ function showVoteResult(playerName, wasImpostor, playerIndex) {
     if (allImpostorsFound) {
         buttonsHTML = `<button class="btn btn-primary" onclick="closeOverlay();showRoundSummary();" style="margin-top:14px">${t('seeRoundSummary')}</button>`;
     } else {
-        buttonsHTML = `<button class="btn btn-warning" onclick="closeOverlay();showVoteScreen();" style="margin-top:14px">${t('continueVoting')}</button>
-            <button class="btn btn-secondary" onclick="closeOverlay();updateGamePlayersList();" style="margin-top:8px">${t('backToGame')}</button>`;
+        // Only continue voting button, no back to game
+        buttonsHTML = `<button class="btn btn-warning" onclick="closeOverlay();showVoteScreen();" style="margin-top:14px">${t('continueVoting')}</button>`;
     }
     
     document.getElementById('overlay-container').innerHTML = `
@@ -383,7 +384,6 @@ function buildScoreControls() {
 function showRoundSummary() {
     const impostorNames = state.impostorIndices.map(i => state.players[i]);
     const impostorLabel = state.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
-    let scoreControlsHTML = buildScoreControls();
     
     // Show similar words if mode was "doesn't know"
     let similarWordsInfo = '';
@@ -393,8 +393,19 @@ function showRoundSummary() {
             const word = state.similarWords[idx];
             return `${name}: ${word}`;
         }).join(', ');
-        similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">Palavras dos impostores: ${similarList}</p>`;
+        similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">${t('impostorWords')}: ${similarList}</p>`;
     }
+    
+    // Build ranking display (read-only, no adjustment controls)
+    const sorted = Object.entries(state.scores).sort((a, b) => b[1] - a[1]);
+    const rankingHTML = sorted.map(([name, score], idx) => {
+        let cls = 'ranking-item';
+        if (idx === 0 && score > 0) cls += ' gold';
+        else if (idx === 1 && score > 0) cls += ' silver';
+        else if (idx === 2 && score > 0) cls += ' bronze';
+        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
+        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
+    }).join('');
     
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
@@ -404,10 +415,9 @@ function showRoundSummary() {
                 <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
                 <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${state.word}</strong></p>
                 ${similarWordsInfo}
-                <div class="section-title">${t('finalScore')}</div>
-                <div class="score-controls">${scoreControlsHTML}</div>
+                <div class="section-title">🏆 RANKING</div>
+                <ul class="ranking-list">${rankingHTML}</ul>
                 <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
-                <button class="btn btn-secondary" onclick="closeOverlay();showGameScreen();" style="margin-top:8px">${t('close')}</button>
             </div>
         </div>
     `;
@@ -492,6 +502,12 @@ if ('serviceWorker' in navigator) {
 }
 
 // INIT
+function initHomeScreen() {
+    initPlayerSelector();
+    updateImpostorSelector();
+    generatePlayerInputs();
+}
+
 function init() {
     const hasLang = loadLanguage();
     
@@ -499,9 +515,7 @@ function init() {
         showScreen('screen-lang');
     } else {
         applyTranslations();
-        initPlayerSelector();
-        updateImpostorSelector();
-        generatePlayerInputs();
+        initHomeScreen();
         
         if (loadState()) {
             if (state.gameInProgress) {
