@@ -1,4 +1,264 @@
-() {
+// GAME-LOCAL.JS - Local Game Logic
+
+let localState = {
+    playerCount: 4,
+    maxImpostors: 1,
+    players: [],
+    scores: {},
+    currentPlayerIndex: 0,
+    word: null,
+    category: null,
+    impostorIndices: [],
+    actualImpostorCount: 0,
+    round: 1,
+    seenPlayers: [],
+    gameInProgress: false,
+    eliminatedPlayers: [],
+    revealedImpostors: [],
+    impostorKnows: true,
+    similarWords: {},
+    maxPoints: null,
+    allCategories: true,
+    selectedCategories: [],
+    votingRound: 0
+};
+
+// STORAGE
+function saveLocalState() {
+    try { localStorage.setItem('impostor_local_state', JSON.stringify(localState)); } catch (e) {}
+}
+
+function loadLocalState() {
+    try {
+        const saved = localStorage.getItem('impostor_local_state');
+        if (saved) {
+            const loaded = JSON.parse(saved);
+            if (loaded.gameInProgress) { 
+                localState = loaded; 
+                if (!localState.eliminatedPlayers) localState.eliminatedPlayers = [];
+                if (!localState.revealedImpostors) localState.revealedImpostors = [];
+                if (localState.impostorKnows === undefined) localState.impostorKnows = true;
+                if (!localState.similarWords) localState.similarWords = {};
+                if (!localState.votingRound) localState.votingRound = 0;
+                return true; 
+            }
+        }
+    } catch (e) {}
+    return false;
+}
+
+function clearLocalState() {
+    try { localStorage.removeItem('impostor_local_state'); } catch (e) {}
+}
+
+// INIT LOCAL GAME
+function initLocalGame() {
+    initPlayerSelector();
+    updateImpostorSelector();
+    generatePlayerInputs();
+    populateCategoriesList();
+    
+    // Check for saved game
+    if (loadLocalState()) {
+        if (localState.gameInProgress) {
+            if (localState.seenPlayers.length >= localState.players.length) {
+                showGameScreen();
+            } else {
+                showPlayerTurn();
+            }
+            showToast(t('gameRestored'));
+        }
+    }
+}
+
+// INIT PLAYER SELECTOR (3-20)
+function initPlayerSelector() {
+    const selector = document.getElementById('player-selector');
+    if (!selector) return;
+    selector.innerHTML = '';
+    for (let i = 3; i <= 20; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'number-btn' + (i === 4 ? ' selected' : '');
+        btn.dataset.num = i;
+        btn.textContent = i;
+        btn.onclick = function() {
+            selector.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            localState.playerCount = parseInt(this.dataset.num);
+            generatePlayerInputs();
+            updateImpostorSelector();
+        };
+        selector.appendChild(btn);
+    }
+}
+
+// UPDATE IMPOSTOR SELECTOR BASED ON PLAYER COUNT
+function updateImpostorSelector() {
+    const maxPossible = Math.floor((localState.playerCount - 1) / 2);
+    const selector = document.getElementById('impostor-selector');
+    if (!selector) return;
+    selector.innerHTML = '';
+    for (let i = 1; i <= Math.min(maxPossible, 5); i++) {
+        const btn = document.createElement('button');
+        btn.className = 'number-btn' + (i === 1 ? ' selected' : '');
+        btn.dataset.num = i;
+        btn.textContent = i;
+        btn.onclick = function() {
+            selector.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            localState.maxImpostors = parseInt(this.dataset.num);
+        };
+        selector.appendChild(btn);
+    }
+    localState.maxImpostors = 1;
+}
+
+// POPULATE CATEGORIES LIST
+function populateCategoriesList() {
+    const container = document.getElementById('categories-list');
+    if (!container) return;
+    const categories = getWordCategories();
+    container.innerHTML = categories.map((cat, idx) => 
+        `<div class="category-item selected" data-idx="${idx}" onclick="toggleCategory(${idx})">${cat.category}</div>`
+    ).join('');
+    localState.selectedCategories = categories.map((_, idx) => idx);
+}
+
+function toggleCategory(idx) {
+    const item = document.querySelector(`#categories-list .category-item[data-idx="${idx}"]`);
+    if (!item) return;
+    item.classList.toggle('selected');
+    
+    if (item.classList.contains('selected')) {
+        if (!localState.selectedCategories.includes(idx)) {
+            localState.selectedCategories.push(idx);
+        }
+    } else {
+        localState.selectedCategories = localState.selectedCategories.filter(i => i !== idx);
+    }
+}
+
+function toggleAllCategories() {
+    const toggle = document.getElementById('toggle-all-categories');
+    if (!toggle) return;
+    localState.allCategories = !localState.allCategories;
+    toggle.classList.toggle('active', localState.allCategories);
+    document.getElementById('categories-list').style.display = localState.allCategories ? 'none' : 'grid';
+    
+    if (localState.allCategories) {
+        const categories = getWordCategories();
+        localState.selectedCategories = categories.map((_, idx) => idx);
+        document.querySelectorAll('#categories-list .category-item').forEach(item => item.classList.add('selected'));
+    }
+}
+
+function toggleImpostorKnows() {
+    const toggle = document.getElementById('toggle-impostor-knows');
+    if (!toggle) return;
+    localState.impostorKnows = !localState.impostorKnows;
+    toggle.classList.toggle('active', localState.impostorKnows);
+}
+
+function generatePlayerInputs() {
+    const container = document.getElementById('player-inputs');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 1; i <= localState.playerCount; i++) {
+        const div = document.createElement('div');
+        div.className = 'player-config';
+        div.innerHTML = '<div class="player-number">' + i + '</div><input type="text" id="player-' + i + '" placeholder="' + t('player') + ' ' + i + '" maxlength="15">';
+        container.appendChild(div);
+    }
+}
+
+// FIND SIMILAR WORD
+function findSimilarWord(originalWord, category) {
+    const categories = getWordCategories();
+    const categoryData = categories.find(c => c.category === category);
+    
+    if (categoryData && categoryData.similar && categoryData.similar[originalWord]) {
+        const similarOptions = categoryData.similar[originalWord];
+        return similarOptions[Math.floor(Math.random() * similarOptions.length)];
+    }
+    
+    if (categoryData) {
+        const otherWords = categoryData.words.filter(w => w !== originalWord);
+        if (otherWords.length > 0) {
+            return otherWords[Math.floor(Math.random() * otherWords.length)];
+        }
+    }
+    
+    return originalWord;
+}
+
+// START LOCAL GAME
+function startLocalGame() {
+    // Validate categories
+    if (!localState.allCategories && localState.selectedCategories.length === 0) {
+        showToast(t('selectCategories'));
+        return;
+    }
+    
+    localState.players = [];
+    localState.scores = {};
+    for (let i = 1; i <= localState.playerCount; i++) {
+        const input = document.getElementById('player-' + i);
+        const name = input ? input.value.trim() : '';
+        const finalName = name || t('player') + ' ' + i;
+        localState.players.push(finalName);
+        localState.scores[finalName] = 0;
+    }
+    localState.players = shuffle(localState.players);
+    localState.round = 1;
+    localState.gameInProgress = true;
+    localState.eliminatedPlayers = [];
+    localState.revealedImpostors = [];
+    
+    // Get max points
+    const maxPointsInput = document.getElementById('max-points-input');
+    const maxPointsValue = maxPointsInput ? maxPointsInput.value : '';
+    localState.maxPoints = maxPointsValue ? parseInt(maxPointsValue) : null;
+    
+    startRound();
+}
+
+function startRound() {
+    const categories = getWordCategories();
+    let availableCategories = localState.allCategories ? 
+        categories : 
+        localState.selectedCategories.map(idx => categories[idx]).filter(c => c);
+    
+    if (availableCategories.length === 0) availableCategories = categories;
+    
+    const categoryData = availableCategories[Math.floor(Math.random() * availableCategories.length)];
+    localState.word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+    localState.category = categoryData.category;
+    localState.actualImpostorCount = Math.floor(Math.random() * localState.maxImpostors) + 1;
+    localState.impostorIndices = [];
+    localState.similarWords = {};
+    localState.votingRound = 0;
+    
+    const indices = [...Array(localState.players.length).keys()];
+    const shuffledIndices = shuffle(indices);
+    for (let i = 0; i < localState.actualImpostorCount; i++) {
+        const impostorIdx = shuffledIndices[i];
+        localState.impostorIndices.push(impostorIdx);
+        
+        if (!localState.impostorKnows) {
+            localState.similarWords[impostorIdx] = findSimilarWord(localState.word, localState.category);
+        }
+    }
+    
+    localState.currentPlayerIndex = 0;
+    localState.seenPlayers = [];
+    localState.eliminatedPlayers = [];
+    localState.revealedImpostors = [];
+    localState.players = shuffle(localState.players);
+    saveLocalState();
+    showPlayerTurn();
+}
+
+function showPlayerTurn() {
     document.getElementById('turn-round-num').textContent = localState.round;
     document.getElementById('current-player-name').textContent = localState.players[localState.currentPlayerIndex];
     const progress = document.getElementById('players-progress');
@@ -189,14 +449,7 @@ function showImpostorWins() {
     if (checkForWinner()) return;
     
     const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = sorted.map(([name, score], idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0 && score > 0) cls += ' gold';
-        else if (idx === 1 && score > 0) cls += ' silver';
-        else if (idx === 2 && score > 0) cls += ' bronze';
-        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
-    }).join('');
+    const rankingHTML = buildRankingHTML(sorted);
     
     let similarWordsInfo = '';
     if (!localState.impostorKnows && Object.keys(localState.similarWords).length > 0) {
@@ -229,14 +482,26 @@ function showImpostorWins() {
 function buildScoreControls() {
     return localState.players.map(name => {
         const safeId = name.replace(/[^a-zA-Z0-9]/g, '_');
+        const escapedName = name.replace(/'/g, "\\'");
         return `<div class="score-player">
             <span class="score-player-name">${name}</span>
             <div class="score-btns">
-                <button class="score-btn minus" onclick="adjustScore('${name.replace(/'/g, "\\'")}', -1)">−</button>
-                <span class="score-value" id="score-${safeId}">${localState.scores[name]}</span>
-                <button class="score-btn plus" onclick="adjustScore('${name.replace(/'/g, "\\'")}', 1)">+</button>
+                <button class="score-btn minus" onclick="adjustScore('${escapedName}', -1)">−</button>
+                <span class="score-value" id="score-${safeId}">${localState.scores[name] || 0}</span>
+                <button class="score-btn plus" onclick="adjustScore('${escapedName}', 1)">+</button>
             </div>
         </div>`;
+    }).join('');
+}
+
+function buildRankingHTML(sorted) {
+    return sorted.map(([name, score], idx) => {
+        let cls = 'ranking-item';
+        if (idx === 0 && score > 0) cls += ' gold';
+        else if (idx === 1 && score > 0) cls += ' silver';
+        else if (idx === 2 && score > 0) cls += ' bronze';
+        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
+        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
     }).join('');
 }
 
@@ -258,14 +523,7 @@ function showRoundSummary() {
     }
     
     const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = sorted.map(([name, score], idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0 && score > 0) cls += ' gold';
-        else if (idx === 1 && score > 0) cls += ' silver';
-        else if (idx === 2 && score > 0) cls += ' bronze';
-        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
-    }).join('');
+    const rankingHTML = buildRankingHTML(sorted);
     
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
@@ -284,7 +542,7 @@ function showRoundSummary() {
 }
 
 function adjustScore(name, delta) {
-    localState.scores[name] += delta;
+    localState.scores[name] = (localState.scores[name] || 0) + delta;
     const el = document.getElementById('score-' + name.replace(/[^a-zA-Z0-9]/g, '_'));
     if (el) el.textContent = localState.scores[name];
     saveLocalState();
@@ -308,16 +566,7 @@ function showLocalGameOver(winnerName) {
     document.getElementById('local-winner-name').textContent = winnerName;
     
     const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = sorted.map(([name, score], idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0) cls += ' gold';
-        else if (idx === 1) cls += ' silver';
-        else if (idx === 2) cls += ' bronze';
-        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
-    }).join('');
-    
-    document.getElementById('local-final-ranking').innerHTML = rankingHTML;
+    document.getElementById('local-final-ranking').innerHTML = buildRankingHTML(sorted);
     
     localState.gameInProgress = false;
     clearLocalState();
@@ -333,15 +582,7 @@ function newRound() {
 
 function showRanking() {
     const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = sorted.map(([name, score], idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0 && score > 0) cls += ' gold';
-        else if (idx === 1 && score > 0) cls += ' silver';
-        else if (idx === 2 && score > 0) cls += ' bronze';
-        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
-    }).join('');
-    document.getElementById('ranking-list').innerHTML = rankingHTML;
+    document.getElementById('ranking-list').innerHTML = buildRankingHTML(sorted);
     showScreen('screen-ranking');
 }
 

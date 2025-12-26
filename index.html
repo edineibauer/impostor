@@ -158,6 +158,14 @@
         .status-indicator.offline{background:#ff4444}
         .vote-status{font-size:.6rem;color:var(--text-dim);margin-left:auto}
         .countdown{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--accent);text-align:center;margin:20px 0}
+        .kick-btn{width:24px;height:24px;border-radius:50%;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.8rem;cursor:pointer;margin-left:8px;opacity:.6;transition:all .2s}
+        .kick-btn:hover{opacity:1;background:rgba(255,68,68,0.2)}
+        .room-header{display:none;position:absolute;top:10px;left:0;right:0;padding:0 15px;z-index:100}
+        .room-header-content{display:flex;align-items:center;justify-content:center;gap:10px}
+        .room-code-small{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--accent);cursor:pointer;padding:6px 12px;background:rgba(255,51,102,0.1);border-radius:8px;border:1px solid var(--accent)}
+        .room-code-small:hover{background:rgba(255,51,102,0.2)}
+        .leave-room-btn{position:absolute;right:15px;width:32px;height:32px;border-radius:8px;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.9rem;cursor:pointer}
+        .leave-room-btn:hover{background:rgba(255,68,68,0.2)}
         @media(max-width:380px){.logo h1{font-size:2.6rem}.logo-icon{width:60px;height:60px}.word-text{font-size:1.9rem}.player-turn-name{font-size:1.9rem}.container{padding:15px}.number-btn{width:36px;height:36px;font-size:1rem}.room-code{font-size:2.5rem;letter-spacing:6px}}
         .install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border);padding:14px 18px;display:none;align-items:center;gap:10px;z-index:999}
         .install-banner.show{display:flex}
@@ -388,8 +396,9 @@
                 <h2 class="card-title" data-i18n="playersLabel">👥 Jogadores</h2>
                 <div id="online-players-status" class="players-list"></div>
             </div>
-            <div id="host-vote-control" style="display:none;margin-top:16px">
-                <button class="btn btn-warning" onclick="startVoting()" data-i18n="startVoting">🗳️ INICIAR VOTAÇÃO</button>
+            <div id="request-vote-control" style="display:none;margin-top:16px">
+                <button class="btn btn-warning" id="request-vote-btn" onclick="requestVote()">🗳️ SOLICITAR VOTAÇÃO</button>
+                <p id="vote-request-status" style="text-align:center;font-size:.75rem;color:var(--text-dim);margin-top:8px"></p>
             </div>
         </div>
 

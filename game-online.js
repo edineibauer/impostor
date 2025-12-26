@@ -1,597 +1,260 @@
 // GAME-ONLINE.JS - Online Game Logic with Firebase
-
-// IMPORTANT: To use online mode, you need to:
-// 1. Create a Firebase project at https://console.firebase.google.com
-// 2. Enable Realtime Database
-// 3. Set rules to allow read/write
-// 4. Replace the config below with your project's config
-
-// Firebase Config - REPLACE WITH YOUR OWN CONFIG
 const firebaseConfig = {
-    apiKey: "AIzaSyA3CHzkPfT-2FNOPQ1Up0HxSSiGpGZ1epM",
-    authDomain: "impostor-1bd7a.firebaseapp.com",
-    databaseURL: "https://impostor-1bd7a-default-rtdb.firebaseio.com",
-    projectId: "impostor-1bd7a",
-    storageBucket: "impostor-1bd7a.firebasestorage.app",
-    messagingSenderId: "629463705730",
-    appId: "1:629463705730:web:bf3521149f90dc5d77ac9b",
-    measurementId: "G-VKN15517B9"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
-// Check if Firebase is configured
-function isFirebaseConfigured() {
-    return firebaseConfig.apiKey !== "1";
-}
+function isFirebaseConfigured() { return firebaseConfig.apiKey !== "YOUR_API_KEY"; }
 
-let db = null;
-let roomRef = null;
-let playerId = null;
-let isHost = false;
-let currentRoom = null;
-let qrCode = null;
+let db = null, roomRef = null, playerId = null, isHost = false, currentRoom = null;
+let onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {} };
 
-// Online state
-let onlineState = {
-    roomCode: null,
-    players: {},
-    gameStarted: false,
-    round: 1,
-    word: null,
-    category: null,
-    impostorIds: [],
-    votes: {},
-    eliminated: [],
-    scores: {},
-    phase: 'lobby', // lobby, playing, voting, result, roundEnd, gameOver
-    maxImpostors: 1,
-    impostorKnows: true,
-    maxPoints: null,
-    allCategories: true,
-    selectedCategories: [],
-    roomLang: 'pt',
-    votingRound: 0,
-    readyPlayers: []
-};
-
-// Initialize Firebase
 function initFirebase() {
-    if (!isFirebaseConfigured()) {
-        return false;
-    }
-    
-    if (!db) {
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        } catch (e) {
-            console.log('Firebase already initialized');
-            db = firebase.database();
-        }
-    }
+    if (!isFirebaseConfigured()) return false;
+    if (!db) { try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch (e) { db = firebase.database(); } }
     return true;
 }
 
-// Connection status
 function updateConnectionStatus(status) {
     const el = document.getElementById('connection-status');
-    el.className = 'connection-status ' + status;
-    el.textContent = t(status);
+    el.style.display = (status === 'connected' || status === '') ? 'none' : 'block';
+    if (status) { el.className = 'connection-status ' + status; el.textContent = t(status); }
 }
 
-// Init Online Menu
 function initOnlineMenu() {
     if (!initFirebase()) {
-        document.getElementById('overlay-container').innerHTML = `
-            <div class="confirm-overlay">
-                <div class="confirm-box">
-                    <h3>⚠️ Firebase Required</h3>
-                    <p style="color:var(--text-dim);font-size:.75rem;margin:16px 0;line-height:1.6;text-align:left">
-                        O modo online requer Firebase Realtime Database.<br><br>
-                        Para habilitar:<br>
-                        1. Crie um projeto em <strong>console.firebase.google.com</strong><br>
-                        2. Habilite Realtime Database<br>
-                        3. Configure as regras de segurança<br>
-                        4. Edite <strong>game-online.js</strong> com sua configuração
-                    </p>
-                    <button class="btn btn-secondary" onclick="closeOverlay();showScreen('screen-mode')">OK</button>
-                </div>
-            </div>
-        `;
+        document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay"><div class="confirm-box"><h3>⚠️ Firebase Required</h3><p style="color:var(--text-dim);font-size:.75rem;margin:16px 0;line-height:1.6;text-align:left">O modo online requer Firebase.<br><br>1. Crie projeto em console.firebase.google.com<br>2. Habilite Realtime Database<br>3. Edite game-online.js com sua config</p><button class="btn btn-secondary" onclick="closeOverlay();showScreen(\'screen-mode\')">OK</button></div></div>';
         return;
     }
-    
-    // Load saved player name
     const savedName = localStorage.getItem('impostor_player_name');
-    if (savedName) {
-        document.getElementById('online-player-name').value = savedName;
-    }
-    
-    // Generate player ID
+    if (savedName) document.getElementById('online-player-name').value = savedName;
     if (!playerId) {
         playerId = localStorage.getItem('impostor_player_id');
-        if (!playerId) {
-            playerId = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('impostor_player_id', playerId);
-        }
+        if (!playerId) { playerId = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('impostor_player_id', playerId); }
     }
 }
 
-// Create Room
 function createRoom() {
     const name = document.getElementById('online-player-name').value.trim();
-    if (!name) {
-        showToast(t('nameRequired'));
-        return;
-    }
+    if (!name) { showToast(t('nameRequired')); return; }
     localStorage.setItem('impostor_player_name', name);
-    
     isHost = true;
-    
-    // Init room settings
     populateRoomCategoriesList();
     updateRoomImpostorSelector();
+    document.querySelectorAll('[id^="room-lang-"]').forEach(b => b.style.borderColor = 'var(--border)');
     document.getElementById('room-lang-' + currentLang).style.borderColor = 'var(--accent)';
     onlineState.roomLang = currentLang;
-    
     showScreen('screen-create-room');
 }
 
-// Room Settings
 function setRoomLanguage(lang) {
     onlineState.roomLang = lang;
-    document.querySelectorAll('[id^="room-lang-"]').forEach(btn => {
-        btn.style.borderColor = 'var(--border)';
-    });
+    document.querySelectorAll('[id^="room-lang-"]').forEach(b => b.style.borderColor = 'var(--border)');
     document.getElementById('room-lang-' + lang).style.borderColor = 'var(--accent)';
+    populateRoomCategoriesList();
 }
 
 function updateRoomImpostorSelector() {
-    const selector = document.getElementById('room-impostor-selector');
-    selector.innerHTML = '';
+    const sel = document.getElementById('room-impostor-selector');
+    sel.innerHTML = '';
     for (let i = 1; i <= 5; i++) {
         const btn = document.createElement('button');
         btn.className = 'number-btn' + (i === 1 ? ' selected' : '');
-        btn.dataset.num = i;
         btn.textContent = i;
-        btn.onclick = function() {
-            selector.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
-            onlineState.maxImpostors = parseInt(this.dataset.num);
-        };
-        selector.appendChild(btn);
+        btn.onclick = function() { sel.querySelectorAll('.number-btn').forEach(b => b.classList.remove('selected')); this.classList.add('selected'); onlineState.maxImpostors = i; };
+        sel.appendChild(btn);
     }
 }
 
-function toggleRoomImpostorKnows() {
-    const toggle = document.getElementById('room-toggle-impostor-knows');
-    onlineState.impostorKnows = !onlineState.impostorKnows;
-    toggle.classList.toggle('active', onlineState.impostorKnows);
-}
+function toggleRoomImpostorKnows() { const t = document.getElementById('room-toggle-impostor-knows'); onlineState.impostorKnows = !onlineState.impostorKnows; t.classList.toggle('active', onlineState.impostorKnows); }
 
 function populateRoomCategoriesList() {
-    const container = document.getElementById('room-categories-list');
-    const categories = getWordCategories(onlineState.roomLang);
-    container.innerHTML = categories.map((cat, idx) => 
-        `<div class="category-item selected" data-idx="${idx}" onclick="toggleRoomCategory(${idx})">${cat.category}</div>`
-    ).join('');
-    onlineState.selectedCategories = categories.map((_, idx) => idx);
+    const c = document.getElementById('room-categories-list');
+    const cats = getWordCategories(onlineState.roomLang);
+    c.innerHTML = cats.map((cat, i) => '<div class="category-item selected" data-idx="' + i + '" onclick="toggleRoomCategory(' + i + ')">' + cat.category + '</div>').join('');
+    onlineState.selectedCategories = cats.map((_, i) => i);
 }
 
 function toggleRoomCategory(idx) {
-    const item = document.querySelector(`#room-categories-list .category-item[data-idx="${idx}"]`);
+    const item = document.querySelector('#room-categories-list .category-item[data-idx="' + idx + '"]');
     item.classList.toggle('selected');
-    
-    if (item.classList.contains('selected')) {
-        if (!onlineState.selectedCategories.includes(idx)) {
-            onlineState.selectedCategories.push(idx);
-        }
-    } else {
-        onlineState.selectedCategories = onlineState.selectedCategories.filter(i => i !== idx);
-    }
+    if (item.classList.contains('selected')) { if (!onlineState.selectedCategories.includes(idx)) onlineState.selectedCategories.push(idx); }
+    else { onlineState.selectedCategories = onlineState.selectedCategories.filter(i => i !== idx); }
 }
 
 function toggleRoomAllCategories() {
-    const toggle = document.getElementById('room-toggle-all-categories');
+    const tog = document.getElementById('room-toggle-all-categories');
     onlineState.allCategories = !onlineState.allCategories;
-    toggle.classList.toggle('active', onlineState.allCategories);
+    tog.classList.toggle('active', onlineState.allCategories);
     document.getElementById('room-categories-list').style.display = onlineState.allCategories ? 'none' : 'grid';
-    
     if (onlineState.allCategories) {
-        const categories = getWordCategories(onlineState.roomLang);
-        onlineState.selectedCategories = categories.map((_, idx) => idx);
-        document.querySelectorAll('#room-categories-list .category-item').forEach(item => item.classList.add('selected'));
+        const cats = getWordCategories(onlineState.roomLang);
+        onlineState.selectedCategories = cats.map((_, i) => i);
+        document.querySelectorAll('#room-categories-list .category-item').forEach(i => i.classList.add('selected'));
     }
 }
 
-// Confirm Create Room
 function confirmCreateRoom() {
-    if (!onlineState.allCategories && onlineState.selectedCategories.length === 0) {
-        showToast(t('selectCategories'));
-        return;
-    }
-    
-    const maxPointsInput = document.getElementById('room-max-points').value;
-    onlineState.maxPoints = maxPointsInput ? parseInt(maxPointsInput) : null;
-    
-    // Generate room code
+    if (!onlineState.allCategories && onlineState.selectedCategories.length === 0) { showToast(t('selectCategories')); return; }
+    const mp = document.getElementById('room-max-points').value;
+    onlineState.maxPoints = mp ? parseInt(mp) : null;
     onlineState.roomCode = generateRoomCode();
-    
     const playerName = localStorage.getItem('impostor_player_name');
-    
-    // Create room in Firebase
     roomRef = db.ref('rooms/' + onlineState.roomCode);
-    
-    const roomData = {
-        host: playerId,
-        hostName: playerName,
-        settings: {
-            maxImpostors: onlineState.maxImpostors,
-            impostorKnows: onlineState.impostorKnows,
-            maxPoints: onlineState.maxPoints,
-            allCategories: onlineState.allCategories,
-            selectedCategories: onlineState.selectedCategories,
-            roomLang: onlineState.roomLang
-        },
-        players: {
-            [playerId]: {
-                name: playerName,
-                score: 0,
-                isHost: true,
-                online: true,
-                joinedAt: firebase.database.ServerValue.TIMESTAMP
-            }
-        },
-        gameState: {
-            phase: 'lobby',
-            round: 0
-        },
+    roomRef.set({
+        host: playerId, hostName: playerName,
+        settings: { maxImpostors: onlineState.maxImpostors, impostorKnows: onlineState.impostorKnows, maxPoints: onlineState.maxPoints, allCategories: onlineState.allCategories, selectedCategories: onlineState.selectedCategories, roomLang: onlineState.roomLang },
+        players: { [playerId]: { name: playerName, score: 0, isHost: true, online: true, joinedAt: firebase.database.ServerValue.TIMESTAMP } },
+        gameState: { phase: 'lobby', round: 0 },
         createdAt: firebase.database.ServerValue.TIMESTAMP
-    };
-    
-    roomRef.set(roomData).then(() => {
-        currentRoom = onlineState.roomCode;
-        setupRoomListeners();
-        showLobby();
-    }).catch(err => {
-        showToast('Error creating room');
-        console.error(err);
-    });
+    }).then(() => { currentRoom = onlineState.roomCode; setupRoomListeners(); showLobby(); }).catch(e => { showToast('Error'); console.error(e); });
 }
 
-// Show Join Room
 function showJoinRoom() {
     const name = document.getElementById('online-player-name').value.trim();
-    if (!name) {
-        showToast(t('nameRequired'));
-        return;
-    }
+    if (!name) { showToast(t('nameRequired')); return; }
     localStorage.setItem('impostor_player_name', name);
-    
     isHost = false;
     showScreen('screen-join-room');
 }
 
-// Join Room
 function joinRoom() {
     const code = document.getElementById('join-room-code').value.trim().toUpperCase();
-    if (!code || code.length !== 4) {
-        showToast(t('roomCode'));
-        return;
-    }
-    
+    if (!code || code.length !== 4) { showToast(t('roomCode')); return; }
     const playerName = localStorage.getItem('impostor_player_name');
-    if (!playerName) {
-        showToast(t('nameRequired'));
-        showScreen('screen-online-menu');
-        return;
-    }
-    
+    if (!playerName) { showToast(t('nameRequired')); showScreen('screen-online-menu'); return; }
     updateConnectionStatus('connecting');
-    
-    // Check if room exists
     roomRef = db.ref('rooms/' + code);
-    roomRef.once('value').then(snapshot => {
-        if (!snapshot.exists()) {
-            showToast(t('roomNotFound'));
-            updateConnectionStatus('disconnected');
-            return;
+    roomRef.once('value').then(snap => {
+        if (!snap.exists()) { showToast(t('roomNotFound')); updateConnectionStatus(''); return; }
+        const data = snap.val();
+        onlineState.roomCode = code; currentRoom = code; isHost = data.host === playerId;
+        if (data.settings) {
+            onlineState.maxImpostors = data.settings.maxImpostors; onlineState.impostorKnows = data.settings.impostorKnows;
+            onlineState.maxPoints = data.settings.maxPoints; onlineState.allCategories = data.settings.allCategories;
+            onlineState.selectedCategories = data.settings.selectedCategories || []; onlineState.roomLang = data.settings.roomLang || 'pt';
+            currentLang = onlineState.roomLang; localStorage.setItem('impostor_lang', currentLang); applyTranslations();
         }
-        
-        const roomData = snapshot.val();
-        
-        // Check if game already started
-        if (roomData.gameState && roomData.gameState.phase !== 'lobby') {
-            showToast('Game already started');
-            updateConnectionStatus('disconnected');
-            return;
-        }
-        
-        // Join room
-        onlineState.roomCode = code;
-        currentRoom = code;
-        isHost = roomData.host === playerId;
-        
-        // Apply room settings
-        if (roomData.settings) {
-            onlineState.maxImpostors = roomData.settings.maxImpostors;
-            onlineState.impostorKnows = roomData.settings.impostorKnows;
-            onlineState.maxPoints = roomData.settings.maxPoints;
-            onlineState.allCategories = roomData.settings.allCategories;
-            onlineState.selectedCategories = roomData.settings.selectedCategories || [];
-            onlineState.roomLang = roomData.settings.roomLang || 'pt';
-            
-            // Apply room language
-            currentLang = onlineState.roomLang;
-            localStorage.setItem('impostor_lang', currentLang);
-            applyTranslations();
-        }
-        
-        // Add player to room
-        roomRef.child('players/' + playerId).set({
-            name: playerName,
-            score: 0,
-            isHost: false,
-            online: true,
-            joinedAt: firebase.database.ServerValue.TIMESTAMP
-        }).then(() => {
-            setupRoomListeners();
-            showLobby();
+        roomRef.child('players/' + playerId).set({ name: playerName, score: 0, isHost: false, online: true, joinedAt: firebase.database.ServerValue.TIMESTAMP }).then(() => {
+            setupRoomListeners(); updateConnectionStatus('');
+            if (data.gameState && data.gameState.phase !== 'lobby') handleGameStateChange(data.gameState);
+            else showLobby();
         });
-        
-    }).catch(err => {
-        showToast('Error joining room');
-        updateConnectionStatus('disconnected');
-        console.error(err);
-    });
+    }).catch(e => { showToast('Error'); updateConnectionStatus(''); console.error(e); });
 }
 
-// Setup Room Listeners
 function setupRoomListeners() {
-    updateConnectionStatus('connected');
-    
-    // Listen for player changes
-    roomRef.child('players').on('value', snapshot => {
-        onlineState.players = snapshot.val() || {};
-        updateLobbyPlayers();
-        updateOnlinePlayersStatus();
-    });
-    
-    // Listen for game state changes
-    roomRef.child('gameState').on('value', snapshot => {
-        const gameState = snapshot.val();
-        if (gameState) {
-            handleGameStateChange(gameState);
-        }
-    });
-    
-    // Listen for votes
-    roomRef.child('votes').on('value', snapshot => {
-        onlineState.votes = snapshot.val() || {};
-        updateVotesProgress();
-        checkAllVoted();
-    });
-    
-    // Listen for ready players
-    roomRef.child('readyPlayers').on('value', snapshot => {
-        onlineState.readyPlayers = snapshot.val() ? Object.keys(snapshot.val()) : [];
-        updateReadyStatus();
-        checkAllReady();
-    });
-    
-    // Set presence
+    roomRef.child('host').on('value', s => { isHost = s.val() === playerId; });
+    roomRef.child('players').on('value', s => { onlineState.players = s.val() || {}; updateLobbyPlayers(); updateOnlinePlayersStatus(); });
+    roomRef.child('gameState').on('value', s => { if (s.val()) handleGameStateChange(s.val()); });
+    roomRef.child('votes').on('value', s => { onlineState.votes = s.val() || {}; updateVotesProgress(); checkAllVoted(); });
+    roomRef.child('voteRequests').on('value', s => { onlineState.voteRequests = s.val() || {}; checkVoteMajority(); updateVoteRequestStatus(); });
+    roomRef.child('readyPlayers').on('value', s => { onlineState.readyPlayers = s.val() ? Object.keys(s.val()) : []; updateReadyStatus(); checkAllReady(); });
+    roomRef.child('kicked/' + playerId).on('value', s => { if (s.val()) { showToast('Você foi removido'); leaveRoom(); } });
     roomRef.child('players/' + playerId + '/online').onDisconnect().set(false);
-    
-    // Connection state
-    db.ref('.info/connected').on('value', snapshot => {
-        if (snapshot.val() === true) {
-            updateConnectionStatus('connected');
-            roomRef.child('players/' + playerId + '/online').set(true);
-        } else {
-            updateConnectionStatus('disconnected');
-        }
-    });
+    db.ref('.info/connected').on('value', s => { if (s.val()) roomRef.child('players/' + playerId + '/online').set(true); });
 }
 
-// Show Lobby
+function showQRModal() {
+    const url = 'https://edineibauer.github.io/impostor/?room=' + onlineState.roomCode;
+    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>📱 Compartilhar Sala</h3><div class="room-code" style="font-size:2.5rem;margin:16px 0">' + onlineState.roomCode + '</div><div id="qr-modal-container" style="display:flex;justify-content:center;margin:16px 0"></div><p style="font-size:.65rem;color:var(--text-dim);word-break:break-all">' + url + '</p><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button></div></div>';
+    if (typeof QRCode !== 'undefined') new QRCode(document.getElementById('qr-modal-container'), { text: url, width: 150, height: 150, colorDark: '#fff', colorLight: '#12121a' });
+}
+
+function confirmLeaveRoom() {
+    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>⚠️ Sair da Sala?</h3><p style="color:var(--text-dim);font-size:.8rem;margin:16px 0">Tem certeza que deseja sair?</p><button class="btn btn-danger" onclick="closeOverlay();leaveRoom()" style="opacity:1;padding:12px">SIM, SAIR</button><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:8px">' + t('cancel') + '</button></div></div>';
+}
+
 function showLobby() {
     document.getElementById('lobby-room-code').textContent = onlineState.roomCode;
-    
-    // Generate QR Code
-    const qrContainer = document.getElementById('qr-container');
-    qrContainer.innerHTML = '';
-    const gameUrl = `https://edineibauer.github.io/impostor/?room=${onlineState.roomCode}`;
-    
-    if (typeof QRCode !== 'undefined') {
-        qrCode = new QRCode(qrContainer, {
-            text: gameUrl,
-            width: 150,
-            height: 150,
-            colorDark: '#ffffff',
-            colorLight: '#12121a',
-            correctLevel: QRCode.CorrectLevel.L
-        });
-    }
-    
-    // Show/hide host controls
+    const qc = document.getElementById('qr-container');
+    qc.innerHTML = '';
+    if (typeof QRCode !== 'undefined') new QRCode(qc, { text: 'https://edineibauer.github.io/impostor/?room=' + onlineState.roomCode, width: 150, height: 150, colorDark: '#fff', colorLight: '#12121a' });
     document.getElementById('host-controls').style.display = isHost ? 'block' : 'none';
     document.getElementById('guest-waiting').style.display = isHost ? 'none' : 'block';
-    
     showScreen('screen-lobby');
 }
 
-// Update Lobby Players
 function updateLobbyPlayers() {
-    const container = document.getElementById('lobby-players');
-    const playerCount = Object.keys(onlineState.players).length;
-    document.getElementById('player-count').textContent = playerCount;
-    
-    container.innerHTML = Object.entries(onlineState.players).map(([id, player]) => {
-        const isYou = id === playerId;
-        const isPlayerHost = player.isHost;
-        let badges = '';
-        if (isPlayerHost) badges += `<span class="player-badge">${t('host')}</span>`;
-        if (isYou) badges += `<span class="player-badge" style="background:var(--success)">${t('you')}</span>`;
-        
-        return `
-            <div class="player-item ${isPlayerHost ? 'host' : ''} ${isYou ? 'you' : ''}">
-                <div class="player-avatar">${player.name.charAt(0).toUpperCase()}</div>
-                <span class="player-name">${player.name}</span>
-                ${badges}
-                <div class="status-indicator ${player.online ? '' : 'offline'}"></div>
-            </div>
-        `;
+    const c = document.getElementById('lobby-players'); if (!c) return;
+    const count = Object.keys(onlineState.players).length;
+    document.getElementById('player-count').textContent = count;
+    c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
+        var id = entry[0], p = entry[1];
+        var isYou = id === playerId, isH = p.isHost;
+        var badges = isH ? '<span class="player-badge">' + t('host') + '</span>' : '';
+        badges += isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '';
+        var kick = isHost && !isYou ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + p.name.replace(/'/g, "\\'") + '\')">✕</button>' : '';
+        return '<div class="player-item ' + (isH ? 'host' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar">' + p.name.charAt(0).toUpperCase() + '</div><span class="player-name">' + p.name + '</span>' + badges + '<div class="status-indicator ' + (p.online ? '' : 'offline') + '"></div>' + kick + '</div>';
     }).join('');
-    
-    // Enable start button if enough players
-    const startBtn = document.getElementById('start-online-btn');
-    if (startBtn) {
-        startBtn.disabled = playerCount < 3;
-        if (playerCount < 3) {
-            startBtn.textContent = t('minPlayers');
-        } else {
-            startBtn.textContent = t('startGame');
-        }
-    }
+    var btn = document.getElementById('start-online-btn');
+    if (btn) { btn.disabled = count < 3; btn.textContent = count < 3 ? t('minPlayers') : t('startGame'); }
 }
 
-// Start Online Game
+function confirmKickPlayer(pid, name) {
+    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>⚠️ Remover Jogador?</h3><p style="color:var(--text-dim);font-size:.8rem;margin:16px 0">Remover <strong>' + name + '</strong>?</p><button class="btn btn-danger" onclick="closeOverlay();kickPlayer(\'' + pid + '\')" style="opacity:1;padding:12px">SIM, REMOVER</button><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:8px">' + t('cancel') + '</button></div></div>';
+}
+
+function kickPlayer(pid) { if (!isHost) return; roomRef.child('kicked/' + pid).set(true); roomRef.child('players/' + pid).remove(); }
+
 function startOnlineGame() {
     if (!isHost) return;
-    
-    const playerCount = Object.keys(onlineState.players).length;
-    if (playerCount < 3) {
-        showToast(t('minPlayers'));
-        return;
-    }
-    
-    // Calculate actual impostor count
-    const maxPossible = Math.floor((playerCount - 1) / 2);
-    const actualMax = Math.min(onlineState.maxImpostors, maxPossible);
-    const actualImpostorCount = Math.floor(Math.random() * actualMax) + 1;
-    
-    // Select word
-    const categories = getWordCategories(onlineState.roomLang);
-    let availableCategories = onlineState.allCategories ? 
-        categories : 
-        onlineState.selectedCategories.map(idx => categories[idx]);
-    
-    const categoryData = availableCategories[Math.floor(Math.random() * availableCategories.length)];
-    const word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
-    
-    // Select impostors
-    const playerIds = Object.keys(onlineState.players);
-    const shuffledIds = shuffle(playerIds);
-    const impostorIds = shuffledIds.slice(0, actualImpostorCount);
-    
-    // Generate similar words for impostors if needed
-    let similarWords = {};
-    if (!onlineState.impostorKnows) {
-        impostorIds.forEach(id => {
-            similarWords[id] = findSimilarWordOnline(word, categoryData.category, categoryData);
-        });
-    }
-    
-    // Update game state
-    roomRef.child('gameState').set({
-        phase: 'playing',
-        round: 1,
-        word: word,
-        category: categoryData.category,
-        impostorIds: impostorIds,
-        impostorKnows: onlineState.impostorKnows,
-        similarWords: similarWords,
-        eliminated: [],
-        votingRound: 0
-    });
-    
-    // Clear votes and ready
-    roomRef.child('votes').remove();
-    roomRef.child('readyPlayers').remove();
+    var pids = Object.keys(onlineState.players);
+    if (pids.length < 3) { showToast(t('minPlayers')); return; }
+    var maxP = Math.floor((pids.length - 1) / 2);
+    var actMax = Math.min(onlineState.maxImpostors, maxP);
+    var impCount = Math.floor(Math.random() * actMax) + 1;
+    var cats = getWordCategories(onlineState.roomLang);
+    var avail = onlineState.allCategories ? cats : onlineState.selectedCategories.map(function(i) { return cats[i]; });
+    var catData = avail[Math.floor(Math.random() * avail.length)];
+    var word = catData.words[Math.floor(Math.random() * catData.words.length)];
+    var shuffled = shuffle(pids);
+    var impIds = shuffled.slice(0, impCount);
+    var simWords = {};
+    if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
+    roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0 });
+    roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
 }
 
-function findSimilarWordOnline(originalWord, category, categoryData) {
-    if (categoryData && categoryData.similar && categoryData.similar[originalWord]) {
-        const similarOptions = categoryData.similar[originalWord];
-        return similarOptions[Math.floor(Math.random() * similarOptions.length)];
-    }
-    
-    if (categoryData) {
-        const otherWords = categoryData.words.filter(w => w !== originalWord);
-        if (otherWords.length > 0) {
-            return otherWords[Math.floor(Math.random() * otherWords.length)];
-        }
-    }
-    
-    return originalWord;
+function findSimilarWordOnline(word, catData) {
+    if (catData.similar && catData.similar[word]) return catData.similar[word][Math.floor(Math.random() * catData.similar[word].length)];
+    var other = catData.words.filter(function(w) { return w !== word; });
+    return other.length ? other[Math.floor(Math.random() * other.length)] : word;
 }
 
-// Handle Game State Changes
-function handleGameStateChange(gameState) {
-    onlineState.phase = gameState.phase;
-    onlineState.round = gameState.round || 1;
-    onlineState.word = gameState.word;
-    onlineState.category = gameState.category;
-    onlineState.impostorIds = gameState.impostorIds || [];
-    onlineState.eliminated = gameState.eliminated || [];
-    onlineState.votingRound = gameState.votingRound || 0;
-    
-    switch(gameState.phase) {
-        case 'lobby':
-            showLobby();
-            break;
-        case 'playing':
-            showOnlineWord(gameState);
-            break;
-        case 'voting':
-            showOnlineVoting();
-            break;
-        case 'result':
-            showOnlineResult(gameState.lastResult);
-            break;
-        case 'roundEnd':
-            showOnlineRoundEnd(gameState);
-            break;
-        case 'gameOver':
-            showOnlineGameOver(gameState.winner);
-            break;
+function handleGameStateChange(gs) {
+    onlineState.phase = gs.phase; onlineState.round = gs.round || 1; onlineState.word = gs.word; onlineState.category = gs.category;
+    onlineState.impostorIds = gs.impostorIds || []; onlineState.eliminated = gs.eliminated || []; onlineState.votingRound = gs.votingRound || 0;
+    switch(gs.phase) {
+        case 'lobby': showLobby(); break;
+        case 'playing': showOnlineWord(gs); break;
+        case 'voting': showOnlineVoting(); break;
+        case 'result': showOnlineResult(gs.lastResult); break;
+        case 'roundEnd': showOnlineRoundEnd(gs); break;
+        case 'gameOver': showOnlineGameOver(gs.winner); break;
     }
 }
 
-// Show Online Word
-function showOnlineWord(gameState) {
+function showOnlineWord(gs) {
     document.getElementById('online-round-num').textContent = onlineState.round;
-    
-    const wordText = document.getElementById('online-word-text');
-    const categoryTag = document.getElementById('online-category-tag');
-    
-    const isImpostor = onlineState.impostorIds.includes(playerId);
-    
-    if (isImpostor) {
-        if (gameState.impostorKnows) {
-            wordText.textContent = t('impostor');
-            wordText.className = 'word-text is-impostor';
-        } else {
-            const similarWord = gameState.similarWords && gameState.similarWords[playerId] ? 
-                gameState.similarWords[playerId] : onlineState.word;
-            wordText.textContent = similarWord;
-            wordText.className = 'word-text is-word';
-        }
-    } else {
-        wordText.textContent = onlineState.word;
-        wordText.className = 'word-text is-word';
-    }
-    
-    categoryTag.textContent = onlineState.category;
-    
-    // Show word, hide hidden container
+    var wt = document.getElementById('online-word-text');
+    var ct = document.getElementById('online-category-tag');
+    var isImp = onlineState.impostorIds.includes(playerId);
+    if (isImp) {
+        if (gs.impostorKnows) { wt.textContent = t('impostor'); wt.className = 'word-text is-impostor'; }
+        else { wt.textContent = (gs.similarWords && gs.similarWords[playerId]) || onlineState.word; wt.className = 'word-text is-word'; }
+    } else { wt.textContent = onlineState.word; wt.className = 'word-text is-word'; }
+    ct.textContent = 'Categoria: ' + onlineState.category;
     document.getElementById('online-word-display').style.display = 'block';
     document.getElementById('hide-word-btn').style.display = 'block';
     document.getElementById('word-hidden-container').style.display = 'none';
-    
-    // Host controls
-    document.getElementById('host-vote-control').style.display = isHost ? 'block' : 'none';
-    
-    updateOnlinePlayersStatus();
+    document.getElementById('request-vote-control').style.display = 'block';
+    updateVoteRequestStatus(); updateOnlinePlayersStatus();
     showScreen('screen-online-word');
 }
 
@@ -607,288 +270,157 @@ function showOnlineWordAgain() {
     document.getElementById('word-hidden-container').style.display = 'none';
 }
 
-// Update Online Players Status
+function requestVote() { roomRef.child('voteRequests/' + playerId).set(true); }
+
+function checkVoteMajority() {
+    if (onlineState.phase !== 'playing') return;
+    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
+    var reqs = Object.keys(onlineState.voteRequests || {}).filter(function(id) { return active.includes(id); }).length;
+    if (reqs >= Math.ceil(active.length / 2) && isHost) {
+        roomRef.child('voteRequests').remove();
+        roomRef.child('gameState/phase').set('voting');
+        roomRef.child('gameState/votingRound').set((onlineState.votingRound || 0) + 1);
+    }
+}
+
+function updateVoteRequestStatus() {
+    var el = document.getElementById('vote-request-status'); if (!el) return;
+    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
+    var reqs = Object.keys(onlineState.voteRequests || {}).filter(function(id) { return active.includes(id); }).length;
+    var maj = Math.ceil(active.length / 2);
+    var hasReq = onlineState.voteRequests && onlineState.voteRequests[playerId];
+    var btn = document.getElementById('request-vote-btn');
+    if (btn) { btn.disabled = hasReq; btn.textContent = hasReq ? '✓ Solicitado (' + reqs + '/' + maj + ')' : '🗳️ SOLICITAR VOTAÇÃO'; }
+    el.textContent = reqs > 0 ? reqs + '/' + maj + ' querem votar' : '';
+}
+
 function updateOnlinePlayersStatus() {
-    const container = document.getElementById('online-players-status');
-    if (!container) return;
-    
-    container.innerHTML = Object.entries(onlineState.players).map(([id, player]) => {
-        const isEliminated = onlineState.eliminated.includes(id);
-        const isYou = id === playerId;
-        
-        return `
-            <div class="player-item ${isEliminated ? 'eliminated' : ''} ${isYou ? 'you' : ''}">
-                <div class="player-avatar" style="${isEliminated ? 'opacity:0.4' : ''}">${player.name.charAt(0).toUpperCase()}</div>
-                <span class="player-name" style="${isEliminated ? 'text-decoration:line-through;opacity:0.4' : ''}">${player.name}</span>
-                ${isYou ? `<span class="player-badge" style="background:var(--success)">${t('you')}</span>` : ''}
-                ${isEliminated ? `<span class="vote-status">${t('eliminated')}</span>` : ''}
-            </div>
-        `;
+    var c = document.getElementById('online-players-status'); if (!c) return;
+    c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
+        var id = entry[0], p = entry[1];
+        var elim = onlineState.eliminated.includes(id), isYou = id === playerId;
+        var kick = isHost && !isYou && !elim ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + p.name.replace(/'/g, "\\'") + '\')">✕</button>' : '';
+        return '<div class="player-item ' + (elim ? 'eliminated' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar" style="' + (elim ? 'opacity:0.4' : '') + '">' + p.name.charAt(0).toUpperCase() + '</div><span class="player-name" style="' + (elim ? 'text-decoration:line-through;opacity:0.4' : '') + '">' + p.name + '</span>' + (isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '') + (elim ? '<span class="vote-status">' + t('eliminated') + '</span>' : '') + kick + '</div>';
     }).join('');
 }
 
-// Start Voting (Host only)
-function startVoting() {
-    if (!isHost) return;
-    
-    roomRef.child('votes').remove();
-    roomRef.child('gameState/phase').set('voting');
-    roomRef.child('gameState/votingRound').set((onlineState.votingRound || 0) + 1);
-}
-
-// Show Online Voting
 function showOnlineVoting() {
-    const container = document.getElementById('online-vote-list');
-    const myVote = onlineState.votes[playerId];
-    
-    container.innerHTML = Object.entries(onlineState.players).map(([id, player]) => {
-        if (id === playerId) return ''; // Can't vote for yourself
-        if (onlineState.eliminated.includes(id)) return ''; // Can't vote eliminated
-        
-        const isSelected = myVote === id;
-        
-        return `
-            <button class="player-vote-btn ${isSelected ? 'selected' : ''}" onclick="castVote('${id}')">
-                ${player.name}
-                ${isSelected ? ' ✓' : ''}
-            </button>
-        `;
+    var c = document.getElementById('online-vote-list');
+    var myVote = onlineState.votes[playerId];
+    var amElim = onlineState.eliminated.includes(playerId);
+    c.innerHTML = Object.entries(onlineState.players).map(function(entry) {
+        var id = entry[0], p = entry[1];
+        if (id === playerId || onlineState.eliminated.includes(id)) return '';
+        return '<button class="player-vote-btn ' + (myVote === id ? 'selected' : '') + '" onclick="castVote(\'' + id + '\')" ' + (amElim ? 'disabled' : '') + '>' + p.name + (myVote === id ? ' ✓' : '') + '</button>';
     }).join('');
-    
-    document.getElementById('vote-waiting').style.display = myVote ? 'block' : 'none';
-    
+    document.getElementById('vote-waiting').style.display = myVote || amElim ? 'block' : 'none';
     showScreen('screen-online-vote');
 }
 
-// Cast Vote
-function castVote(targetId) {
-    roomRef.child('votes/' + playerId).set(targetId);
-}
+function castVote(tid) { if (onlineState.eliminated.includes(playerId)) return; roomRef.child('votes/' + playerId).set(tid); }
 
-// Update Votes Progress
 function updateVotesProgress() {
-    const totalActive = Object.keys(onlineState.players).filter(id => !onlineState.eliminated.includes(id)).length;
-    const votedCount = Object.keys(onlineState.votes).length;
-    
-    const progressEl = document.getElementById('votes-progress');
-    if (progressEl) {
-        progressEl.textContent = `${votedCount}/${totalActive}`;
-    }
+    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
+    var voted = Object.keys(onlineState.votes).filter(function(id) { return active.includes(id); }).length;
+    var el = document.getElementById('votes-progress');
+    if (el) el.textContent = voted + '/' + active.length;
 }
 
-// Check if All Voted
 function checkAllVoted() {
-    if (!isHost) return;
-    if (onlineState.phase !== 'voting') return;
-    
-    const activePlayers = Object.keys(onlineState.players).filter(id => !onlineState.eliminated.includes(id));
-    const allVoted = activePlayers.every(id => onlineState.votes[id]);
-    
-    if (allVoted && activePlayers.length > 0) {
-        processVotes();
-    }
+    if (onlineState.phase !== 'voting' || !isHost) return;
+    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
+    var allVoted = active.every(function(id) { return onlineState.votes[id]; });
+    if (allVoted && active.length > 0) processVotes();
 }
 
-// Process Votes (Host)
 function processVotes() {
-    // Count votes
-    const voteCounts = {};
-    Object.values(onlineState.votes).forEach(targetId => {
-        voteCounts[targetId] = (voteCounts[targetId] || 0) + 1;
-    });
-    
-    // Find most voted
-    let maxVotes = 0;
-    let eliminated = null;
-    Object.entries(voteCounts).forEach(([id, count]) => {
-        if (count > maxVotes) {
-            maxVotes = count;
-            eliminated = id;
-        }
-    });
-    
-    // Check for tie - in case of tie, no one is eliminated
-    const tiedPlayers = Object.entries(voteCounts).filter(([_, count]) => count === maxVotes);
-    if (tiedPlayers.length > 1) {
-        // Tie - show result but no elimination
-        roomRef.child('gameState/lastResult').set({
-            type: 'tie',
-            voteCounts: voteCounts
-        });
+    var active = Object.keys(onlineState.players).filter(function(id) { return !onlineState.eliminated.includes(id); });
+    var counts = {};
+    active.forEach(function(vid) { var t = onlineState.votes[vid]; if (t) counts[t] = (counts[t] || 0) + 1; });
+    var maxV = 0, mostV = [];
+    Object.entries(counts).forEach(function(entry) { var id = entry[0], c = entry[1]; if (c > maxV) { maxV = c; mostV = [id]; } else if (c === maxV) mostV.push(id); });
+    if (mostV.length > 1) {
+        roomRef.child('votes').remove();
+        roomRef.child('gameState/lastResult').set({ type: 'tie', tiedPlayers: mostV.map(function(id) { return onlineState.players[id] ? onlineState.players[id].name : '?'; }) });
         roomRef.child('gameState/phase').set('result');
         return;
     }
-    
-    const isImpostor = onlineState.impostorIds.includes(eliminated);
-    const eliminatedName = onlineState.players[eliminated].name;
-    
-    // Update scores
-    const newEliminated = [...onlineState.eliminated, eliminated];
-    const isFirstVotingRound = (onlineState.votingRound || 1) === 1;
-    
-    // Calculate score changes
-    Object.entries(onlineState.votes).forEach(([voterId, targetId]) => {
-        if (targetId === eliminated) {
-            if (isImpostor) {
-                // Correct vote - voter gains 1 point
-                updatePlayerScore(voterId, 1);
-            } else {
-                // Wrong vote - voter loses 1 point
-                updatePlayerScore(voterId, -1);
-            }
-        }
+    var elim = mostV[0], isImp = onlineState.impostorIds.includes(elim), elimName = onlineState.players[elim] ? onlineState.players[elim].name : '?';
+    var newElim = onlineState.eliminated.slice(); newElim.push(elim);
+    var isFirst = (onlineState.votingRound || 1) === 1;
+    var changes = {};
+    active.forEach(function(vid) {
+        if (onlineState.votes[vid] === elim) changes[vid] = (changes[vid] || 0) + (isImp ? 1 : -1);
     });
-    
-    // Impostor score changes
-    if (isImpostor) {
-        if (isFirstVotingRound) {
-            // Caught in first round - impostor loses 1 point
-            updatePlayerScore(eliminated, -1);
-        }
-        // If caught after first round, impostor keeps points earned from surviving
-    } else {
-        // Innocent eliminated - all impostors gain 1 point for surviving
-        onlineState.impostorIds.forEach(impId => {
-            if (!newEliminated.includes(impId)) {
-                updatePlayerScore(impId, 1);
-            }
-        });
-    }
-    
-    // Check game end conditions
-    const remainingImpostors = onlineState.impostorIds.filter(id => !newEliminated.includes(id));
-    const remainingPlayers = Object.keys(onlineState.players).filter(id => !newEliminated.includes(id));
-    const remainingInnocents = remainingPlayers.filter(id => !onlineState.impostorIds.includes(id));
-    
-    let gameEndType = null;
-    if (remainingImpostors.length === 0) {
-        gameEndType = 'innocentsWin';
-    } else if (remainingInnocents.length <= remainingImpostors.length) {
-        gameEndType = 'impostorsWin';
-    }
-    
-    // Update game state
-    roomRef.child('gameState/eliminated').set(newEliminated);
-    roomRef.child('gameState/lastResult').set({
-        type: isImpostor ? 'correct' : 'wrong',
-        eliminatedId: eliminated,
-        eliminatedName: eliminatedName,
-        wasImpostor: isImpostor,
-        voteCounts: voteCounts,
-        remainingImpostors: remainingImpostors.length,
-        gameEnd: gameEndType
-    });
-    
-    // Clear votes
+    if (isImp && isFirst) changes[elim] = (changes[elim] || 0) - 1;
+    if (!isImp) onlineState.impostorIds.forEach(function(iid) { if (!newElim.includes(iid)) changes[iid] = (changes[iid] || 0) + 1; });
+    Object.entries(changes).forEach(function(entry) { roomRef.child('players/' + entry[0] + '/score').transaction(function(c) { return (c || 0) + entry[1]; }); });
+    var remImp = onlineState.impostorIds.filter(function(id) { return !newElim.includes(id); });
+    var remPlayers = Object.keys(onlineState.players).filter(function(id) { return !newElim.includes(id); });
+    var remInn = remPlayers.filter(function(id) { return !onlineState.impostorIds.includes(id); });
+    var gameEnd = null;
+    if (remImp.length === 0) gameEnd = 'innocentsWin';
+    else if (remInn.length <= remImp.length) gameEnd = 'impostorsWin';
+    roomRef.child('gameState/eliminated').set(newElim);
+    roomRef.child('gameState/lastResult').set({ type: isImp ? 'correct' : 'wrong', eliminatedId: elim, eliminatedName: elimName, wasImpostor: isImp, scoreChanges: changes, remainingImpostors: remImp.length, gameEnd: gameEnd });
     roomRef.child('votes').remove();
-    
     roomRef.child('gameState/phase').set('result');
 }
 
-function updatePlayerScore(playerId, delta) {
-    roomRef.child('players/' + playerId + '/score').transaction(current => {
-        return (current || 0) + delta;
-    });
-}
-
-// Show Online Result
-function showOnlineResult(result) {
-    const container = document.getElementById('online-result-content');
-    
-    if (result.type === 'tie') {
-        container.innerHTML = `
-            <div class="result-icon">⚖️</div>
-            <h3 style="color:var(--warning)">EMPATE!</h3>
-            <p style="color:var(--text-dim);margin:14px 0">Ninguém foi eliminado nesta votação.</p>
-        `;
+function showOnlineResult(r) {
+    var c = document.getElementById('online-result-content');
+    if (r.type === 'tie') {
+        c.innerHTML = '<div class="result-icon">⚖️</div><h3 style="color:var(--warning)">EMPATE!</h3><p style="color:var(--text-dim);margin:14px 0">Votem novamente!</p><p style="font-size:.8rem;color:var(--text-dim)">' + (r.tiedPlayers ? r.tiedPlayers.join(', ') : '') + '</p>';
+        document.getElementById('continue-voting-btn').style.display = 'block';
+        document.getElementById('continue-voting-btn').textContent = '🗳️ VOTAR NOVAMENTE';
     } else {
-        const icon = result.wasImpostor ? '✅' : '❌';
-        const color = result.wasImpostor ? 'var(--success)' : '#ff4444';
-        const message = result.wasImpostor ? t('correct') : t('wrong');
-        const subMessage = result.wasImpostor ? t('wasImpostor') : t('wasInnocent');
-        
-        container.innerHTML = `
-            <div class="result-icon">${icon}</div>
-            <h3 style="color:${color}">${message}</h3>
-            <p style="font-size:1.1rem;margin:14px 0"><strong>${result.eliminatedName}</strong> ${subMessage}</p>
-            ${result.remainingImpostors > 0 && !result.wasImpostor ? 
-                `<p style="color:var(--text-dim);font-size:.85rem">${t('hiddenImpostors').replace('{n}', result.remainingImpostors)}</p>` : ''}
-            ${result.wasImpostor && result.remainingImpostors > 0 ? 
-                `<p style="color:var(--warning);font-size:.85rem">${t('remainingImpostors').replace('{n}', result.remainingImpostors)}</p>` : ''}
-        `;
+        var icon = r.wasImpostor ? '✅' : '❌', color = r.wasImpostor ? 'var(--success)' : '#ff4444';
+        var scHTML = '';
+        if (r.scoreChanges) {
+            var scParts = [];
+            Object.entries(r.scoreChanges).forEach(function(entry) {
+                var id = entry[0], d = entry[1];
+                var n = onlineState.players[id] ? onlineState.players[id].name : '?', col = d > 0 ? 'var(--success)' : '#ff4444';
+                scParts.push('<span style="color:' + col + '">' + n + ': ' + (d > 0 ? '+' : '') + d + '</span>');
+            });
+            scHTML = '<p style="font-size:.75rem;margin-top:10px">' + scParts.join(', ') + '</p>';
+        }
+        c.innerHTML = '<div class="result-icon">' + icon + '</div><h3 style="color:' + color + '">' + (r.wasImpostor ? t('correct') : t('wrong')) + '</h3><p style="font-size:1.1rem;margin:14px 0"><strong>' + r.eliminatedName + '</strong> ' + (r.wasImpostor ? t('wasImpostor') : t('wasInnocent')) + '</p>' + (r.remainingImpostors > 0 && !r.wasImpostor ? '<p style="color:var(--text-dim);font-size:.85rem">' + t('hiddenImpostors').replace('{n}', r.remainingImpostors) + '</p>' : '') + (r.wasImpostor && r.remainingImpostors > 0 ? '<p style="color:var(--warning);font-size:.85rem">' + t('remainingImpostors').replace('{n}', r.remainingImpostors) + '</p>' : '') + scHTML;
+        var btn = document.getElementById('continue-voting-btn');
+        if (r.gameEnd) { btn.style.display = 'none'; setTimeout(function() { if (isHost) roomRef.child('gameState/phase').set('roundEnd'); }, 3000); }
+        else { btn.style.display = 'block'; btn.textContent = t('continueVoting'); }
     }
-    
-    // Show/hide continue button based on game end
-    const continueBtn = document.getElementById('continue-voting-btn');
-    if (result.gameEnd) {
-        continueBtn.style.display = 'none';
-        // Auto-advance to round end after delay
-        setTimeout(() => {
-            if (isHost) {
-                roomRef.child('gameState/phase').set('roundEnd');
-            }
-        }, 3000);
-    } else {
-        continueBtn.style.display = 'block';
-    }
-    
     showScreen('screen-online-result');
 }
 
-// Continue Online Voting
 function continueOnlineVoting() {
-    if (isHost) {
-        roomRef.child('gameState/phase').set('voting');
-    }
+    roomRef.child('votes').remove();
+    roomRef.child('voteRequests').remove();
+    roomRef.child('gameState/phase').set('playing');
 }
 
-// Show Online Round End
-function showOnlineRoundEnd(gameState) {
-    const container = document.getElementById('online-round-summary');
-    const impostorNames = onlineState.impostorIds.map(id => onlineState.players[id]?.name || 'Unknown').join(', ');
-    
-    let endMessage = '';
-    if (gameState.lastResult?.gameEnd === 'innocentsWin') {
-        endMessage = `<div class="result-icon">🎉</div><h3 style="color:var(--success)">${t('correct')}</h3>`;
-    } else if (gameState.lastResult?.gameEnd === 'impostorsWin') {
-        endMessage = `<div class="result-icon">🎭</div><h3 style="color:var(--accent)">${t('impostorWins')}</h3>`;
-    }
-    
-    container.innerHTML = `
-        ${endMessage}
-        <p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">${t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas')}</p>
-        <p style="font-size:1.2rem;color:var(--accent);font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames}</p>
-        <p style="margin:14px 0;font-size:.9rem">${t('word')} <strong style="color:var(--success)">${onlineState.word}</strong></p>
-    `;
-    
-    // Build ranking
+function showOnlineRoundEnd(gs) {
+    var c = document.getElementById('online-round-summary');
+    var impNames = onlineState.impostorIds.map(function(id) { return onlineState.players[id] ? onlineState.players[id].name : '?'; }).join(', ');
+    var endMsg = '';
+    if (gs.lastResult && gs.lastResult.gameEnd === 'innocentsWin') endMsg = '<div class="result-icon">🎉</div><h3 style="color:var(--success)">INOCENTES VENCERAM!</h3>';
+    else if (gs.lastResult && gs.lastResult.gameEnd === 'impostorsWin') endMsg = '<div class="result-icon">🎭</div><h3 style="color:var(--accent)">' + t('impostorWins') + '</h3>';
+    c.innerHTML = endMsg + '<p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">' + t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas') + '</p><p style="font-size:1.2rem;color:var(--accent);font-family:\'Bebas Neue\',sans-serif">' + impNames + '</p><p style="margin:14px 0;font-size:.9rem">' + t('word') + ' <strong style="color:var(--success)">' + onlineState.word + '</strong></p><p style="font-size:.75rem;color:var(--text-dim)">Categoria: ' + onlineState.category + '</p>';
     updateOnlineRanking();
-    
-    // Reset ready button
     document.getElementById('ready-next-btn').disabled = false;
     document.getElementById('ready-next-btn').textContent = t('ready');
-    
     showScreen('screen-online-round-end');
 }
 
 function updateOnlineRanking() {
-    const sorted = Object.entries(onlineState.players)
-        .map(([id, p]) => ({ name: p.name, score: p.score || 0 }))
-        .sort((a, b) => b.score - a.score);
-    
-    const rankingHTML = sorted.map((p, idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0 && p.score > 0) cls += ' gold';
-        else if (idx === 1 && p.score > 0) cls += ' silver';
-        else if (idx === 2 && p.score > 0) cls += ' bronze';
-        const scoreClass = p.score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${p.name}</span><span class="${scoreClass}">${p.score}</span></li>`;
+    var sorted = Object.entries(onlineState.players).map(function(entry) { return { name: entry[1].name, score: entry[1].score || 0 }; }).sort(function(a, b) { return b.score - a.score; });
+    document.getElementById('online-ranking-list').innerHTML = sorted.map(function(p, i) {
+        var cls = 'ranking-item';
+        if (i === 0 && p.score > 0) cls += ' gold'; else if (i === 1 && p.score > 0) cls += ' silver'; else if (i === 2 && p.score > 0) cls += ' bronze';
+        return '<li class="' + cls + '"><div class="ranking-position">' + (i + 1) + '</div><span class="ranking-name">' + p.name + '</span><span class="ranking-score ' + (p.score < 0 ? 'negative' : '') + '">' + p.score + '</span></li>';
     }).join('');
-    
-    document.getElementById('online-ranking-list').innerHTML = rankingHTML;
 }
 
-// Ready for Next Round
 function readyNextRound() {
     roomRef.child('readyPlayers/' + playerId).set(true);
     document.getElementById('ready-next-btn').disabled = true;
@@ -896,144 +428,76 @@ function readyNextRound() {
 }
 
 function updateReadyStatus() {
-    const total = Object.keys(onlineState.players).length;
-    const ready = onlineState.readyPlayers.length;
-    
-    const statusEl = document.getElementById('ready-status');
-    if (statusEl) {
-        statusEl.textContent = `${ready}/${total} ${t('ready').toLowerCase()}`;
-    }
+    var total = Object.keys(onlineState.players).length, ready = onlineState.readyPlayers.length;
+    var el = document.getElementById('ready-status');
+    if (el) el.textContent = ready + '/' + total + ' ' + t('ready').toLowerCase();
 }
 
 function checkAllReady() {
-    if (!isHost) return;
-    if (onlineState.phase !== 'roundEnd') return;
-    
-    const allPlayers = Object.keys(onlineState.players);
-    const allReady = allPlayers.every(id => onlineState.readyPlayers.includes(id));
-    
-    if (allReady && allPlayers.length > 0) {
-        // Check for winner
+    if (onlineState.phase !== 'roundEnd' || !isHost) return;
+    var all = Object.keys(onlineState.players);
+    var allReady = all.every(function(id) { return onlineState.readyPlayers.includes(id); });
+    if (allReady && all.length > 0) {
         if (onlineState.maxPoints) {
-            for (const [id, player] of Object.entries(onlineState.players)) {
-                if ((player.score || 0) >= onlineState.maxPoints) {
+            for (var i = 0; i < Object.entries(onlineState.players).length; i++) {
+                var entry = Object.entries(onlineState.players)[i];
+                if ((entry[1].score || 0) >= onlineState.maxPoints) {
                     roomRef.child('gameState/phase').set('gameOver');
-                    roomRef.child('gameState/winner').set({ id, name: player.name, score: player.score });
+                    roomRef.child('gameState/winner').set({ id: entry[0], name: entry[1].name, score: entry[1].score });
                     return;
                 }
             }
         }
-        
-        // Start next round
         startNextOnlineRound();
     }
 }
 
 function startNextOnlineRound() {
-    const newRound = onlineState.round + 1;
-    
-    // Select new word
-    const categories = getWordCategories(onlineState.roomLang);
-    let availableCategories = onlineState.allCategories ? 
-        categories : 
-        onlineState.selectedCategories.map(idx => categories[idx]);
-    
-    const categoryData = availableCategories[Math.floor(Math.random() * availableCategories.length)];
-    const word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
-    
-    // Select new impostors
-    const playerIds = Object.keys(onlineState.players);
-    const maxPossible = Math.floor((playerIds.length - 1) / 2);
-    const actualMax = Math.min(onlineState.maxImpostors, maxPossible);
-    const actualImpostorCount = Math.floor(Math.random() * actualMax) + 1;
-    
-    const shuffledIds = shuffle(playerIds);
-    const impostorIds = shuffledIds.slice(0, actualImpostorCount);
-    
-    let similarWords = {};
-    if (!onlineState.impostorKnows) {
-        impostorIds.forEach(id => {
-            similarWords[id] = findSimilarWordOnline(word, categoryData.category, categoryData);
-        });
-    }
-    
-    // Update game state
-    roomRef.child('gameState').set({
-        phase: 'playing',
-        round: newRound,
-        word: word,
-        category: categoryData.category,
-        impostorIds: impostorIds,
-        impostorKnows: onlineState.impostorKnows,
-        similarWords: similarWords,
-        eliminated: [],
-        votingRound: 0
-    });
-    
-    // Clear ready and votes
+    var nr = onlineState.round + 1;
+    var cats = getWordCategories(onlineState.roomLang);
+    var avail = onlineState.allCategories ? cats : onlineState.selectedCategories.map(function(i) { return cats[i]; });
+    var catData = avail[Math.floor(Math.random() * avail.length)];
+    var word = catData.words[Math.floor(Math.random() * catData.words.length)];
+    var pids = Object.keys(onlineState.players);
+    var maxP = Math.floor((pids.length - 1) / 2);
+    var actMax = Math.min(onlineState.maxImpostors, maxP);
+    var impCount = Math.floor(Math.random() * actMax) + 1;
+    var shuffled = shuffle(pids);
+    var impIds = shuffled.slice(0, impCount);
+    var simWords = {};
+    if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
+    roomRef.child('gameState').set({ phase: 'playing', round: nr, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0 });
     roomRef.child('readyPlayers').remove();
     roomRef.child('votes').remove();
+    roomRef.child('voteRequests').remove();
 }
 
-// Show Online Game Over
 function showOnlineGameOver(winner) {
     document.getElementById('winner-name').textContent = winner.name;
-    
-    const sorted = Object.entries(onlineState.players)
-        .map(([id, p]) => ({ name: p.name, score: p.score || 0 }))
-        .sort((a, b) => b.score - a.score);
-    
-    const rankingHTML = sorted.map((p, idx) => {
-        let cls = 'ranking-item';
-        if (idx === 0) cls += ' gold';
-        else if (idx === 1) cls += ' silver';
-        else if (idx === 2) cls += ' bronze';
-        const scoreClass = p.score < 0 ? 'ranking-score negative' : 'ranking-score';
-        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${p.name}</span><span class="${scoreClass}">${p.score}</span></li>`;
+    var sorted = Object.entries(onlineState.players).map(function(entry) { return { name: entry[1].name, score: entry[1].score || 0 }; }).sort(function(a, b) { return b.score - a.score; });
+    document.getElementById('final-ranking-list').innerHTML = sorted.map(function(p, i) {
+        var cls = 'ranking-item';
+        if (i === 0) cls += ' gold'; else if (i === 1) cls += ' silver'; else if (i === 2) cls += ' bronze';
+        return '<li class="' + cls + '"><div class="ranking-position">' + (i + 1) + '</div><span class="ranking-name">' + p.name + '</span><span class="ranking-score ' + (p.score < 0 ? 'negative' : '') + '">' + p.score + '</span></li>';
     }).join('');
-    
-    document.getElementById('final-ranking-list').innerHTML = rankingHTML;
     document.getElementById('host-restart-controls').style.display = isHost ? 'block' : 'none';
-    
     showScreen('screen-online-game-over');
 }
 
-// Restart Online Game
 function restartOnlineGame() {
     if (!isHost) return;
-    
-    // Reset scores
-    Object.keys(onlineState.players).forEach(id => {
-        roomRef.child('players/' + id + '/score').set(0);
-    });
-    
-    // Clear state
+    Object.keys(onlineState.players).forEach(function(id) { roomRef.child('players/' + id + '/score').set(0); });
     roomRef.child('votes').remove();
+    roomRef.child('voteRequests').remove();
     roomRef.child('readyPlayers').remove();
-    roomRef.child('gameState').set({
-        phase: 'lobby',
-        round: 0
-    });
+    roomRef.child('kicked').remove();
+    roomRef.child('gameState').set({ phase: 'lobby', round: 0 });
 }
 
-// Leave Room
 function leaveRoom() {
-    if (roomRef) {
-        roomRef.child('players/' + playerId).remove();
-        roomRef.off();
-    }
-    
-    roomRef = null;
-    currentRoom = null;
-    isHost = false;
-    onlineState = {
-        roomCode: null, players: {}, gameStarted: false, round: 1,
-        word: null, category: null, impostorIds: [], votes: {},
-        eliminated: [], scores: {}, phase: 'lobby', maxImpostors: 1,
-        impostorKnows: true, maxPoints: null, allCategories: true,
-        selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: []
-    };
-    
+    if (roomRef) { roomRef.child('players/' + playerId).remove(); roomRef.off(); }
+    roomRef = null; currentRoom = null; isHost = false;
+    onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {} };
     updateConnectionStatus('');
     showScreen('screen-mode');
 }
