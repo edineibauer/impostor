@@ -20,9 +20,13 @@
         body{font-family:'Space Mono',monospace;background:var(--bg-dark);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden}
         .bg-pattern{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 80%,rgba(255,51,102,0.1) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(0,255,136,0.08) 0%,transparent 50%),linear-gradient(180deg,#0a0a0f 0%,#0f0f18 100%);z-index:-1}
         .container{max-width:480px;margin:0 auto;padding:20px;padding-bottom:40px;min-height:100vh}
-        .logo{text-align:center;padding:40px 0 30px}
-        .logo h1{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:8px;background:linear-gradient(135deg,var(--accent) 0%,#ff6699 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pulse-glow 3s ease-in-out infinite}
-        .logo .subtitle{font-size:.75rem;color:var(--text-dim);letter-spacing:4px;margin-top:8px;text-transform:uppercase}
+        .logo{text-align:center;padding:30px 0 25px;display:flex;flex-direction:column;align-items:center;gap:10px}
+        .logo-icon{width:80px;height:80px;border-radius:20px;box-shadow:0 8px 30px var(--accent-glow)}
+        .logo h1{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:8px;background:linear-gradient(135deg,var(--accent) 0%,#ff6699 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pulse-glow 3s ease-in-out infinite}
+        .logo .subtitle{font-size:.7rem;color:var(--text-dim);letter-spacing:4px;text-transform:uppercase}
+        .mini-logo{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 0}
+        .mini-logo img{width:40px;height:40px;border-radius:10px}
+        .mini-logo h1{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:3px;color:var(--text-dim)}
         @keyframes pulse-glow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.2)}}
         .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
         .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent)}
@@ -37,14 +41,15 @@
         .btn-secondary{background:transparent;border:2px solid var(--border);color:var(--text)}
         .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
         .btn-success{background:linear-gradient(135deg,var(--success) 0%,#00cc6a 100%);color:var(--bg-dark)}
+        .btn-warning{background:linear-gradient(135deg,var(--warning) 0%,#cc8800 100%);color:var(--bg-dark)}
         .btn-danger{background:transparent;border:1px solid #ff4444;color:#ff4444;font-size:.8rem;padding:10px;opacity:.6}
         .btn-danger:hover{opacity:1}
         .btn+.btn{margin-top:12px}
         .player-config{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px}
         .player-config .player-number{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#fff;flex-shrink:0}
         .player-config input{flex:1;margin-bottom:0;padding:10px 14px}
-        .number-selector{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0}
-        .number-btn{width:46px;height:46px;border-radius:12px;border:2px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.3rem;cursor:pointer;transition:all .2s ease}
+        .number-selector{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+        .number-btn{width:42px;height:42px;border-radius:10px;border:2px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;cursor:pointer;transition:all .2s ease}
         .number-btn:hover{border-color:var(--accent)}
         .number-btn.selected{border-color:var(--accent);background:var(--accent);color:#fff}
         .game-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
@@ -52,7 +57,7 @@
         .info-label{font-size:.6rem;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
         .info-value{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--text)}
         .word-container{text-align:center;padding:30px 15px}
-        .word-text{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:4px;margin-bottom:16px;line-height:1.2}
+        .word-text{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:4px;margin-bottom:16px;line-height:1.2}
         .word-text.is-word{color:var(--success);text-shadow:0 0 40px rgba(0,255,136,0.5)}
         .word-text.is-impostor{color:var(--accent);text-shadow:0 0 40px var(--accent-glow)}
         .category-tag{display:inline-block;padding:8px 20px;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:30px;font-size:.75rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-top:12px}
@@ -68,11 +73,14 @@
         .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
         .round-badge{display:inline-block;padding:8px 16px;background:rgba(255,170,0,0.2);border:1px solid var(--warning);border-radius:20px;font-size:.7rem;letter-spacing:2px;color:var(--warning);margin-bottom:16px}
         .players-summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-        .player-chip{padding:6px 12px;background:rgba(255,255,255,0.05);border-radius:20px;font-size:.75rem;border:1px solid var(--border)}
+        .player-chip{padding:6px 12px;background:rgba(255,255,255,0.05);border-radius:20px;font-size:.75rem;border:1px solid var(--border);cursor:default}
         .player-chip.current{border-color:var(--accent);background:rgba(255,51,102,0.15)}
         .player-chip.seen{border-color:var(--success);background:rgba(0,255,136,0.1)}
+        .player-chip.clickable{cursor:pointer;transition:all .2s}
+        .player-chip.clickable:hover{border-color:var(--accent);background:rgba(255,51,102,0.2);transform:scale(1.05)}
+        .player-chip.eliminated{opacity:.4;text-decoration:line-through}
         .confirm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
-        .confirm-box{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:380px;width:100%;text-align:center;animation:reveal-word .3s ease-out;max-height:90vh;overflow-y:auto}
+        .confirm-box{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:400px;width:100%;text-align:center;animation:reveal-word .3s ease-out;max-height:90vh;overflow-y:auto}
         .confirm-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;margin-bottom:16px;color:var(--accent);letter-spacing:2px}
         .ranking-list{list-style:none;margin:16px 0}
         .ranking-item{display:flex;align-items:center;padding:12px 14px;background:rgba(255,255,255,0.03);border-radius:10px;margin-bottom:8px;border:1px solid transparent}
@@ -85,6 +93,7 @@
         .ranking-item.bronze .ranking-position{background:#cd7f32;color:#000}
         .ranking-name{flex:1;font-size:.85rem}
         .ranking-score{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--success)}
+        .ranking-score.negative{color:#ff4444}
         .score-controls{margin:20px 0}
         .score-player{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:10px;margin-bottom:8px}
         .score-player-name{font-size:.85rem;flex:1}
@@ -99,48 +108,60 @@
         .mini-header{text-align:center;padding:15px 0}
         .mini-header h1{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:4px;color:var(--text-dim)}
         .impostor-count-info{font-size:.7rem;color:var(--text-dim);text-align:center;margin-top:8px}
-        @media(max-width:380px){.logo h1{font-size:3rem}.word-text{font-size:2.2rem}.player-turn-name{font-size:2rem}.container{padding:15px}}
+        .result-icon{font-size:4rem;margin-bottom:16px}
+        .vote-section{margin:20px 0}
+        .vote-section p{font-size:.8rem;color:var(--text-dim);margin-bottom:12px}
+        .player-vote-list{display:flex;flex-direction:column;gap:8px}
+        .player-vote-btn{padding:14px 20px;background:rgba(255,255,255,0.05);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Space Mono',monospace;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:left}
+        .player-vote-btn:hover{border-color:var(--accent);background:rgba(255,51,102,0.1)}
+        .player-vote-btn.eliminated{opacity:.4;pointer-events:none;text-decoration:line-through}
+        @media(max-width:380px){.logo h1{font-size:2.8rem}.logo-icon{width:60px;height:60px}.word-text{font-size:2rem}.player-turn-name{font-size:2rem}.container{padding:15px}.number-btn{width:38px;height:38px;font-size:1rem}}
         .install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border);padding:16px 20px;display:none;align-items:center;gap:12px;z-index:999}
         .install-banner.show{display:flex}
         .install-banner p{flex:1;font-size:.8rem;color:var(--text-dim)}
         .install-banner button{padding:10px 20px;border-radius:8px;border:none;font-family:'Bebas Neue',sans-serif;font-size:1rem;cursor:pointer}
         .install-btn{background:var(--accent);color:#fff}
         .close-install{background:transparent;color:var(--text-dim)}
+        .impostor-survived{margin-top:16px;padding:12px;background:rgba(255,170,0,0.1);border:1px solid var(--warning);border-radius:10px;font-size:.8rem;color:var(--warning)}
     </style>
 </head>
 <body>
     <div class="bg-pattern"></div>
     <div class="container">
         <div id="screen-home" class="screen active">
-            <div class="logo"><h1>IMPOSTOR</h1><p class="subtitle">Jogo de Dedução Social</p></div>
-            <div class="card"><h2 class="card-title">👥 Jogadores</h2><div class="number-selector" id="player-selector"><button class="number-btn" data-num="3">3</button><button class="number-btn selected" data-num="4">4</button><button class="number-btn" data-num="5">5</button><button class="number-btn" data-num="6">6</button><button class="number-btn" data-num="7">7</button><button class="number-btn" data-num="8">8</button><button class="number-btn" data-num="9">9</button><button class="number-btn" data-num="10">10</button></div></div>
+            <div class="logo">
+                <img src="icon-192.png" alt="Impostor" class="logo-icon">
+                <h1>IMPOSTOR</h1>
+                <p class="subtitle">Jogo de Dedução Social</p>
+            </div>
+            <div class="card"><h2 class="card-title">👥 Jogadores</h2><div class="number-selector" id="player-selector"></div></div>
             <div class="card"><h2 class="card-title">🎭 Máx. Impostores</h2><div class="number-selector" id="impostor-selector"><button class="number-btn selected" data-num="1">1</button><button class="number-btn" data-num="2">2</button><button class="number-btn" data-num="3">3</button></div><p class="impostor-count-info">Pode ter de 1 até o máximo selecionado</p></div>
             <div class="card"><h2 class="card-title">📝 Nomes</h2><div id="player-inputs"></div></div>
             <button class="btn btn-primary" onclick="startGame()">🎮 INICIAR JOGO</button>
-            <div class="card" style="margin-top:30px;opacity:.8"><h2 class="card-title">📖 Como Jogar</h2><p style="font-size:.75rem;line-height:1.8;color:var(--text-dim)"><strong style="color:var(--text)">1.</strong> Cada jogador vê sua palavra em segredo<br><strong style="color:var(--text)">2.</strong> Todos recebem a mesma palavra...<br><strong style="color:var(--text)">3.</strong> ...exceto os <span style="color:var(--accent)">IMPOSTORES</span>!<br><strong style="color:var(--text)">4.</strong> Conversem e descubram quem são!</p></div>
+            <div class="card" style="margin-top:30px;opacity:.8"><h2 class="card-title">📖 Como Jogar</h2><p style="font-size:.72rem;line-height:1.9;color:var(--text-dim)"><strong style="color:var(--text)">1.</strong> Cada jogador vê sua palavra em segredo<br><strong style="color:var(--text)">2.</strong> Todos recebem a mesma palavra, exceto os <span style="color:var(--accent)">IMPOSTORES</span><br><strong style="color:var(--text)">3.</strong> Cada um fala uma palavra relacionada<br><strong style="color:var(--text)">4.</strong> A qualquer momento, votem em quem acham que é impostor<br><strong style="color:var(--text)">5.</strong> Continue até descobrir todos os impostores<br><strong style="color:var(--text)">6.</strong> Pontue os jogadores ao final!</p></div>
         </div>
         <div id="screen-turn" class="screen">
-            <div class="mini-header"><h1>RODADA <span id="turn-round-num">1</span></h1></div>
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1>RODADA <span id="turn-round-num">1</span></h1></div>
             <div class="player-turn-card"><div class="player-turn-name" id="current-player-name">JOGADOR</div><p class="player-turn-instruction">Pegue o celular e veja sua palavra</p></div>
             <div class="card"><h2 class="card-title">📋 Progresso</h2><div class="players-summary" id="players-progress"></div></div>
             <button class="btn btn-primary" onclick="showWord()">👁️ VER MINHA PALAVRA</button>
         </div>
         <div id="screen-word" class="screen">
-            <div class="mini-header"><h1>SUA MISSÃO</h1></div>
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1>SUA MISSÃO</h1></div>
             <div class="card"><div class="word-container"><div id="word-display" class="word-reveal-animation"><div class="word-text" id="word-text"></div><div class="category-tag" id="category-tag"></div></div></div></div>
             <p style="text-align:center;color:var(--text-dim);font-size:.75rem;margin-bottom:20px">Memorize e passe o celular</p>
             <button class="btn btn-success" onclick="nextPlayer()">✓ ENTENDI, PRÓXIMO</button>
         </div>
         <div id="screen-game" class="screen">
-            <div class="mini-header"><h1>RODADA <span id="game-round-num">1</span></h1></div>
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1>RODADA <span id="game-round-num">1</span></h1></div>
             <div class="game-info"><div class="info-box"><div class="info-label">Jogadores</div><div class="info-value" id="total-players">4</div></div><div class="info-box"><div class="info-label">Impostores</div><div class="info-value" style="color:var(--accent)" id="impostor-count-display">1-2</div></div></div>
-            <div class="card"><h2 class="card-title">🎭 Hora de Jogar!</h2><p style="font-size:.8rem;color:var(--text-dim);line-height:1.6">Conversem! Cada um fala algo relacionado à palavra. Impostores tentam se camuflar!</p><div class="players-summary" id="game-players" style="margin-top:16px"></div></div>
-            <button class="btn btn-primary" onclick="showRoundEnd()">🏁 FINALIZAR RODADA</button>
+            <div class="card"><h2 class="card-title">🎭 Hora de Jogar!</h2><p style="font-size:.8rem;color:var(--text-dim);line-height:1.6">Cada um fala uma palavra relacionada. Quando suspeitarem de alguém, votem!</p><div class="players-summary" id="game-players" style="margin-top:16px"></div></div>
+            <button class="btn btn-warning" onclick="showVoteScreen()">🗳️ ESCOLHER IMPOSTOR</button>
             <button class="btn btn-secondary" onclick="showRanking()">🏆 VER RANKING</button>
             <div class="danger-zone"><button class="btn btn-danger" onclick="confirmNewGame()">REINICIAR JOGO</button></div>
         </div>
         <div id="screen-ranking" class="screen">
-            <div class="mini-header"><h1>🏆 RANKING</h1></div>
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1>🏆 RANKING</h1></div>
             <div class="card"><ul class="ranking-list" id="ranking-list"></ul></div>
             <button class="btn btn-secondary" onclick="showGameScreen()">← VOLTAR</button>
         </div>
