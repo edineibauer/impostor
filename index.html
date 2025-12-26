@@ -123,10 +123,10 @@
         .toggle-switch.active{background:var(--accent)}
         .toggle-switch::after{content:'';position:absolute;width:22px;height:22px;background:#fff;border-radius:50%;top:3px;left:3px;transition:all .3s}
         .toggle-switch.active::after{left:25px}
-        .lang-selector{display:flex;gap:10px;justify-content:center;margin:20px 0}
-        .lang-btn{padding:16px 24px;background:rgba(255,255,255,0.05);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Space Mono',monospace;font-size:.9rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px}
+        .lang-selector{display:flex;gap:8px;justify-content:center;margin:20px 0}
+        .lang-btn{flex:1;max-width:110px;padding:14px 8px;background:rgba(255,255,255,0.05);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Space Mono',monospace;font-size:.7rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:6px}
         .lang-btn:hover{border-color:var(--accent)}
-        .lang-btn .flag{font-size:2rem}
+        .lang-btn .flag{font-size:1.8rem}
         @media(max-width:380px){.logo h1{font-size:2.6rem}.logo-icon{width:60px;height:60px}.word-text{font-size:1.9rem}.player-turn-name{font-size:1.9rem}.container{padding:15px}.number-btn{width:36px;height:36px;font-size:1rem}}
         .install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border);padding:14px 18px;display:none;align-items:center;gap:10px;z-index:999}
         .install-banner.show{display:flex}

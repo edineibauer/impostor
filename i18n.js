@@ -62,7 +62,9 @@ const translations = {
         language: "Idioma",
         saveSettings: "SALVAR",
         similarWord: "Palavra similar - você pode ser o impostor!",
-        impostorWords: "Palavras dos impostores"
+        impostorWords: "Palavras dos impostores",
+        impostorWins: "O IMPOSTOR VENCEU!",
+        eliminatedWrong: "Vocês eliminaram os jogadores errados!"
     },
     en: {
         title: "THE IMPOSTOR",
@@ -126,7 +128,9 @@ const translations = {
         language: "Language",
         saveSettings: "SAVE",
         similarWord: "Similar word - you might be the impostor!",
-        impostorWords: "Impostor words"
+        impostorWords: "Impostor words",
+        impostorWins: "THE IMPOSTOR WON!",
+        eliminatedWrong: "You eliminated the wrong players!"
     },
     es: {
         title: "EL IMPOSTOR",
@@ -190,7 +194,9 @@ const translations = {
         language: "Idioma",
         saveSettings: "GUARDAR",
         similarWord: "Palabra similar - ¡podrías ser el impostor!",
-        impostorWords: "Palabras de los impostores"
+        impostorWords: "Palabras de los impostores",
+        impostorWins: "¡EL IMPOSTOR GANÓ!",
+        eliminatedWrong: "¡Eliminaron a los jugadores equivocados!"
     }
 };
 

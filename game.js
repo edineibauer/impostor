@@ -320,7 +320,77 @@ function votePlayer(playerIndex) {
     }
     
     saveState();
-    showVoteResult(playerName, isImpostor, playerIndex);
+    
+    // Check if impostors won (only impostors remain)
+    const remainingPlayers = state.players.filter((_, idx) => !state.eliminatedPlayers.includes(idx));
+    const remainingImpostors = state.impostorIndices.filter(idx => !state.eliminatedPlayers.includes(idx));
+    
+    // Impostors win if all remaining players are impostors
+    const impostorsWon = remainingPlayers.length > 0 && 
+                         remainingPlayers.every((_, i) => {
+                             const originalIdx = state.players.findIndex((p, idx) => 
+                                 !state.eliminatedPlayers.includes(idx) && 
+                                 state.players.filter((_, j) => !state.eliminatedPlayers.includes(j)).indexOf(p) === i
+                             );
+                             // Find actual remaining indices
+                             const remainingIndices = state.players.map((_, idx) => idx).filter(idx => !state.eliminatedPlayers.includes(idx));
+                             return remainingIndices.every(idx => state.impostorIndices.includes(idx));
+                         });
+    
+    // Simpler check: remaining non-eliminated indices that are impostors
+    const remainingIndices = state.players.map((_, idx) => idx).filter(idx => !state.eliminatedPlayers.includes(idx));
+    const allRemainingAreImpostors = remainingIndices.length > 0 && remainingIndices.every(idx => state.impostorIndices.includes(idx));
+    
+    if (allRemainingAreImpostors && !isImpostor) {
+        // Wrong vote and only impostors remain - impostors win!
+        showImpostorWins(playerName);
+    } else {
+        showVoteResult(playerName, isImpostor, playerIndex);
+    }
+}
+
+function showImpostorWins(eliminatedPlayerName) {
+    const impostorNames = state.impostorIndices.map(i => state.players[i]);
+    const impostorLabel = state.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
+    
+    // Build ranking display
+    const sorted = Object.entries(state.scores).sort((a, b) => b[1] - a[1]);
+    const rankingHTML = sorted.map(([name, score], idx) => {
+        let cls = 'ranking-item';
+        if (idx === 0 && score > 0) cls += ' gold';
+        else if (idx === 1 && score > 0) cls += ' silver';
+        else if (idx === 2 && score > 0) cls += ' bronze';
+        const scoreClass = score < 0 ? 'ranking-score negative' : 'ranking-score';
+        return `<li class="${cls}"><div class="ranking-position">${idx + 1}</div><span class="ranking-name">${name}</span><span class="${scoreClass}">${score}</span></li>`;
+    }).join('');
+    
+    // Show similar words if mode was "doesn't know"
+    let similarWordsInfo = '';
+    if (!state.impostorKnows && Object.keys(state.similarWords).length > 0) {
+        const similarList = state.impostorIndices.map(idx => {
+            const name = state.players[idx];
+            const word = state.similarWords[idx];
+            return `${name}: ${word}`;
+        }).join(', ');
+        similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">${t('impostorWords')}: ${similarList}</p>`;
+    }
+    
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                <div class="result-icon">🎭</div>
+                <h3 style="color:var(--accent)">${t('impostorWins')}</h3>
+                <p style="font-size:.9rem;margin:14px 0;color:var(--text-dim)">${t('eliminatedWrong')}</p>
+                <p style="margin-bottom:6px;color:var(--text-dim);font-size:.75rem">${impostorLabel}</p>
+                <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
+                <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${state.word}</strong></p>
+                ${similarWordsInfo}
+                <div class="section-title">🏆 RANKING</div>
+                <ul class="ranking-list">${rankingHTML}</ul>
+                <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
+            </div>
+        </div>
+    `;
 }
 
 function voteResultHTML(playerName, wasImpostor) {
