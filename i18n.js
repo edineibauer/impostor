@@ -3,12 +3,21 @@ const translations = {
     pt: {
         title: "O IMPOSTOR",
         subtitle: "Jogo de dedução social por palavras",
+        chooseMode: "🎮 Escolha o Modo",
+        localMode: "MODO LOCAL",
+        localModeDesc: "Um único dispositivo. Passe o celular entre os jogadores. Ideal para jogar presencialmente.",
+        onlineMode: "MODO ONLINE",
+        onlineModeDesc: "Cada jogador usa seu próprio dispositivo. Conecte-se na mesma sala. Ideal para jogar à distância.",
         players: "👥 Jogadores",
         maxImpostors: "🎭 Máx. Impostores",
         impostorInfo: "Pode ter de 1 até o máximo selecionado",
         impostorMode: "🔮 Modo Impostor",
         impostorKnows: "Impostor sabe que é impostor",
         impostorModeInfo: "Se desativado, impostor recebe palavra similar",
+        maxPoints: "🏆 Pontuação Máxima",
+        maxPointsInfo: "Deixe vazio para jogar sem limite de pontos",
+        categories: "📂 Categorias",
+        allCategories: "Todas as categorias",
         names: "📝 Nomes",
         startGame: "🎮 INICIAR JOGO",
         howToPlay: "📖 Como Jogar",
@@ -61,20 +70,70 @@ const translations = {
         settings: "⚙️ CONFIGURAÇÕES",
         language: "Idioma",
         saveSettings: "SALVAR",
-        similarWord: "Palavra similar - você pode ser o impostor!",
         impostorWords: "Palavras dos impostores",
         impostorWins: "O IMPOSTOR VENCEU!",
-        eliminatedWrong: "Vocês eliminaram os jogadores errados!"
+        eliminatedWrong: "Vocês eliminaram os jogadores errados!",
+        // Online mode
+        yourName: "👤 Seu Nome",
+        createRoom: "🏠 CRIAR SALA",
+        joinRoom: "🚪 ENTRAR EM SALA",
+        roomSettings: "CONFIGURAR SALA",
+        roomLanguage: "🌍 Idioma da Sala",
+        roomCode: "🔑 Código da Sala",
+        enter: "🚪 ENTRAR",
+        lobby: "SALA DE ESPERA",
+        shareCode: "Compartilhe o código ou QR Code com seus amigos",
+        playersInRoom: "Jogadores na Sala",
+        waitingHost: "Aguardando o host iniciar",
+        leaveRoom: "SAIR DA SALA",
+        host: "HOST",
+        you: "VOCÊ",
+        hideWord: "🙈 ESCONDER PALAVRA",
+        showWord: "👁️ MOSTRAR PALAVRA",
+        wordHidden: "Palavra escondida",
+        startVoting: "🗳️ INICIAR VOTAÇÃO",
+        voting: "🗳️ VOTAÇÃO",
+        waitingVotes: "Aguardando votos",
+        result: "📊 RESULTADO",
+        ready: "✓ PRONTO",
+        waitingPlayers: "Aguardando jogadores",
+        gameOver: "🎉 FIM DE JOGO",
+        reachedPoints: "Alcançou a pontuação máxima!",
+        finalRanking: "🏆 RANKING FINAL",
+        playAgain: "🔄 JOGAR NOVAMENTE",
+        minPlayers: "Mínimo 3 jogadores para iniciar",
+        connecting: "Conectando...",
+        connected: "Conectado",
+        disconnected: "Desconectado",
+        roomNotFound: "Sala não encontrada",
+        roomFull: "Sala cheia",
+        nameRequired: "Digite seu nome",
+        voted: "Votou",
+        eliminated: "Eliminado",
+        surviving: "Sobreviveu",
+        firstRoundCatch: "Descoberto na 1ª rodada",
+        pointsGained: "+{n} ponto(s)",
+        pointsLost: "-{n} ponto(s)",
+        selectCategories: "Selecione pelo menos uma categoria"
     },
     en: {
         title: "THE IMPOSTOR",
         subtitle: "Social deduction word game",
+        chooseMode: "🎮 Choose Mode",
+        localMode: "LOCAL MODE",
+        localModeDesc: "Single device. Pass the phone between players. Ideal for playing in person.",
+        onlineMode: "ONLINE MODE",
+        onlineModeDesc: "Each player uses their own device. Connect to the same room. Ideal for playing remotely.",
         players: "👥 Players",
         maxImpostors: "🎭 Max. Impostors",
         impostorInfo: "Can have from 1 up to the selected maximum",
         impostorMode: "🔮 Impostor Mode",
         impostorKnows: "Impostor knows they are the impostor",
         impostorModeInfo: "If disabled, impostor receives a similar word",
+        maxPoints: "🏆 Maximum Points",
+        maxPointsInfo: "Leave empty to play without point limit",
+        categories: "📂 Categories",
+        allCategories: "All categories",
         names: "📝 Names",
         startGame: "🎮 START GAME",
         howToPlay: "📖 How to Play",
@@ -127,20 +186,70 @@ const translations = {
         settings: "⚙️ SETTINGS",
         language: "Language",
         saveSettings: "SAVE",
-        similarWord: "Similar word - you might be the impostor!",
         impostorWords: "Impostor words",
         impostorWins: "THE IMPOSTOR WON!",
-        eliminatedWrong: "You eliminated the wrong players!"
+        eliminatedWrong: "You eliminated the wrong players!",
+        // Online mode
+        yourName: "👤 Your Name",
+        createRoom: "🏠 CREATE ROOM",
+        joinRoom: "🚪 JOIN ROOM",
+        roomSettings: "ROOM SETTINGS",
+        roomLanguage: "🌍 Room Language",
+        roomCode: "🔑 Room Code",
+        enter: "🚪 ENTER",
+        lobby: "WAITING ROOM",
+        shareCode: "Share the code or QR Code with your friends",
+        playersInRoom: "Players in Room",
+        waitingHost: "Waiting for host to start",
+        leaveRoom: "LEAVE ROOM",
+        host: "HOST",
+        you: "YOU",
+        hideWord: "🙈 HIDE WORD",
+        showWord: "👁️ SHOW WORD",
+        wordHidden: "Word hidden",
+        startVoting: "🗳️ START VOTING",
+        voting: "🗳️ VOTING",
+        waitingVotes: "Waiting for votes",
+        result: "📊 RESULT",
+        ready: "✓ READY",
+        waitingPlayers: "Waiting for players",
+        gameOver: "🎉 GAME OVER",
+        reachedPoints: "Reached the maximum score!",
+        finalRanking: "🏆 FINAL RANKING",
+        playAgain: "🔄 PLAY AGAIN",
+        minPlayers: "Minimum 3 players to start",
+        connecting: "Connecting...",
+        connected: "Connected",
+        disconnected: "Disconnected",
+        roomNotFound: "Room not found",
+        roomFull: "Room is full",
+        nameRequired: "Enter your name",
+        voted: "Voted",
+        eliminated: "Eliminated",
+        surviving: "Survived",
+        firstRoundCatch: "Caught in 1st round",
+        pointsGained: "+{n} point(s)",
+        pointsLost: "-{n} point(s)",
+        selectCategories: "Select at least one category"
     },
     es: {
         title: "EL IMPOSTOR",
         subtitle: "Juego de deducción social por palabras",
+        chooseMode: "🎮 Elige el Modo",
+        localMode: "MODO LOCAL",
+        localModeDesc: "Un solo dispositivo. Pasa el celular entre los jugadores. Ideal para jugar presencialmente.",
+        onlineMode: "MODO ONLINE",
+        onlineModeDesc: "Cada jugador usa su propio dispositivo. Conéctense a la misma sala. Ideal para jugar a distancia.",
         players: "👥 Jugadores",
         maxImpostors: "🎭 Máx. Impostores",
         impostorInfo: "Puede haber de 1 hasta el máximo seleccionado",
         impostorMode: "🔮 Modo Impostor",
         impostorKnows: "Impostor sabe que es impostor",
         impostorModeInfo: "Si está desactivado, el impostor recibe una palabra similar",
+        maxPoints: "🏆 Puntuación Máxima",
+        maxPointsInfo: "Deja vacío para jugar sin límite de puntos",
+        categories: "📂 Categorías",
+        allCategories: "Todas las categorías",
         names: "📝 Nombres",
         startGame: "🎮 INICIAR JUEGO",
         howToPlay: "📖 Cómo Jugar",
@@ -193,10 +302,51 @@ const translations = {
         settings: "⚙️ CONFIGURACIÓN",
         language: "Idioma",
         saveSettings: "GUARDAR",
-        similarWord: "Palabra similar - ¡podrías ser el impostor!",
         impostorWords: "Palabras de los impostores",
         impostorWins: "¡EL IMPOSTOR GANÓ!",
-        eliminatedWrong: "¡Eliminaron a los jugadores equivocados!"
+        eliminatedWrong: "¡Eliminaron a los jugadores equivocados!",
+        // Online mode
+        yourName: "👤 Tu Nombre",
+        createRoom: "🏠 CREAR SALA",
+        joinRoom: "🚪 UNIRSE A SALA",
+        roomSettings: "CONFIGURAR SALA",
+        roomLanguage: "🌍 Idioma de la Sala",
+        roomCode: "🔑 Código de Sala",
+        enter: "🚪 ENTRAR",
+        lobby: "SALA DE ESPERA",
+        shareCode: "Comparte el código o QR Code con tus amigos",
+        playersInRoom: "Jugadores en la Sala",
+        waitingHost: "Esperando que el host inicie",
+        leaveRoom: "SALIR DE LA SALA",
+        host: "HOST",
+        you: "TÚ",
+        hideWord: "🙈 OCULTAR PALABRA",
+        showWord: "👁️ MOSTRAR PALABRA",
+        wordHidden: "Palabra oculta",
+        startVoting: "🗳️ INICIAR VOTACIÓN",
+        voting: "🗳️ VOTACIÓN",
+        waitingVotes: "Esperando votos",
+        result: "📊 RESULTADO",
+        ready: "✓ LISTO",
+        waitingPlayers: "Esperando jugadores",
+        gameOver: "🎉 FIN DEL JUEGO",
+        reachedPoints: "¡Alcanzó la puntuación máxima!",
+        finalRanking: "🏆 RANKING FINAL",
+        playAgain: "🔄 JUGAR DE NUEVO",
+        minPlayers: "Mínimo 3 jugadores para iniciar",
+        connecting: "Conectando...",
+        connected: "Conectado",
+        disconnected: "Desconectado",
+        roomNotFound: "Sala no encontrada",
+        roomFull: "Sala llena",
+        nameRequired: "Ingresa tu nombre",
+        voted: "Votó",
+        eliminated: "Eliminado",
+        surviving: "Sobrevivió",
+        firstRoundCatch: "Atrapado en 1ª ronda",
+        pointsGained: "+{n} punto(s)",
+        pointsLost: "-{n} punto(s)",
+        selectCategories: "Selecciona al menos una categoría"
     }
 };
 
@@ -219,16 +369,6 @@ function applyTranslations() {
     document.documentElement.lang = currentLang === 'pt' ? 'pt-BR' : currentLang === 'es' ? 'es' : 'en';
 }
 
-function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('impostor_lang', lang);
-    applyTranslations();
-    if (typeof initHomeScreen === 'function') {
-        initHomeScreen();
-    }
-    showScreen('screen-home');
-}
-
 function loadLanguage() {
     const saved = localStorage.getItem('impostor_lang');
     if (saved) {
@@ -239,21 +379,25 @@ function loadLanguage() {
 }
 
 function showSettings() {
-    const flags = { pt: '🇧🇷', en: '🇺🇸', es: '🇪🇸' };
-    const names = { pt: 'Português', en: 'English', es: 'Español' };
-    
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay" onclick="closeOverlay(event)">
             <div class="confirm-box" onclick="event.stopPropagation()">
                 <h3>${t('settings')}</h3>
                 <div class="section-title">${t('language')}</div>
                 <div class="lang-selector" style="margin:16px 0">
-                    <button class="lang-btn ${currentLang === 'pt' ? 'selected' : ''}" onclick="setLanguage('pt');closeOverlay()"><span class="flag">🇧🇷</span>Português</button>
-                    <button class="lang-btn ${currentLang === 'en' ? 'selected' : ''}" onclick="setLanguage('en');closeOverlay()"><span class="flag">🇺🇸</span>English</button>
-                    <button class="lang-btn ${currentLang === 'es' ? 'selected' : ''}" onclick="setLanguage('es');closeOverlay()"><span class="flag">🇪🇸</span>Español</button>
+                    <button class="lang-btn ${currentLang === 'pt' ? 'selected' : ''}" onclick="changeLanguage('pt')"><span class="flag">🇧🇷</span>PT</button>
+                    <button class="lang-btn ${currentLang === 'en' ? 'selected' : ''}" onclick="changeLanguage('en')"><span class="flag">🇺🇸</span>EN</button>
+                    <button class="lang-btn ${currentLang === 'es' ? 'selected' : ''}" onclick="changeLanguage('es')"><span class="flag">🇪🇸</span>ES</button>
                 </div>
                 <button class="btn btn-secondary" onclick="closeOverlay()">${t('close')}</button>
             </div>
         </div>
     `;
+}
+
+function changeLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('impostor_lang', lang);
+    applyTranslations();
+    closeOverlay();
 }

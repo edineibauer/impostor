@@ -1,8 +1,10 @@
-const CACHE_NAME = 'impostor-v2';
+const CACHE_NAME = 'impostor-v3';
 const urlsToCache = [
     './',
     './index.html',
-    './game.js',
+    './app.js',
+    './game-local.js',
+    './game-online.js',
     './i18n.js',
     './words-pt.js',
     './words-en.js',
@@ -36,6 +38,13 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    // Skip Firebase and external API calls
+    if (event.request.url.includes('firebase') || 
+        event.request.url.includes('googleapis') ||
+        event.request.url.includes('gstatic')) {
+        return;
+    }
+    
     event.respondWith(
         caches.match(event.request)
             .then(response => {
