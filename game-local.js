@@ -53,21 +53,82 @@ function clearLocalState() {
 
 // INIT LOCAL GAME
 function initLocalGame() {
+    // First load any saved state (may contain previous game settings)
+    const hadSavedState = loadLocalState();
+    
+    // Initialize UI components
     initPlayerSelector();
     updateImpostorSelector();
     generatePlayerInputs();
     populateCategoriesList();
     
-    // Check for saved game
-    if (loadLocalState()) {
-        if (localState.gameInProgress) {
-            if (localState.seenPlayers.length >= localState.players.length) {
-                showGameScreen();
-            } else {
-                showPlayerTurn();
-            }
-            showToast(t('gameRestored'));
+    // Apply saved settings to UI (if any)
+    applySettingsToUI();
+    
+    // Check for saved game in progress
+    if (hadSavedState && localState.gameInProgress) {
+        if (localState.seenPlayers.length >= localState.players.length) {
+            showGameScreen();
+        } else {
+            showPlayerTurn();
         }
+        showToast(t('gameRestored'));
+    }
+}
+
+// Apply saved localState settings to UI elements
+function applySettingsToUI() {
+    // Apply player count
+    const playerSelector = document.getElementById('player-selector');
+    if (playerSelector) {
+        playerSelector.querySelectorAll('.number-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (parseInt(btn.dataset.num) === localState.playerCount) {
+                btn.classList.add('selected');
+            }
+        });
+    }
+    
+    // Apply max impostors
+    const impostorSelector = document.getElementById('impostor-selector');
+    if (impostorSelector) {
+        impostorSelector.querySelectorAll('.number-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (parseInt(btn.dataset.num) === localState.maxImpostors) {
+                btn.classList.add('selected');
+            }
+        });
+    }
+    
+    // Apply impostor knows toggle
+    const toggle = document.getElementById('toggle-impostor-knows');
+    if (toggle) {
+        toggle.classList.toggle('active', localState.impostorKnows);
+    }
+    
+    // Apply all categories toggle
+    const allCatToggle = document.getElementById('toggle-all-categories');
+    if (allCatToggle) {
+        allCatToggle.classList.toggle('active', localState.allCategories);
+    }
+    
+    // Apply selected categories
+    const categoriesList = document.getElementById('categories-list');
+    if (categoriesList) {
+        categoriesList.querySelectorAll('.category-item').forEach(item => {
+            const idx = parseInt(item.dataset.idx);
+            if (localState.allCategories || localState.selectedCategories.includes(idx)) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+    
+    // Apply max points
+    const maxPointsInput = document.getElementById('max-points-input');
+    if (maxPointsInput && localState.maxPoints) {
+        maxPointsInput.value = localState.maxPoints;
     }
 }
 
@@ -75,10 +136,14 @@ function initLocalGame() {
 function initPlayerSelector() {
     const selector = document.getElementById('player-selector');
     if (!selector) return;
+    
+    // Preserve current selection if valid, otherwise default to 4
+    const currentCount = localState.playerCount >= 3 && localState.playerCount <= 20 ? localState.playerCount : 4;
+    
     selector.innerHTML = '';
     for (let i = 3; i <= 20; i++) {
         const btn = document.createElement('button');
-        btn.className = 'number-btn' + (i === 4 ? ' selected' : '');
+        btn.className = 'number-btn' + (i === currentCount ? ' selected' : '');
         btn.dataset.num = i;
         btn.textContent = i;
         btn.onclick = function() {
@@ -90,6 +155,7 @@ function initPlayerSelector() {
         };
         selector.appendChild(btn);
     }
+    localState.playerCount = currentCount;
 }
 
 // UPDATE IMPOSTOR SELECTOR BASED ON PLAYER COUNT
@@ -97,10 +163,15 @@ function updateImpostorSelector() {
     const maxPossible = Math.floor((localState.playerCount - 1) / 2);
     const selector = document.getElementById('impostor-selector');
     if (!selector) return;
+    
+    // Preserve current selection if valid, otherwise default to 1
+    const currentMax = localState.maxImpostors;
+    const validMax = Math.min(currentMax, maxPossible, 5);
+    
     selector.innerHTML = '';
     for (let i = 1; i <= Math.min(maxPossible, 5); i++) {
         const btn = document.createElement('button');
-        btn.className = 'number-btn' + (i === 1 ? ' selected' : '');
+        btn.className = 'number-btn' + (i === validMax ? ' selected' : '');
         btn.dataset.num = i;
         btn.textContent = i;
         btn.onclick = function() {
@@ -110,7 +181,7 @@ function updateImpostorSelector() {
         };
         selector.appendChild(btn);
     }
-    localState.maxImpostors = 1;
+    localState.maxImpostors = validMax || 1;
 }
 
 // POPULATE CATEGORIES LIST
@@ -118,10 +189,19 @@ function populateCategoriesList() {
     const container = document.getElementById('categories-list');
     if (!container) return;
     const categories = getWordCategories();
-    container.innerHTML = categories.map((cat, idx) => 
-        `<div class="category-item selected" data-idx="${idx}" onclick="toggleCategory(${idx})">${cat.category}</div>`
-    ).join('');
-    localState.selectedCategories = categories.map((_, idx) => idx);
+    
+    // If no categories selected yet, select all by default
+    const hasSelection = localState.selectedCategories && localState.selectedCategories.length > 0;
+    
+    container.innerHTML = categories.map((cat, idx) => {
+        const isSelected = localState.allCategories || (hasSelection ? localState.selectedCategories.includes(idx) : true);
+        return `<div class="category-item ${isSelected ? 'selected' : ''}" data-idx="${idx}" onclick="toggleCategory(${idx})">${cat.category}</div>`;
+    }).join('');
+    
+    // Only set all categories if no previous selection
+    if (!hasSelection) {
+        localState.selectedCategories = categories.map((_, idx) => idx);
+    }
 }
 
 function toggleCategory(idx) {
@@ -609,15 +689,50 @@ function confirmNewGame() {
 
 function resetGame() {
     closeOverlay();
-    localState = { 
-        playerCount: 4, maxImpostors: 1, players: [], scores: {}, currentPlayerIndex: 0, 
-        word: null, category: null, impostorIndices: [], actualImpostorCount: 0, round: 1, 
-        seenPlayers: [], gameInProgress: false, eliminatedPlayers: [], revealedImpostors: [],
-        impostorKnows: true, similarWords: {}, maxPoints: null, allCategories: true, 
-        selectedCategories: [], votingRound: 0
+    
+    // Save current settings before reset
+    const savedSettings = {
+        playerCount: localState.playerCount,
+        maxImpostors: localState.maxImpostors,
+        impostorKnows: localState.impostorKnows,
+        maxPoints: localState.maxPoints,
+        allCategories: localState.allCategories,
+        selectedCategories: localState.selectedCategories.slice()
     };
+    
+    // Reset game state but keep settings
+    localState = { 
+        playerCount: savedSettings.playerCount, 
+        maxImpostors: savedSettings.maxImpostors, 
+        players: [], 
+        scores: {}, 
+        currentPlayerIndex: 0, 
+        word: null, 
+        category: null, 
+        impostorIndices: [], 
+        actualImpostorCount: 0, 
+        round: 1, 
+        seenPlayers: [], 
+        gameInProgress: false, 
+        eliminatedPlayers: [], 
+        revealedImpostors: [],
+        impostorKnows: savedSettings.impostorKnows, 
+        similarWords: {}, 
+        maxPoints: savedSettings.maxPoints, 
+        allCategories: savedSettings.allCategories, 
+        selectedCategories: savedSettings.selectedCategories, 
+        votingRound: 0
+    };
+    
     clearLocalState();
-    initLocalGame();
+    
+    // Re-initialize UI with saved settings
+    initPlayerSelector();
+    updateImpostorSelector();
+    generatePlayerInputs();
+    populateCategoriesList();
+    applySettingsToUI();
+    
     showScreen('screen-home');
     showToast(t('gameRestarted'));
 }
