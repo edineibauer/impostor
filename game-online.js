@@ -256,7 +256,11 @@ function startOnlineGame() {
     var shuffled = shuffle(pids);
     var impIds = shuffled.slice(0, impCount);
     var simWords = {};
-    if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
+    // Generate ONE similar word for ALL impostors (so they can identify each other)
+    if (!onlineState.impostorKnows) {
+        var impostorWord = findSimilarWordOnline(word, catData);
+        impIds.forEach(function(id) { simWords[id] = impostorWord; });
+    }
     // Save active players for this round
     roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
@@ -611,7 +615,11 @@ function startNextOnlineRound() {
     var shuffled = shuffle(pids);
     var impIds = shuffled.slice(0, impCount);
     var simWords = {};
-    if (!onlineState.impostorKnows) impIds.forEach(function(id) { simWords[id] = findSimilarWordOnline(word, catData); });
+    // Generate ONE similar word for ALL impostors (so they can identify each other)
+    if (!onlineState.impostorKnows) {
+        var impostorWord = findSimilarWordOnline(word, catData);
+        impIds.forEach(function(id) { simWords[id] = impostorWord; });
+    }
     roomRef.child('gameState').set({ phase: 'playing', round: nr, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('readyPlayers').remove();
     roomRef.child('votes').remove();

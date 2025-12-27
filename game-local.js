@@ -240,12 +240,20 @@ function startRound() {
     
     const indices = [...Array(localState.players.length).keys()];
     const shuffledIndices = shuffle(indices);
+    
+    // Generate ONE similar word for ALL impostors (so they can identify each other)
+    let impostorWord = null;
+    if (!localState.impostorKnows) {
+        impostorWord = findSimilarWord(localState.word, localState.category);
+    }
+    
     for (let i = 0; i < localState.actualImpostorCount; i++) {
         const impostorIdx = shuffledIndices[i];
         localState.impostorIndices.push(impostorIdx);
         
         if (!localState.impostorKnows) {
-            localState.similarWords[impostorIdx] = findSimilarWord(localState.word, localState.category);
+            // All impostors get the SAME similar word
+            localState.similarWords[impostorIdx] = impostorWord;
         }
     }
     
