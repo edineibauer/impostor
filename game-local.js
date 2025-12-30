@@ -288,7 +288,7 @@ function startLocalGame() {
         localState.players.push(finalName);
         localState.scores[finalName] = 0;
     }
-    localState.players = shuffle(localState.players);
+    // Keep players in original order (do not shuffle)
     localState.round = 1;
     localState.gameInProgress = true;
     localState.eliminatedPlayers = [];
@@ -341,7 +341,7 @@ function startRound() {
     localState.seenPlayers = [];
     localState.eliminatedPlayers = [];
     localState.revealedImpostors = [];
-    localState.players = shuffle(localState.players);
+    // Keep players in original order (do not shuffle)
     saveLocalState();
     showPlayerTurn();
 }

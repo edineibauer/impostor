@@ -555,22 +555,8 @@ function showOnlineResult(r) {
         document.getElementById('continue-voting-btn').textContent = '🗳️ VOTAR NOVAMENTE';
     } else {
         var icon = r.wasImpostor ? '✅' : '❌', color = r.wasImpostor ? 'var(--success)' : '#ff4444';
-        var scHTML = '';
         
-        // Only show score changes if there are visible changes
-        if (r.scoreChanges && Object.keys(r.scoreChanges).length > 0) {
-            var scParts = [];
-            Object.entries(r.scoreChanges).forEach(function(entry) {
-                var id = entry[0], d = entry[1];
-                var n = onlineState.players[id] ? onlineState.players[id].name : '?', col = d > 0 ? 'var(--success)' : '#ff4444';
-                scParts.push('<span style="color:' + col + '">' + n + ': ' + (d > 0 ? '+' : '') + d + '</span>');
-            });
-            if (scParts.length > 0) {
-                scHTML = '<p style="font-size:.75rem;margin-top:10px">' + scParts.join(', ') + '</p>';
-            }
-        }
-        
-        // Build result HTML
+        // Build result HTML - NO score display during game
         var resultHTML = '<div class="result-icon">' + icon + '</div>';
         resultHTML += '<h3 style="color:' + color + '">' + (r.wasImpostor ? t('correct') : t('wrong')) + '</h3>';
         resultHTML += '<p style="font-size:1.1rem;margin:14px 0"><strong>' + r.eliminatedName + '</strong> ' + (r.wasImpostor ? t('wasImpostor') : t('wasInnocent')) + '</p>';
@@ -582,7 +568,6 @@ function showOnlineResult(r) {
             resultHTML += '<p style="color:var(--warning);font-size:.85rem">' + t('remainingImpostors').replace('{n}', r.remainingImpostors) + '</p>';
         }
         
-        resultHTML += scHTML;
         c.innerHTML = resultHTML;
         
         var btn = document.getElementById('continue-voting-btn');
