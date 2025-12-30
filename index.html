@@ -391,13 +391,13 @@
                         <div class="word-text" id="online-word-text"></div>
                         <div class="category-tag" id="online-category-tag"></div>
                     </div>
+                    <div id="word-hidden-container" style="display:none">
+                        <div class="word-hidden">🔒</div>
+                        <p style="text-align:center;color:var(--text-dim);font-size:.8rem;margin:10px 0" data-i18n="wordHidden">Palavra escondida</p>
+                    </div>
                 </div>
-            </div>
-            <button class="btn btn-secondary" onclick="hideOnlineWord()" id="hide-word-btn" data-i18n="hideWord">🙈 ESCONDER PALAVRA</button>
-            <div id="word-hidden-container" style="display:none">
-                <div class="word-hidden">🔒</div>
-                <p style="text-align:center;color:var(--text-dim);font-size:.8rem;margin:20px 0" data-i18n="wordHidden">Palavra escondida</p>
-                <button class="btn btn-secondary" onclick="showOnlineWordAgain()" data-i18n="showWord">👁️ MOSTRAR PALAVRA</button>
+                <button class="btn btn-secondary" onclick="hideOnlineWord()" id="hide-word-btn" style="margin-top:16px" data-i18n="hideWord">🙈 ESCONDER PALAVRA</button>
+                <button class="btn btn-secondary" onclick="showOnlineWordAgain()" id="show-word-btn" style="display:none;margin-top:16px" data-i18n="showWord">👁️ MOSTRAR PALAVRA</button>
             </div>
             <div id="online-game-status" class="card" style="margin-top:20px">
                 <h2 class="card-title" data-i18n="playersLabel">👥 Jogadores</h2>

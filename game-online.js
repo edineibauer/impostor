@@ -309,21 +309,45 @@ function showOnlineWord(gs) {
         wt.className = 'word-text';
         wt.style.color = 'var(--warning)';
         ct.textContent = 'Você entrará na próxima rodada';
+        ct.style.display = 'block';
         document.getElementById('online-word-display').style.display = 'block';
         document.getElementById('hide-word-btn').style.display = 'none';
+        document.getElementById('show-word-btn').style.display = 'none';
         document.getElementById('word-hidden-container').style.display = 'none';
         document.getElementById('request-vote-control').style.display = 'none';
     } else {
         wt.style.color = '';
         var isImp = onlineState.impostorIds.includes(playerId);
+        
         if (isImp) {
-            if (gs.impostorKnows) { wt.textContent = t('impostor'); wt.className = 'word-text is-impostor'; }
-            else { wt.textContent = (gs.similarWords && gs.similarWords[playerId]) || onlineState.word; wt.className = 'word-text is-word'; }
-        } else { wt.textContent = onlineState.word; wt.className = 'word-text is-word'; }
-        ct.textContent = 'Categoria: ' + onlineState.category;
-        document.getElementById('online-word-display').style.display = 'block';
-        document.getElementById('hide-word-btn').style.display = 'block';
-        document.getElementById('word-hidden-container').style.display = 'none';
+            if (gs.impostorKnows) { 
+                wt.textContent = t('impostor'); 
+                wt.className = 'word-text is-impostor'; 
+                ct.textContent = 'Categoria: ' + onlineState.category;
+                ct.style.display = 'block';
+            } else { 
+                // Impostor doesn't know - show similar word WITHOUT category
+                wt.textContent = (gs.similarWords && gs.similarWords[playerId]) || onlineState.word; 
+                wt.className = 'word-text is-word';
+                ct.style.display = 'none'; // Hide category for impostor who doesn't know
+            }
+        } else { 
+            wt.textContent = onlineState.word; 
+            wt.className = 'word-text is-word';
+            // Show category only if impostorKnows is true (so everyone sees category or no one does)
+            if (gs.impostorKnows) {
+                ct.textContent = 'Categoria: ' + onlineState.category;
+                ct.style.display = 'block';
+            } else {
+                ct.style.display = 'none'; // Hide category for all when impostor doesn't know
+            }
+        }
+        
+        // Start with word HIDDEN - user must click to reveal
+        document.getElementById('online-word-display').style.display = 'none';
+        document.getElementById('hide-word-btn').style.display = 'none';
+        document.getElementById('show-word-btn').style.display = 'block';
+        document.getElementById('word-hidden-container').style.display = 'block';
         document.getElementById('request-vote-control').style.display = 'block';
     }
     updateVoteRequestStatus(); updateOnlinePlayersStatus();
@@ -334,12 +358,14 @@ function showOnlineWord(gs) {
 function hideOnlineWord() {
     document.getElementById('online-word-display').style.display = 'none';
     document.getElementById('hide-word-btn').style.display = 'none';
+    document.getElementById('show-word-btn').style.display = 'block';
     document.getElementById('word-hidden-container').style.display = 'block';
 }
 
 function showOnlineWordAgain() {
     document.getElementById('online-word-display').style.display = 'block';
     document.getElementById('hide-word-btn').style.display = 'block';
+    document.getElementById('show-word-btn').style.display = 'none';
     document.getElementById('word-hidden-container').style.display = 'none';
 }
 
@@ -423,6 +449,7 @@ function processVotes() {
         var impostorIds = gs.impostorIds || [];
         var eliminated = gs.eliminated || [];
         var votingRound = gs.votingRound || 1;
+        var impostorKnows = gs.impostorKnows !== false; // default true
         
         var active = Object.keys(onlineState.players).filter(function(id) { return !eliminated.includes(id); });
         var counts = {};
@@ -443,12 +470,13 @@ function processVotes() {
         var newElim = eliminated.slice(); newElim.push(elim);
         var isFirst = votingRound === 1;
         var changes = {};
+        var hiddenChanges = {}; // Changes that won't be shown (impostor points when impostorKnows=false)
         
         // SCORING RULES:
         // 1. Innocent votes for impostor: +1 (correct)
         // 2. Innocent votes for innocent: -1 (wrong)
         // 3. Impostor votes: 0 (no points for voting)
-        // 4. Impostor survives (innocent eliminated): +1
+        // 4. Impostor survives (innocent eliminated): +2 (hidden if impostorKnows=false)
         // 5. Impostor caught in 1st round: -1
         
         // Process votes from INNOCENTS only
@@ -473,17 +501,24 @@ function processVotes() {
             changes[elim] = (changes[elim] || 0) - 1;
         }
         
-        // Innocent eliminated - all surviving impostors gain 1 point
+        // Innocent eliminated - all surviving impostors gain 2 points
         if (!isElimImpostor) {
             impostorIds.forEach(function(iid) { 
                 if (!newElim.includes(iid)) {
-                    changes[iid] = (changes[iid] || 0) + 1;
+                    if (impostorKnows) {
+                        // Show impostor points if they know they're impostor
+                        changes[iid] = (changes[iid] || 0) + 2;
+                    } else {
+                        // Hide impostor points if they don't know
+                        hiddenChanges[iid] = (hiddenChanges[iid] || 0) + 2;
+                    }
                 }
             });
         }
         
-        // Apply score changes
-        Object.entries(changes).forEach(function(entry) { 
+        // Apply all score changes (visible and hidden)
+        var allChanges = Object.assign({}, changes, hiddenChanges);
+        Object.entries(allChanges).forEach(function(entry) { 
             roomRef.child('players/' + entry[0] + '/score').transaction(function(c) { return (c || 0) + entry[1]; }); 
         });
         
@@ -502,9 +537,10 @@ function processVotes() {
             eliminatedId: elim, 
             eliminatedName: elimName, 
             wasImpostor: isElimImpostor, 
-            scoreChanges: changes, 
+            scoreChanges: changes, // Only visible changes
             remainingImpostors: remImp.length, 
-            gameEnd: gameEnd 
+            gameEnd: gameEnd,
+            impostorKnows: impostorKnows
         });
         roomRef.child('votes').remove();
         roomRef.child('gameState/phase').set('result');
@@ -520,19 +556,43 @@ function showOnlineResult(r) {
     } else {
         var icon = r.wasImpostor ? '✅' : '❌', color = r.wasImpostor ? 'var(--success)' : '#ff4444';
         var scHTML = '';
-        if (r.scoreChanges) {
+        
+        // Only show score changes if there are visible changes
+        if (r.scoreChanges && Object.keys(r.scoreChanges).length > 0) {
             var scParts = [];
             Object.entries(r.scoreChanges).forEach(function(entry) {
                 var id = entry[0], d = entry[1];
                 var n = onlineState.players[id] ? onlineState.players[id].name : '?', col = d > 0 ? 'var(--success)' : '#ff4444';
                 scParts.push('<span style="color:' + col + '">' + n + ': ' + (d > 0 ? '+' : '') + d + '</span>');
             });
-            scHTML = '<p style="font-size:.75rem;margin-top:10px">' + scParts.join(', ') + '</p>';
+            if (scParts.length > 0) {
+                scHTML = '<p style="font-size:.75rem;margin-top:10px">' + scParts.join(', ') + '</p>';
+            }
         }
-        c.innerHTML = '<div class="result-icon">' + icon + '</div><h3 style="color:' + color + '">' + (r.wasImpostor ? t('correct') : t('wrong')) + '</h3><p style="font-size:1.1rem;margin:14px 0"><strong>' + r.eliminatedName + '</strong> ' + (r.wasImpostor ? t('wasImpostor') : t('wasInnocent')) + '</p>' + (r.remainingImpostors > 0 && !r.wasImpostor ? '<p style="color:var(--text-dim);font-size:.85rem">' + t('hiddenImpostors').replace('{n}', r.remainingImpostors) + '</p>' : '') + (r.wasImpostor && r.remainingImpostors > 0 ? '<p style="color:var(--warning);font-size:.85rem">' + t('remainingImpostors').replace('{n}', r.remainingImpostors) + '</p>' : '') + scHTML;
+        
+        // Build result HTML
+        var resultHTML = '<div class="result-icon">' + icon + '</div>';
+        resultHTML += '<h3 style="color:' + color + '">' + (r.wasImpostor ? t('correct') : t('wrong')) + '</h3>';
+        resultHTML += '<p style="font-size:1.1rem;margin:14px 0"><strong>' + r.eliminatedName + '</strong> ' + (r.wasImpostor ? t('wasImpostor') : t('wasInnocent')) + '</p>';
+        
+        // Show remaining impostors info (but don't reveal who they are)
+        if (r.remainingImpostors > 0 && !r.wasImpostor) {
+            resultHTML += '<p style="color:var(--text-dim);font-size:.85rem">' + t('hiddenImpostors').replace('{n}', r.remainingImpostors) + '</p>';
+        } else if (r.wasImpostor && r.remainingImpostors > 0) {
+            resultHTML += '<p style="color:var(--warning);font-size:.85rem">' + t('remainingImpostors').replace('{n}', r.remainingImpostors) + '</p>';
+        }
+        
+        resultHTML += scHTML;
+        c.innerHTML = resultHTML;
+        
         var btn = document.getElementById('continue-voting-btn');
-        if (r.gameEnd) { btn.style.display = 'none'; setTimeout(function() { if (isHost) roomRef.child('gameState/phase').set('roundEnd'); }, 3000); }
-        else { btn.style.display = 'block'; btn.textContent = t('continueVoting'); }
+        if (r.gameEnd) { 
+            btn.style.display = 'none'; 
+            setTimeout(function() { if (isHost) roomRef.child('gameState/phase').set('roundEnd'); }, 3000); 
+        } else { 
+            btn.style.display = 'block'; 
+            btn.textContent = t('continueVoting'); 
+        }
     }
     updateRoomHeaders();
     showScreen('screen-online-result');
