@@ -21,12 +21,16 @@ let localState = {
     allCategories: true,
     selectedCategories: [],
     votingRound: 0,
-    starterPlayerIndex: 0 // Who starts talking each round
+    starterPlayerIndex: 0, // Who starts talking each round
+    currentScreen: null // Track current screen for restoration
 };
 
 // STORAGE
-function saveLocalState() {
-    try { localStorage.setItem('impostor_local_state', JSON.stringify(localState)); } catch (e) {}
+function saveLocalState(screen) {
+    try { 
+        if (screen) localState.currentScreen = screen;
+        localStorage.setItem('impostor_local_state', JSON.stringify(localState)); 
+    } catch (e) {}
 }
 
 function loadLocalState() {
@@ -42,6 +46,7 @@ function loadLocalState() {
                 if (!localState.similarWords) localState.similarWords = {};
                 if (!localState.votingRound) localState.votingRound = 0;
                 if (localState.starterPlayerIndex === undefined) localState.starterPlayerIndex = 0;
+                if (!localState.currentScreen) localState.currentScreen = 'screen-game';
                 return true; 
             } else {
                 // Load settings even if game not in progress
@@ -77,13 +82,83 @@ function initLocalGame() {
     
     // Check for saved game in progress
     if (hadSavedState && localState.gameInProgress) {
-        if (localState.seenPlayers.length >= localState.players.length) {
-            showGameScreen();
-        } else {
-            showPlayerTurn();
-        }
+        restoreGameState();
         showToast(t('gameRestored'));
     }
+}
+
+// Restore game to the exact state before reload
+function restoreGameState() {
+    const screen = localState.currentScreen;
+    
+    switch(screen) {
+        case 'screen-turn':
+            showPlayerTurn();
+            break;
+        case 'screen-word':
+            // Show word screen for current player
+            showWordDirectly();
+            break;
+        case 'screen-game':
+            showGameScreen();
+            break;
+        case 'screen-ranking':
+            showRanking();
+            break;
+        case 'screen-round-result':
+            // If was on result screen, go to game screen
+            showGameScreen();
+            break;
+        case 'screen-game-over':
+            showGameOver();
+            break;
+        default:
+            // Default: if all players have seen their words, show game screen
+            if (localState.seenPlayers.length >= localState.players.length) {
+                showGameScreen();
+            } else {
+                showPlayerTurn();
+            }
+    }
+}
+
+// Show word directly without animation (for restore)
+function showWordDirectly() {
+    const wordDisplay = document.getElementById('word-display');
+    const wordText = document.getElementById('word-text');
+    const categoryTag = document.getElementById('category-tag');
+    const currentPlayer = document.getElementById('word-player-name');
+    
+    if (currentPlayer) {
+        currentPlayer.textContent = localState.players[localState.currentPlayerIndex];
+    }
+    
+    const isImpostor = localState.impostorIndices.includes(localState.currentPlayerIndex);
+    
+    if (isImpostor) {
+        if (localState.impostorKnows) {
+            wordText.textContent = t('impostor');
+            wordText.className = 'word-text is-impostor';
+            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
+        } else {
+            const similarWord = localState.similarWords[localState.currentPlayerIndex] || localState.word;
+            wordText.textContent = similarWord;
+            wordText.className = 'word-text is-word';
+            categoryTag.style.display = 'none';
+        }
+    } else {
+        wordText.textContent = localState.word;
+        wordText.className = 'word-text is-word';
+        if (localState.impostorKnows) {
+            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
+        } else {
+            categoryTag.style.display = 'none';
+        }
+    }
+    
+    showScreen('screen-word');
 }
 
 // Apply saved localState settings to UI elements
@@ -374,6 +449,7 @@ function showPlayerTurn() {
         else if (localState.seenPlayers.includes(idx)) cls += ' seen';
         return '<span class="' + cls + '">' + name + '</span>';
     }).join('');
+    saveLocalState('screen-turn');
     showScreen('screen-turn');
 }
 
@@ -411,7 +487,7 @@ function showWord() {
         }
     }
     
-    saveLocalState(); // Save when showing word
+    saveLocalState('screen-word'); // Save screen state
     showScreen('screen-word');
 }
 
@@ -423,7 +499,7 @@ function nextPlayer() {
     } else {
         showPlayerTurn();
     }
-    saveLocalState();
+    // Note: saveLocalState is called inside showGameScreen and showPlayerTurn
 }
 
 function showGameScreen() {
@@ -441,6 +517,7 @@ function showGameScreen() {
     }
     
     updateGamePlayersList();
+    saveLocalState('screen-game');
     showScreen('screen-game');
 }
 
@@ -490,7 +567,7 @@ function votePlayer(playerIndex) {
         localState.revealedImpostors.push(playerIndex);
     }
     
-    saveLocalState();
+    saveLocalState('screen-game'); // Save with game screen as fallback
     
     const remainingIndices = localState.players.map((_, idx) => idx).filter(idx => !localState.eliminatedPlayers.includes(idx));
     const allRemainingAreImpostors = remainingIndices.length > 0 && remainingIndices.every(idx => localState.impostorIndices.includes(idx));
@@ -708,6 +785,7 @@ function newRound() {
 function showRanking() {
     const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
     document.getElementById('ranking-list').innerHTML = buildRankingHTML(sorted);
+    saveLocalState('screen-ranking');
     showScreen('screen-ranking');
 }
 
