@@ -13,7 +13,7 @@ const firebaseConfig = {
 function isFirebaseConfigured() { return firebaseConfig.apiKey !== "YOUR_API_KEY"; }
 
 let db = null, roomRef = null, playerId = null, isHost = false, currentRoom = null;
-let onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {} };
+let onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {}, scoreHistory: [] };
 
 function initFirebase() {
     if (!isFirebaseConfigured()) return false;
@@ -175,6 +175,7 @@ function setupRoomListeners() {
     roomRef.child('votes').on('value', s => { onlineState.votes = s.val() || {}; updateVotesProgress(); checkAllVoted(); });
     roomRef.child('voteRequests').on('value', s => { onlineState.voteRequests = s.val() || {}; checkVoteMajority(); updateVoteRequestStatus(); });
     roomRef.child('readyPlayers').on('value', s => { onlineState.readyPlayers = s.val() ? Object.keys(s.val()) : []; updateReadyStatus(); checkAllReady(); });
+    roomRef.child('scoreHistory').on('value', s => { onlineState.scoreHistory = s.val() || []; });
     roomRef.child('kicked/' + playerId).on('value', s => { if (s.val()) { showToast('Você foi removido'); leaveRoom(); } });
     roomRef.child('players/' + playerId + '/online').onDisconnect().set(false);
     db.ref('.info/connected').on('value', s => { if (s.val()) roomRef.child('players/' + playerId + '/online').set(true); });
@@ -266,6 +267,7 @@ function startOnlineGame() {
     // Save active players for this round
     roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
+    roomRef.child('scoreHistory').remove(); // Clear score history for new game
     roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
     // Clear isNew flag for all players
     pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
@@ -524,6 +526,82 @@ function processVotes() {
             roomRef.child('players/' + entry[0] + '/score').transaction(function(c) { return (c || 0) + entry[1]; }); 
         });
         
+        // Build detailed score explanations for history
+        var scoreExplanations = [];
+        
+        // Explanations for innocents who voted correctly
+        active.forEach(function(vid) {
+            var votedFor = onlineState.votes[vid];
+            var voterIsImpostor = impostorIds.includes(vid);
+            var voterName = onlineState.players[vid] ? onlineState.players[vid].name : '?';
+            
+            if (!voterIsImpostor && votedFor === elim) {
+                if (isElimImpostor) {
+                    scoreExplanations.push({
+                        playerId: vid,
+                        playerName: voterName,
+                        points: 1,
+                        reason: 'votedCorrectly',
+                        detail: elimName
+                    });
+                } else {
+                    scoreExplanations.push({
+                        playerId: vid,
+                        playerName: voterName,
+                        points: -1,
+                        reason: 'votedWrongly',
+                        detail: elimName
+                    });
+                }
+            }
+        });
+        
+        // Explanation for impostor caught in first round
+        if (isElimImpostor && isFirst) {
+            scoreExplanations.push({
+                playerId: elim,
+                playerName: elimName,
+                points: -1,
+                reason: 'caughtFirstRound',
+                detail: ''
+            });
+        }
+        
+        // Explanation for impostors surviving
+        if (!isElimImpostor) {
+            impostorIds.forEach(function(iid) { 
+                if (!newElim.includes(iid)) {
+                    var impName = onlineState.players[iid] ? onlineState.players[iid].name : '?';
+                    scoreExplanations.push({
+                        playerId: iid,
+                        playerName: impName,
+                        points: 2,
+                        reason: 'survivedAsImpostor',
+                        detail: elimName,
+                        hidden: !impostorKnows
+                    });
+                }
+            });
+        }
+        
+        // Save to score history
+        var historyEntry = {
+            round: gs.round || onlineState.round,
+            votingRound: votingRound,
+            eliminated: elimName,
+            wasImpostor: isElimImpostor,
+            word: gs.word || onlineState.word,
+            category: gs.category || onlineState.category,
+            explanations: scoreExplanations,
+            timestamp: Date.now()
+        };
+        
+        roomRef.child('scoreHistory').transaction(function(history) {
+            if (!history) history = [];
+            history.push(historyEntry);
+            return history;
+        });
+        
         // Check game end conditions
         var remImp = impostorIds.filter(function(id) { return !newElim.includes(id); });
         var remPlayers = Object.keys(onlineState.players).filter(function(id) { return !newElim.includes(id); });
@@ -597,12 +675,90 @@ function showOnlineRoundEnd(gs) {
     var endMsg = '';
     if (gs.lastResult && gs.lastResult.gameEnd === 'innocentsWin') endMsg = '<div class="result-icon">🎉</div><h3 style="color:var(--success)">INOCENTES VENCERAM!</h3>';
     else if (gs.lastResult && gs.lastResult.gameEnd === 'impostorsWin') endMsg = '<div class="result-icon">🎭</div><h3 style="color:var(--accent)">' + t('impostorWins') + '</h3>';
-    c.innerHTML = endMsg + '<p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">' + t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas') + '</p><p style="font-size:1.2rem;color:var(--accent);font-family:\'Bebas Neue\',sans-serif">' + impNames + '</p><p style="margin:14px 0;font-size:.9rem">' + t('word') + ' <strong style="color:var(--success)">' + onlineState.word + '</strong></p><p style="font-size:.75rem;color:var(--text-dim)">Categoria: ' + onlineState.category + '</p>';
+    c.innerHTML = endMsg + '<p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">' + t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas') + '</p><p style="font-size:1.2rem;color:var(--accent);font-family:\'Bebas Neue\',sans-serif">' + impNames + '</p><p style="margin:14px 0;font-size:.9rem">' + t('word') + ' <strong style="color:var(--success)">' + onlineState.word + '</strong></p><p style="font-size:.75rem;color:var(--text-dim)">Categoria: ' + onlineState.category + '</p><button class="btn btn-secondary" onclick="showScoreHistoryModal()" style="margin-top:16px;padding:10px 16px;font-size:.8rem">📊 ' + (t('scoreExplanation') || 'Ver Detalhes da Pontuação') + '</button>';
     updateOnlineRanking();
     document.getElementById('ready-next-btn').disabled = false;
     document.getElementById('ready-next-btn').textContent = t('ready');
     updateRoomHeaders();
     showScreen('screen-online-round-end');
+}
+
+function showScoreHistoryModal() {
+    var history = onlineState.scoreHistory || [];
+    
+    if (history.length === 0) {
+        document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>📊 ' + (t('scoreExplanation') || 'Detalhes da Pontuação') + '</h3><p style="color:var(--text-dim);margin:16px 0">Nenhuma pontuação registrada ainda.</p><button class="btn btn-secondary" onclick="closeOverlay()">' + t('close') + '</button></div></div>';
+        return;
+    }
+    
+    var historyHTML = '';
+    
+    // Group by round
+    var roundsMap = {};
+    history.forEach(function(entry) {
+        var roundKey = 'R' + entry.round;
+        if (!roundsMap[roundKey]) {
+            roundsMap[roundKey] = {
+                round: entry.round,
+                word: entry.word,
+                category: entry.category,
+                events: []
+            };
+        }
+        roundsMap[roundKey].events.push(entry);
+    });
+    
+    Object.values(roundsMap).forEach(function(roundData) {
+        historyHTML += '<div class="score-history-round">';
+        historyHTML += '<div class="score-history-header">';
+        historyHTML += '<strong>Rodada ' + roundData.round + '</strong>';
+        historyHTML += '<span style="font-size:.75rem;color:var(--text-dim);margin-left:8px">' + roundData.word + '</span>';
+        historyHTML += '</div>';
+        
+        roundData.events.forEach(function(event) {
+            historyHTML += '<div class="score-history-event">';
+            historyHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:6px">';
+            historyHTML += event.wasImpostor ? '✅ Impostor eliminado: ' : '❌ Inocente eliminado: ';
+            historyHTML += '<strong>' + event.eliminated + '</strong>';
+            historyHTML += '</div>';
+            
+            if (event.explanations && event.explanations.length > 0) {
+                event.explanations.forEach(function(exp) {
+                    if (exp.hidden) return; // Don't show hidden entries
+                    
+                    var color = exp.points > 0 ? 'var(--success)' : '#ff4444';
+                    var pointsStr = (exp.points > 0 ? '+' : '') + exp.points;
+                    var reasonText = getScoreReasonText(exp.reason, exp.detail);
+                    
+                    historyHTML += '<div class="score-history-item">';
+                    historyHTML += '<span>' + exp.playerName + '</span>';
+                    historyHTML += '<span style="color:' + color + ';font-weight:600">' + pointsStr + '</span>';
+                    historyHTML += '</div>';
+                    historyHTML += '<div style="font-size:.65rem;color:var(--text-dim);margin:-4px 0 6px 0">' + reasonText + '</div>';
+                });
+            }
+            historyHTML += '</div>';
+        });
+        
+        historyHTML += '</div>';
+    });
+    
+    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box score-history-modal" onclick="event.stopPropagation()"><h3>📊 ' + (t('scoreExplanation') || 'Detalhes da Pontuação') + '</h3><div class="score-history-content">' + historyHTML + '</div><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button></div></div>';
+}
+
+function getScoreReasonText(reason, detail) {
+    switch(reason) {
+        case 'votedCorrectly':
+            return 'Votou corretamente em ' + detail;
+        case 'votedWrongly':
+            return 'Votou incorretamente em ' + detail;
+        case 'caughtFirstRound':
+            return 'Pego na primeira votação';
+        case 'survivedAsImpostor':
+            return 'Sobreviveu como impostor';
+        default:
+            return reason;
+    }
 }
 
 function updateOnlineRanking() {
