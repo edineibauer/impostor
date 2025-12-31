@@ -78,9 +78,151 @@ function updateRoomActivity() {
 }
 
 // UTILITIES
+// NAVIGATION HISTORY for back button
+let screenHistory = [];
+let lastBackPress = 0;
+
 function showScreen(screenId) {
+    const currentScreen = document.querySelector('.screen.active');
+    const currentScreenId = currentScreen ? currentScreen.id : null;
+    
+    // Add to history (avoid duplicates)
+    if (currentScreenId && currentScreenId !== screenId) {
+        // Don't add certain screens to history (game flow screens)
+        const noHistoryScreens = ['screen-turn', 'screen-word', 'screen-online-result'];
+        if (!noHistoryScreens.includes(currentScreenId)) {
+            screenHistory.push(currentScreenId);
+            // Limit history size
+            if (screenHistory.length > 20) screenHistory.shift();
+        }
+    }
+    
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
+}
+
+function goBack() {
+    // Check if overlay is open - close it first
+    const overlay = document.getElementById('overlay-container');
+    if (overlay && overlay.innerHTML.trim() !== '') {
+        closeOverlay();
+        return true;
+    }
+    
+    // Get current screen
+    const currentScreen = document.querySelector('.screen.active');
+    const currentScreenId = currentScreen ? currentScreen.id : null;
+    
+    // Define back navigation map
+    const backMap = {
+        'screen-home': 'screen-mode',
+        'screen-online-menu': 'screen-mode',
+        'screen-join': 'screen-online-menu',
+        'screen-create': 'screen-online-menu',
+        'screen-lobby': null, // Special handling - leave room
+        'screen-turn': 'screen-home',
+        'screen-word': null, // Don't allow back during word view
+        'screen-game': null, // Don't allow back during game
+        'screen-ranking': 'screen-game',
+        'screen-game-over': 'screen-mode',
+        'screen-online-word': null, // Don't allow back during online game
+        'screen-online-vote': null,
+        'screen-online-result': null,
+        'screen-online-round-end': null,
+        'screen-online-game-over': null,
+        'screen-settings': 'screen-mode',
+        'screen-lang': null, // Don't allow back from language selection
+        'screen-mode': null // Exit app
+    };
+    
+    // Special handling for lobby - leave room
+    if (currentScreenId === 'screen-lobby') {
+        if (typeof leaveRoom === 'function') {
+            leaveRoom();
+        }
+        return true;
+    }
+    
+    // Check if we're at a root screen (should exit app)
+    if (currentScreenId === 'screen-mode' || currentScreenId === 'screen-lang') {
+        return false; // Signal to show exit confirmation
+    }
+    
+    // Navigate back
+    const targetScreen = backMap[currentScreenId];
+    if (targetScreen) {
+        showScreen(targetScreen);
+        return true;
+    }
+    
+    // Try history
+    if (screenHistory.length > 0) {
+        const prevScreen = screenHistory.pop();
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(prevScreen).classList.add('active');
+        return true;
+    }
+    
+    return false;
+}
+
+function showExitConfirmation() {
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay" onclick="closeOverlay(event)">
+            <div class="confirm-box" onclick="event.stopPropagation()">
+                <h3>👋 ${t('exitApp') || 'Sair do App?'}</h3>
+                <p style="color:var(--text-dim);font-size:.85rem;margin:16px 0">${t('exitConfirm') || 'Deseja realmente sair do jogo?'}</p>
+                <button class="btn btn-danger" onclick="exitApp()" style="margin-bottom:8px">${t('yesExit') || 'SIM, SAIR'}</button>
+                <button class="btn btn-secondary" onclick="closeOverlay()">${t('cancel')}</button>
+            </div>
+        </div>
+    `;
+}
+
+function exitApp() {
+    // Close the app/window
+    if (navigator.app && navigator.app.exitApp) {
+        navigator.app.exitApp(); // Cordova
+    } else if (window.close) {
+        window.close();
+    }
+    // If can't close, just go to mode screen
+    closeOverlay();
+}
+
+// Handle hardware back button (Android)
+document.addEventListener('backbutton', function(e) {
+    e.preventDefault();
+    handleBackButton();
+}, false);
+
+// Handle browser back button
+window.addEventListener('popstate', function(e) {
+    e.preventDefault();
+    handleBackButton();
+    // Push state again to prevent actual navigation
+    history.pushState(null, '', window.location.href);
+});
+
+// Initialize history state
+if (history.state === null) {
+    history.pushState(null, '', window.location.href);
+}
+
+function handleBackButton() {
+    const now = Date.now();
+    
+    if (!goBack()) {
+        // At root screen - check for double press or show confirmation
+        if (now - lastBackPress < 2000) {
+            // Double press within 2 seconds - show confirmation
+            showExitConfirmation();
+        } else {
+            // First press - show toast
+            showToast(t('pressAgainToExit') || 'Pressione novamente para sair');
+            lastBackPress = now;
+        }
+    }
 }
 
 function showToast(message) {
@@ -168,6 +310,23 @@ function showProfileModal() {
     document.getElementById('profile-name-input').focus();
 }
 
+// Profile modal with welcome message (for auto-generated names)
+function showProfileModalWithMessage() {
+    const currentName = localStorage.getItem('impostor_player_name') || '';
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box" onclick="event.stopPropagation()">
+                <h3>👋 ${t('welcome') || 'Bem-vindo!'}</h3>
+                <p style="color:var(--text-dim);font-size:.85rem;margin:8px 0 16px">${t('enterYourName') || 'Digite seu nome para os outros jogadores te identificarem:'}</p>
+                <input type="text" id="profile-name-input" value="${currentName}" placeholder="${t('player')}" maxlength="15" style="margin:0 0 16px">
+                <button class="btn btn-primary" onclick="saveProfileName()">${t('confirm') || 'CONFIRMAR'}</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('profile-name-input').focus();
+    document.getElementById('profile-name-input').select();
+}
+
 function saveProfileName() {
     const name = document.getElementById('profile-name-input').value.trim();
     if (name) {
@@ -234,9 +393,12 @@ function init() {
         
         // Ensure player has a name
         let playerName = localStorage.getItem('impostor_player_name');
+        let nameWasGenerated = false;
         if (!playerName) {
             playerName = generateRandomName();
             localStorage.setItem('impostor_player_name', playerName);
+            nameWasGenerated = true;
+            localStorage.setItem('impostor_name_auto_generated', 'true');
         }
         
         // Generate player ID if needed
@@ -440,6 +602,14 @@ function autoJoinRoom(code) {
                 handleGameStateChange(data.gameState);
             } else {
                 showLobby();
+                
+                // If name was auto-generated, show profile modal to let user set their name
+                if (localStorage.getItem('impostor_name_auto_generated') === 'true') {
+                    localStorage.removeItem('impostor_name_auto_generated');
+                    setTimeout(() => {
+                        showProfileModalWithMessage();
+                    }, 500);
+                }
             }
             
             showToast('Bem-vindo, ' + playerName + '!');

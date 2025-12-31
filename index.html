@@ -160,6 +160,10 @@
         .countdown{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--accent);text-align:center;margin:20px 0}
         .kick-btn{width:24px;height:24px;border-radius:50%;border:1px solid #ff4444;background:transparent;color:#ff4444;font-size:.8rem;cursor:pointer;margin-left:8px;opacity:.6;transition:all .2s}
         .kick-btn:hover{opacity:1;background:rgba(255,68,68,0.2)}
+        .edit-name-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--primary);background:transparent;font-size:.7rem;cursor:pointer;margin-left:6px;opacity:.7;transition:all .2s;padding:0;line-height:24px}
+        .edit-name-btn:hover{opacity:1;background:rgba(147,112,219,0.2)}
+        .fixed-bottom-btn{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,var(--bg) 20%);z-index:100}
+        .fixed-bottom-btn .btn{width:100%;max-width:400px;margin:0 auto;display:block}
         .room-header{position:fixed;top:0;left:0;right:0;height:50px;background:var(--bg-dark);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:100}
         .room-header-left{display:flex;align-items:center;gap:10px}
         .room-header-code{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--accent);cursor:pointer;padding:6px 12px;background:rgba(255,51,102,0.1);border-radius:8px;border:1px solid var(--accent);display:flex;align-items:center;gap:6px}
@@ -445,8 +449,11 @@
                 <h2 class="card-title">🏆 RANKING</h2>
                 <ul id="online-ranking-list" class="ranking-list"></ul>
             </div>
-            <button class="btn btn-primary" onclick="readyNextRound()" id="ready-next-btn" data-i18n="ready">✓ PRONTO</button>
-            <div id="ready-status" style="text-align:center;margin-top:16px"></div>
+            <div id="ready-status" style="text-align:center;margin:16px 0;font-size:.85rem;color:var(--text-dim)"></div>
+            <div style="height:80px"></div><!-- Spacer for fixed button -->
+            <div class="fixed-bottom-btn">
+                <button class="btn btn-primary" onclick="readyNextRound()" id="ready-next-btn" data-i18n="ready">✓ PRONTO</button>
+            </div>
         </div>
 
         <!-- ONLINE MODE: GAME OVER -->

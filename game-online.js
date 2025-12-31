@@ -227,7 +227,9 @@ function updateLobbyPlayers() {
         badges += isYou ? '<span class="player-badge" style="background:var(--success)">' + t('you') + '</span>' : '';
         var safeName = playerName.replace(/'/g, "\\'");
         var kick = isHost && !isYou ? '<button class="kick-btn" onclick="confirmKickPlayer(\'' + id + '\',\'' + safeName + '\')">✕</button>' : '';
-        return '<div class="player-item ' + (isH ? 'host' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar">' + playerName.charAt(0).toUpperCase() + '</div><span class="player-name">' + playerName + '</span>' + badges + '<div class="status-indicator ' + (p.online ? '' : 'offline') + '"></div>' + kick + '</div>';
+        // Add edit button for own name
+        var editBtn = isYou ? '<button class="edit-name-btn" onclick="showProfileModal()" title="Editar nome">✏️</button>' : '';
+        return '<div class="player-item ' + (isH ? 'host' : '') + ' ' + (isYou ? 'you' : '') + '"><div class="player-avatar">' + playerName.charAt(0).toUpperCase() + '</div><span class="player-name">' + playerName + '</span>' + editBtn + badges + '<div class="status-indicator ' + (p.online ? '' : 'offline') + '"></div>' + kick + '</div>';
     }).join('');
     var btn = document.getElementById('start-online-btn');
     if (btn) { btn.disabled = count < 3; btn.textContent = count < 3 ? t('minPlayers') : t('startGame'); }
@@ -604,27 +606,45 @@ function showOnlineRoundEnd(gs) {
 }
 
 function updateOnlineRanking() {
+    var readyList = onlineState.readyPlayers || [];
     var sorted = Object.entries(onlineState.players)
         .filter(function(entry) { return entry[1] && entry[1].name; })
-        .map(function(entry) { return { name: entry[1].name || 'Jogador', score: entry[1].score || 0 }; })
+        .map(function(entry) { 
+            return { 
+                id: entry[0],
+                name: entry[1].name || 'Jogador', 
+                score: entry[1].score || 0,
+                isReady: readyList.includes(entry[0])
+            }; 
+        })
         .sort(function(a, b) { return b.score - a.score; });
     document.getElementById('online-ranking-list').innerHTML = sorted.map(function(p, i) {
         var cls = 'ranking-item';
         if (i === 0 && p.score > 0) cls += ' gold'; else if (i === 1 && p.score > 0) cls += ' silver'; else if (i === 2 && p.score > 0) cls += ' bronze';
-        return '<li class="' + cls + '"><div class="ranking-position">' + (i + 1) + '</div><span class="ranking-name">' + p.name + '</span><span class="ranking-score ' + (p.score < 0 ? 'negative' : '') + '">' + p.score + '</span></li>';
+        var readyIcon = p.isReady ? '<span style="color:var(--success);margin-left:8px">✓</span>' : '<span style="color:var(--text-dim);margin-left:8px;opacity:.5">⏳</span>';
+        return '<li class="' + cls + '"><div class="ranking-position">' + (i + 1) + '</div><span class="ranking-name">' + p.name + readyIcon + '</span><span class="ranking-score ' + (p.score < 0 ? 'negative' : '') + '">' + p.score + '</span></li>';
     }).join('');
 }
 
 function readyNextRound() {
     roomRef.child('readyPlayers/' + playerId).set(true);
     document.getElementById('ready-next-btn').disabled = true;
-    document.getElementById('ready-next-btn').textContent = t('waitingPlayers') + '...';
+    document.getElementById('ready-next-btn').textContent = '✓ ' + (t('waitingPlayers') || 'Aguardando') + '...';
 }
 
 function updateReadyStatus() {
     var total = Object.keys(onlineState.players).length, ready = onlineState.readyPlayers.length;
     var el = document.getElementById('ready-status');
-    if (el) el.textContent = ready + '/' + total + ' ' + t('ready').toLowerCase();
+    if (el) {
+        var remaining = total - ready;
+        if (remaining > 0) {
+            el.innerHTML = '<span style="color:var(--success)">' + ready + '</span>/' + total + ' prontos • <span style="color:var(--warning)">Faltam ' + remaining + '</span>';
+        } else {
+            el.innerHTML = '<span style="color:var(--success)">Todos prontos! Iniciando...</span>';
+        }
+    }
+    // Update ranking to show who is ready
+    updateOnlineRanking();
 }
 
 function checkAllReady() {
