@@ -386,6 +386,16 @@ function init() {
     // Check for active room (page reload)
     const activeRoom = localStorage.getItem('impostor_active_room');
     
+    // Check for local game in progress
+    const localGameState = localStorage.getItem('impostor_local_state');
+    let hasLocalGame = false;
+    if (localGameState) {
+        try {
+            const parsed = JSON.parse(localGameState);
+            hasLocalGame = parsed.gameInProgress === true;
+        } catch(e) {}
+    }
+    
     if (hasPendingRoom || localStorage.getItem('pending_room')) {
         // Auto-join room from QR code - skip language selection
         const pendingRoom = localStorage.getItem('pending_room');
@@ -446,6 +456,11 @@ function init() {
             localStorage.removeItem('impostor_active_room');
             showScreen('screen-mode');
         }
+    } else if (hasLocalGame) {
+        // Restore local game in progress
+        applyTranslations();
+        gameMode = 'local';
+        initLocalGame(); // This will restore the game state
     } else if (!hasLang) {
         showScreen('screen-lang');
     } else {
