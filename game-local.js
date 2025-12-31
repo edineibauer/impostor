@@ -20,7 +20,8 @@ let localState = {
     maxPoints: null,
     allCategories: true,
     selectedCategories: [],
-    votingRound: 0
+    votingRound: 0,
+    starterPlayerIndex: 0 // Who starts talking each round
 };
 
 // STORAGE
@@ -40,7 +41,16 @@ function loadLocalState() {
                 if (localState.impostorKnows === undefined) localState.impostorKnows = true;
                 if (!localState.similarWords) localState.similarWords = {};
                 if (!localState.votingRound) localState.votingRound = 0;
+                if (localState.starterPlayerIndex === undefined) localState.starterPlayerIndex = 0;
                 return true; 
+            } else {
+                // Load settings even if game not in progress
+                localState.playerCount = loaded.playerCount || 4;
+                localState.maxImpostors = loaded.maxImpostors || 1;
+                localState.impostorKnows = loaded.impostorKnows !== undefined ? loaded.impostorKnows : true;
+                localState.maxPoints = loaded.maxPoints || null;
+                localState.allCategories = loaded.allCategories !== undefined ? loaded.allCategories : true;
+                localState.selectedCategories = loaded.selectedCategories || [];
             }
         }
     } catch (e) {}
@@ -293,6 +303,7 @@ function startLocalGame() {
     localState.gameInProgress = true;
     localState.eliminatedPlayers = [];
     localState.revealedImpostors = [];
+    localState.starterPlayerIndex = 0; // First player starts in round 1
     
     // Get max points
     const maxPointsInput = document.getElementById('max-points-input');
@@ -311,7 +322,14 @@ function startRound() {
     if (availableCategories.length === 0) availableCategories = categories;
     
     const categoryData = availableCategories[Math.floor(Math.random() * availableCategories.length)];
-    localState.word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+    
+    // Use getRandomWordPT if available (avoids repetition), otherwise fallback
+    if (typeof getRandomWordPT === 'function' && currentLang === 'pt') {
+        localState.word = getRandomWordPT(categoryData);
+    } else {
+        localState.word = categoryData.words[Math.floor(Math.random() * categoryData.words.length)];
+    }
+    
     localState.category = categoryData.category;
     localState.actualImpostorCount = Math.floor(Math.random() * localState.maxImpostors) + 1;
     localState.impostorIndices = [];
@@ -374,18 +392,26 @@ function showWord() {
             wordText.textContent = t('impostor');
             wordText.className = 'word-text is-impostor';
             categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
         } else {
             const similarWord = localState.similarWords[localState.currentPlayerIndex] || localState.word;
             wordText.textContent = similarWord;
             wordText.className = 'word-text is-word';
-            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'none'; // Hide category when impostor doesn't know
         }
     } else {
         wordText.textContent = localState.word;
         wordText.className = 'word-text is-word';
-        categoryTag.textContent = localState.category;
+        // Hide category for all when impostor doesn't know
+        if (localState.impostorKnows) {
+            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
+        } else {
+            categoryTag.style.display = 'none';
+        }
     }
     
+    saveLocalState(); // Save when showing word
     showScreen('screen-word');
 }
 
@@ -405,6 +431,15 @@ function showGameScreen() {
     document.getElementById('total-players').textContent = localState.players.length;
     const impostorDisplay = localState.maxImpostors > 1 ? '1-' + localState.maxImpostors : '1';
     document.getElementById('impostor-count-display').textContent = impostorDisplay;
+    
+    // Show who starts talking this round
+    const starterName = localState.players[localState.starterPlayerIndex];
+    const starterInfo = document.getElementById('starter-player-info');
+    if (starterInfo) {
+        starterInfo.innerHTML = '<span style="color:var(--primary)">🎤 ' + starterName + '</span> ' + t('startsTalking');
+        starterInfo.style.display = 'block';
+    }
+    
     updateGamePlayersList();
     showScreen('screen-game');
 }
@@ -664,6 +699,8 @@ function showLocalGameOver(winnerName) {
 
 function newRound() {
     localState.round++;
+    // Advance starter player (circular)
+    localState.starterPlayerIndex = (localState.starterPlayerIndex + 1) % localState.players.length;
     startRound();
     showToast(t('newRound') + ' ' + localState.round);
 }

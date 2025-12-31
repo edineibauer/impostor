@@ -286,7 +286,12 @@
         <div id="screen-game" class="screen">
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1><span data-i18n="round">RODADA</span> <span id="game-round-num">1</span></h1></div>
             <div class="game-info"><div class="info-box"><div class="info-label" data-i18n="playersLabel">Jogadores</div><div class="info-value" id="total-players">4</div></div><div class="info-box"><div class="info-label" data-i18n="impostorsLabel">Impostores</div><div class="info-value" style="color:var(--accent)" id="impostor-count-display">1-2</div></div></div>
-            <div class="card"><h2 class="card-title" data-i18n="timeToPlay">🎭 Hora de Jogar!</h2><p style="font-size:.75rem;color:var(--text-dim);line-height:1.5" data-i18n="playInstructions">Cada um fala uma palavra relacionada. Quando suspeitarem de alguém, votem!</p><div class="players-summary" id="game-players" style="margin-top:14px"></div></div>
+            <div class="card">
+                <h2 class="card-title" data-i18n="timeToPlay">🎭 Hora de Jogar!</h2>
+                <div id="starter-player-info" style="background:var(--bg-card);padding:12px;border-radius:10px;text-align:center;margin:12px 0;font-weight:600;border:2px solid var(--primary)"></div>
+                <p style="font-size:.75rem;color:var(--text-dim);line-height:1.5" data-i18n="playInstructions">Cada um fala uma palavra relacionada. Quando suspeitarem de alguém, votem!</p>
+                <div class="players-summary" id="game-players" style="margin-top:14px"></div>
+            </div>
             <button class="btn btn-warning" onclick="showVoteScreen()" data-i18n="chooseImpostor">🗳️ ESCOLHER IMPOSTOR</button>
             <button class="btn btn-secondary" onclick="showRanking()" data-i18n="seeRanking">🏆 VER RANKING</button>
             <div class="danger-zone"><button class="btn btn-danger" onclick="confirmNewGame()" data-i18n="restartGame">REINICIAR JOGO</button></div>
