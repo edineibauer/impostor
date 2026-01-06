@@ -672,10 +672,115 @@ function continueOnlineVoting() {
 function showOnlineRoundEnd(gs) {
     var c = document.getElementById('online-round-summary');
     var impNames = onlineState.impostorIds.map(function(id) { return onlineState.players[id] ? onlineState.players[id].name : '?'; }).join(', ');
+    
+    // Header message
     var endMsg = '';
     if (gs.lastResult && gs.lastResult.gameEnd === 'innocentsWin') endMsg = '<div class="result-icon">🎉</div><h3 style="color:var(--success)">INOCENTES VENCERAM!</h3>';
     else if (gs.lastResult && gs.lastResult.gameEnd === 'impostorsWin') endMsg = '<div class="result-icon">🎭</div><h3 style="color:var(--accent)">' + t('impostorWins') + '</h3>';
-    c.innerHTML = endMsg + '<p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">' + t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas') + '</p><p style="font-size:1.2rem;color:var(--accent);font-family:\'Bebas Neue\',sans-serif">' + impNames + '</p><p style="margin:14px 0;font-size:.9rem">' + t('word') + ' <strong style="color:var(--success)">' + onlineState.word + '</strong></p><p style="font-size:.75rem;color:var(--text-dim)">Categoria: ' + onlineState.category + '</p><button class="btn btn-secondary" onclick="showScoreHistoryModal()" style="margin-top:16px;padding:10px 16px;font-size:.8rem">📊 ' + (t('scoreExplanation') || 'Ver Detalhes da Pontuação') + '</button>';
+    
+    // Get current round history entries
+    var history = onlineState.scoreHistory || [];
+    var currentRound = gs.round || onlineState.round;
+    var currentRoundEntries = history.filter(function(e) { return e.round === currentRound; });
+    
+    // Calculate points for ALL players this round
+    var roundPoints = {};
+    Object.keys(onlineState.players).forEach(function(pid) {
+        roundPoints[pid] = 0;
+    });
+    
+    currentRoundEntries.forEach(function(entry) {
+        if (entry.explanations) {
+            entry.explanations.forEach(function(exp) {
+                if (!exp.hidden) {
+                    roundPoints[exp.playerId] = (roundPoints[exp.playerId] || 0) + exp.points;
+                }
+            });
+        }
+    });
+    
+    // Build elimination order for current round
+    var eliminationOrder = currentRoundEntries.map(function(entry, idx) {
+        return {
+            order: idx + 1,
+            name: entry.eliminated,
+            wasImpostor: entry.wasImpostor
+        };
+    });
+    
+    // Build round points HTML - all players
+    var playersPointsHTML = '<div class="round-points-list">';
+    Object.entries(onlineState.players)
+        .filter(function(entry) { return entry[1] && entry[1].name; })
+        .sort(function(a, b) { return (roundPoints[b[0]] || 0) - (roundPoints[a[0]] || 0); })
+        .forEach(function(entry) {
+            var pid = entry[0];
+            var pname = entry[1].name;
+            var pts = roundPoints[pid] || 0;
+            var isImpostor = onlineState.impostorIds.includes(pid);
+            var ptsColor = pts > 0 ? 'var(--success)' : (pts < 0 ? '#ff4444' : 'var(--text-dim)');
+            var ptsStr = pts > 0 ? '+' + pts : '' + pts;
+            var badge = isImpostor ? ' <span style="color:var(--accent);font-size:.7rem">🎭</span>' : '';
+            
+            playersPointsHTML += '<div class="round-player-points">';
+            playersPointsHTML += '<span>' + pname + badge + '</span>';
+            playersPointsHTML += '<span style="color:' + ptsColor + ';font-weight:600">' + ptsStr + '</span>';
+            playersPointsHTML += '</div>';
+        });
+    playersPointsHTML += '</div>';
+    
+    // Build elimination order HTML
+    var elimHTML = '';
+    if (eliminationOrder.length > 0) {
+        elimHTML = '<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">';
+        elimHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:8px">Ordem de eliminação:</div>';
+        eliminationOrder.forEach(function(e) {
+            var icon = e.wasImpostor ? '✅' : '❌';
+            var typeText = e.wasImpostor ? 'Impostor' : 'Inocente';
+            elimHTML += '<div style="font-size:.8rem;margin:4px 0">';
+            elimHTML += '<span style="color:var(--text-dim)">' + e.order + 'º</span> ';
+            elimHTML += icon + ' <strong>' + e.name + '</strong> ';
+            elimHTML += '<span style="color:var(--text-dim);font-size:.7rem">(' + typeText + ')</span>';
+            elimHTML += '</div>';
+        });
+        elimHTML += '</div>';
+    }
+    
+    // Build previous rounds buttons
+    var prevRoundsHTML = '';
+    var allRounds = [];
+    history.forEach(function(e) {
+        if (!allRounds.includes(e.round) && e.round < currentRound) {
+            allRounds.push(e.round);
+        }
+    });
+    allRounds.sort(function(a, b) { return b - a; }); // Most recent first
+    
+    if (allRounds.length > 0) {
+        prevRoundsHTML = '<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">';
+        prevRoundsHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:8px">Rodadas anteriores:</div>';
+        prevRoundsHTML += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+        allRounds.forEach(function(r) {
+            prevRoundsHTML += '<button class="btn btn-secondary" onclick="showRoundHistoryModal(' + r + ')" style="padding:8px 12px;font-size:.75rem;flex:0 0 auto">';
+            prevRoundsHTML += '📜 Rodada ' + r;
+            prevRoundsHTML += '</button>';
+        });
+        prevRoundsHTML += '</div>';
+        prevRoundsHTML += '</div>';
+    }
+    
+    c.innerHTML = endMsg + 
+        '<p style="margin:14px 0;color:var(--text-dim);font-size:.85rem">' + t(onlineState.impostorIds.length > 1 ? 'impostorsWere' : 'impostorWas') + '</p>' +
+        '<p style="font-size:1.2rem;color:var(--accent);font-family:\'Bebas Neue\',sans-serif">' + impNames + '</p>' +
+        '<p style="margin:14px 0;font-size:.9rem">' + t('word') + ' <strong style="color:var(--success)">' + onlineState.word + '</strong></p>' +
+        '<p style="font-size:.75rem;color:var(--text-dim)">Categoria: ' + onlineState.category + '</p>' +
+        '<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">' +
+        '<div style="font-size:.85rem;color:var(--text-dim);margin-bottom:10px">Pontos nesta rodada:</div>' +
+        playersPointsHTML +
+        '</div>' +
+        elimHTML +
+        prevRoundsHTML;
+    
     updateOnlineRanking();
     document.getElementById('ready-next-btn').disabled = false;
     document.getElementById('ready-next-btn').textContent = t('ready');
@@ -683,67 +788,103 @@ function showOnlineRoundEnd(gs) {
     showScreen('screen-online-round-end');
 }
 
-function showScoreHistoryModal() {
+function showRoundHistoryModal(roundNum) {
     var history = onlineState.scoreHistory || [];
+    var roundEntries = history.filter(function(e) { return e.round === roundNum; });
     
-    if (history.length === 0) {
-        document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box" onclick="event.stopPropagation()"><h3>📊 ' + (t('scoreExplanation') || 'Detalhes da Pontuação') + '</h3><p style="color:var(--text-dim);margin:16px 0">Nenhuma pontuação registrada ainda.</p><button class="btn btn-secondary" onclick="closeOverlay()">' + t('close') + '</button></div></div>';
+    if (roundEntries.length === 0) {
+        showToast('Nenhum dado encontrado para esta rodada');
         return;
     }
     
-    var historyHTML = '';
+    // Get round info from first entry
+    var word = roundEntries[0].word;
+    var category = roundEntries[0].category;
     
-    // Group by round
-    var roundsMap = {};
-    history.forEach(function(entry) {
-        var roundKey = 'R' + entry.round;
-        if (!roundsMap[roundKey]) {
-            roundsMap[roundKey] = {
-                round: entry.round,
-                word: entry.word,
-                category: entry.category,
-                events: []
-            };
+    // Calculate points for all players this round
+    var roundPoints = {};
+    var allPlayerIds = Object.keys(onlineState.players);
+    allPlayerIds.forEach(function(pid) { roundPoints[pid] = 0; });
+    
+    roundEntries.forEach(function(entry) {
+        if (entry.explanations) {
+            entry.explanations.forEach(function(exp) {
+                if (!exp.hidden) {
+                    roundPoints[exp.playerId] = (roundPoints[exp.playerId] || 0) + exp.points;
+                }
+            });
         }
-        roundsMap[roundKey].events.push(entry);
     });
     
-    Object.values(roundsMap).forEach(function(roundData) {
-        historyHTML += '<div class="score-history-round">';
-        historyHTML += '<div class="score-history-header">';
-        historyHTML += '<strong>Rodada ' + roundData.round + '</strong>';
-        historyHTML += '<span style="font-size:.75rem;color:var(--text-dim);margin-left:8px">' + roundData.word + '</span>';
-        historyHTML += '</div>';
-        
-        roundData.events.forEach(function(event) {
-            historyHTML += '<div class="score-history-event">';
-            historyHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:6px">';
-            historyHTML += event.wasImpostor ? '✅ Impostor eliminado: ' : '❌ Inocente eliminado: ';
-            historyHTML += '<strong>' + event.eliminated + '</strong>';
-            historyHTML += '</div>';
+    // Find who were the impostors (from first entry's explanations or by checking survivedAsImpostor)
+    var impostorNames = [];
+    roundEntries.forEach(function(entry) {
+        if (entry.wasImpostor) {
+            impostorNames.push(entry.eliminated);
+        }
+        if (entry.explanations) {
+            entry.explanations.forEach(function(exp) {
+                if (exp.reason === 'survivedAsImpostor' && !impostorNames.includes(exp.playerName)) {
+                    impostorNames.push(exp.playerName);
+                }
+                if (exp.reason === 'caughtFirstRound' && !impostorNames.includes(exp.playerName)) {
+                    impostorNames.push(exp.playerName);
+                }
+            });
+        }
+    });
+    
+    // Build points HTML
+    var pointsHTML = '<div class="round-points-list">';
+    Object.entries(onlineState.players)
+        .filter(function(entry) { return entry[1] && entry[1].name; })
+        .sort(function(a, b) { return (roundPoints[b[0]] || 0) - (roundPoints[a[0]] || 0); })
+        .forEach(function(entry) {
+            var pid = entry[0];
+            var pname = entry[1].name;
+            var pts = roundPoints[pid] || 0;
+            var isImpostor = impostorNames.includes(pname);
+            var ptsColor = pts > 0 ? 'var(--success)' : (pts < 0 ? '#ff4444' : 'var(--text-dim)');
+            var ptsStr = pts > 0 ? '+' + pts : '' + pts;
+            var badge = isImpostor ? ' <span style="color:var(--accent);font-size:.7rem">🎭</span>' : '';
             
-            if (event.explanations && event.explanations.length > 0) {
-                event.explanations.forEach(function(exp) {
-                    if (exp.hidden) return; // Don't show hidden entries
-                    
-                    var color = exp.points > 0 ? 'var(--success)' : '#ff4444';
-                    var pointsStr = (exp.points > 0 ? '+' : '') + exp.points;
-                    var reasonText = getScoreReasonText(exp.reason, exp.detail);
-                    
-                    historyHTML += '<div class="score-history-item">';
-                    historyHTML += '<span>' + exp.playerName + '</span>';
-                    historyHTML += '<span style="color:' + color + ';font-weight:600">' + pointsStr + '</span>';
-                    historyHTML += '</div>';
-                    historyHTML += '<div style="font-size:.65rem;color:var(--text-dim);margin:-4px 0 6px 0">' + reasonText + '</div>';
-                });
-            }
-            historyHTML += '</div>';
+            pointsHTML += '<div class="round-player-points">';
+            pointsHTML += '<span>' + pname + badge + '</span>';
+            pointsHTML += '<span style="color:' + ptsColor + ';font-weight:600">' + ptsStr + '</span>';
+            pointsHTML += '</div>';
         });
-        
-        historyHTML += '</div>';
-    });
+    pointsHTML += '</div>';
     
-    document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)"><div class="confirm-box score-history-modal" onclick="event.stopPropagation()"><h3>📊 ' + (t('scoreExplanation') || 'Detalhes da Pontuação') + '</h3><div class="score-history-content">' + historyHTML + '</div><button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button></div></div>';
+    // Build elimination order
+    var elimHTML = '<div style="margin-top:12px">';
+    elimHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:6px">Ordem de eliminação:</div>';
+    roundEntries.forEach(function(entry, idx) {
+        var icon = entry.wasImpostor ? '✅' : '❌';
+        var typeText = entry.wasImpostor ? 'Impostor' : 'Inocente';
+        elimHTML += '<div style="font-size:.8rem;margin:4px 0">';
+        elimHTML += '<span style="color:var(--text-dim)">' + (idx + 1) + 'º</span> ';
+        elimHTML += icon + ' <strong>' + entry.eliminated + '</strong> ';
+        elimHTML += '<span style="color:var(--text-dim);font-size:.7rem">(' + typeText + ')</span>';
+        elimHTML += '</div>';
+    });
+    elimHTML += '</div>';
+    
+    var modalHTML = '<div class="confirm-overlay" onclick="closeOverlay(event)">';
+    modalHTML += '<div class="confirm-box" onclick="event.stopPropagation()" style="max-width:350px">';
+    modalHTML += '<h3 style="margin-bottom:12px">📜 Rodada ' + roundNum + '</h3>';
+    modalHTML += '<p style="font-size:.85rem;margin-bottom:4px">Palavra: <strong style="color:var(--success)">' + word + '</strong></p>';
+    modalHTML += '<p style="font-size:.75rem;color:var(--text-dim);margin-bottom:12px">Categoria: ' + category + '</p>';
+    modalHTML += '<p style="font-size:.75rem;color:var(--text-dim);margin-bottom:4px">' + (impostorNames.length > 1 ? 'Impostores' : 'Impostor') + ':</p>';
+    modalHTML += '<p style="font-size:.9rem;color:var(--accent);margin-bottom:12px">' + impostorNames.join(', ') + '</p>';
+    modalHTML += '<div style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px">';
+    modalHTML += '<div style="font-size:.75rem;color:var(--text-dim);margin-bottom:8px">Pontos na rodada:</div>';
+    modalHTML += pointsHTML;
+    modalHTML += '</div>';
+    modalHTML += elimHTML;
+    modalHTML += '<button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:16px">' + t('close') + '</button>';
+    modalHTML += '</div></div>';
+    
+    document.getElementById('overlay-container').innerHTML = modalHTML;
 }
 
 function getScoreReasonText(reason, detail) {
