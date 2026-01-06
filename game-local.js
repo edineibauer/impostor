@@ -22,7 +22,8 @@ let localState = {
     selectedCategories: [],
     votingRound: 0,
     starterPlayerIndex: 0, // Who starts talking each round
-    currentScreen: null // Track current screen for restoration
+    currentScreen: null, // Track current screen for restoration
+    previousImpostors: [] // Track who was impostor in previous round (for weighted selection)
 };
 
 // STORAGE
@@ -47,6 +48,7 @@ function loadLocalState() {
                 if (!localState.votingRound) localState.votingRound = 0;
                 if (localState.starterPlayerIndex === undefined) localState.starterPlayerIndex = 0;
                 if (!localState.currentScreen) localState.currentScreen = 'screen-game';
+                if (!localState.previousImpostors) localState.previousImpostors = [];
                 return true; 
             } else {
                 // Load settings even if game not in progress
@@ -411,23 +413,41 @@ function startRound() {
     localState.similarWords = {};
     localState.votingRound = 0;
     
+    // Weighted impostor selection - previous impostors have half the chance
     const indices = [...Array(localState.players.length).keys()];
-    const shuffledIndices = shuffle(indices);
+    const previousImps = localState.previousImpostors || [];
+    
+    // Create weighted pool: normal players appear twice, previous impostors appear once
+    let weightedPool = [];
+    indices.forEach(idx => {
+        if (previousImps.includes(idx)) {
+            weightedPool.push(idx); // Previous impostor: 1x (half chance)
+        } else {
+            weightedPool.push(idx); // Normal player: 2x (full chance)
+            weightedPool.push(idx);
+        }
+    });
+    
+    // Shuffle and select impostors
+    const shuffledPool = shuffle(weightedPool);
+    const selectedImpostors = [];
+    
+    for (let i = 0; i < shuffledPool.length && selectedImpostors.length < localState.actualImpostorCount; i++) {
+        const idx = shuffledPool[i];
+        if (!selectedImpostors.includes(idx)) {
+            selectedImpostors.push(idx);
+        }
+    }
+    
+    localState.impostorIndices = selectedImpostors;
     
     // Generate ONE similar word for ALL impostors (so they can identify each other)
     let impostorWord = null;
     if (!localState.impostorKnows) {
         impostorWord = findSimilarWord(localState.word, localState.category);
-    }
-    
-    for (let i = 0; i < localState.actualImpostorCount; i++) {
-        const impostorIdx = shuffledIndices[i];
-        localState.impostorIndices.push(impostorIdx);
-        
-        if (!localState.impostorKnows) {
-            // All impostors get the SAME similar word
+        selectedImpostors.forEach(impostorIdx => {
             localState.similarWords[impostorIdx] = impostorWord;
-        }
+        });
     }
     
     localState.currentPlayerIndex = 0;
@@ -601,7 +621,16 @@ function showVoteResult(playerName, wasImpostor, playerIndex) {
     const allImpostorsFound = remainingImpostors === 0;
     
     let resultHTML = voteResultHTML(playerName, wasImpostor);
-    let scoreControlsHTML = buildScoreControls();
+    
+    // Only show score controls if maxPoints is set
+    let scoreSection = '';
+    if (localState.maxPoints) {
+        let scoreControlsHTML = buildScoreControls();
+        scoreSection = `
+            <div class="section-title">${t('adjustPoints')}</div>
+            <div class="score-controls">${scoreControlsHTML}</div>
+        `;
+    }
     
     let buttonsHTML = '';
     if (allImpostorsFound) {
@@ -614,8 +643,7 @@ function showVoteResult(playerName, wasImpostor, playerIndex) {
         <div class="confirm-overlay">
             <div class="confirm-box">
                 ${resultHTML}
-                <div class="section-title">${t('adjustPoints')}</div>
-                <div class="score-controls">${scoreControlsHTML}</div>
+                ${scoreSection}
                 ${buttonsHTML}
             </div>
         </div>
@@ -627,14 +655,21 @@ function showVoteResultWithImpostorWin(playerName) {
         <p style="font-size:1.1rem;margin:14px 0"><strong>${playerName}</strong> ${t('wasInnocent')}</p>
         <p style="color:var(--warning);font-size:.85rem;margin-top:10px">🎭 ${t('impostorWins')}</p>`;
     
-    let scoreControlsHTML = buildScoreControls();
+    // Only show score controls if maxPoints is set
+    let scoreSection = '';
+    if (localState.maxPoints) {
+        let scoreControlsHTML = buildScoreControls();
+        scoreSection = `
+            <div class="section-title">${t('adjustPoints')}</div>
+            <div class="score-controls">${scoreControlsHTML}</div>
+        `;
+    }
     
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
                 ${resultHTML}
-                <div class="section-title">${t('adjustPoints')}</div>
-                <div class="score-controls">${scoreControlsHTML}</div>
+                ${scoreSection}
                 <button class="btn btn-primary" onclick="closeOverlay();showImpostorWins();" style="margin-top:14px">${t('seeRoundSummary')}</button>
             </div>
         </div>
@@ -645,11 +680,19 @@ function showImpostorWins() {
     const impostorNames = localState.impostorIndices.map(i => localState.players[i]);
     const impostorLabel = localState.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
     
-    // Check for winner
-    if (checkForWinner()) return;
+    // Check for winner (only if maxPoints is set)
+    if (localState.maxPoints && checkForWinner()) return;
     
-    const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = buildRankingHTML(sorted);
+    // Only show ranking if maxPoints is set
+    let rankingSection = '';
+    if (localState.maxPoints) {
+        const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
+        const rankingHTML = buildRankingHTML(sorted);
+        rankingSection = `
+            <div class="section-title">🏆 RANKING</div>
+            <ul class="ranking-list">${rankingHTML}</ul>
+        `;
+    }
     
     let similarWordsInfo = '';
     if (!localState.impostorKnows && Object.keys(localState.similarWords).length > 0) {
@@ -671,8 +714,7 @@ function showImpostorWins() {
                 <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
                 <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${localState.word}</strong></p>
                 ${similarWordsInfo}
-                <div class="section-title">🏆 RANKING</div>
-                <ul class="ranking-list">${rankingHTML}</ul>
+                ${rankingSection}
                 <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
             </div>
         </div>
@@ -709,8 +751,8 @@ function showRoundSummary() {
     const impostorNames = localState.impostorIndices.map(i => localState.players[i]);
     const impostorLabel = localState.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
     
-    // Check for winner
-    if (checkForWinner()) return;
+    // Check for winner (only if maxPoints is set)
+    if (localState.maxPoints && checkForWinner()) return;
     
     let similarWordsInfo = '';
     if (!localState.impostorKnows && Object.keys(localState.similarWords).length > 0) {
@@ -722,8 +764,16 @@ function showRoundSummary() {
         similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">${t('impostorWords')}: ${similarList}</p>`;
     }
     
-    const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-    const rankingHTML = buildRankingHTML(sorted);
+    // Build content based on whether we have scoring enabled
+    let rankingSection = '';
+    if (localState.maxPoints) {
+        const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
+        const rankingHTML = buildRankingHTML(sorted);
+        rankingSection = `
+            <div class="section-title">🏆 RANKING</div>
+            <ul class="ranking-list">${rankingHTML}</ul>
+        `;
+    }
     
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
@@ -733,8 +783,7 @@ function showRoundSummary() {
                 <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
                 <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${localState.word}</strong></p>
                 ${similarWordsInfo}
-                <div class="section-title">🏆 RANKING</div>
-                <ul class="ranking-list">${rankingHTML}</ul>
+                ${rankingSection}
                 <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
             </div>
         </div>
@@ -775,6 +824,9 @@ function showLocalGameOver(winnerName) {
 }
 
 function newRound() {
+    // Save current impostors as previous (for weighted selection in next round)
+    localState.previousImpostors = [...localState.impostorIndices];
+    
     localState.round++;
     // Advance starter player (circular)
     localState.starterPlayerIndex = (localState.starterPlayerIndex + 1) % localState.players.length;

@@ -13,7 +13,7 @@ const firebaseConfig = {
 function isFirebaseConfigured() { return firebaseConfig.apiKey !== "YOUR_API_KEY"; }
 
 let db = null, roomRef = null, playerId = null, isHost = false, currentRoom = null;
-let onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {}, scoreHistory: [] };
+let onlineState = { roomCode: null, players: {}, round: 1, word: null, category: null, impostorIds: [], votes: {}, eliminated: [], phase: 'lobby', maxImpostors: 1, impostorKnows: true, maxPoints: null, allCategories: true, selectedCategories: [], roomLang: 'pt', votingRound: 0, readyPlayers: [], voteRequests: {}, scoreHistory: [], previousImpostors: [] };
 
 function initFirebase() {
     if (!isFirebaseConfigured()) return false;
@@ -28,12 +28,18 @@ function updateConnectionStatus(status) {
 }
 
 function initOnlineMenu() {
+    // Always load saved name first, regardless of Firebase status
+    const savedName = localStorage.getItem('impostor_player_name');
+    const nameInput = document.getElementById('online-player-name');
+    if (savedName && nameInput) {
+        nameInput.value = savedName;
+    }
+    
     if (!initFirebase()) {
         document.getElementById('overlay-container').innerHTML = '<div class="confirm-overlay"><div class="confirm-box"><h3>⚠️ Firebase Required</h3><p style="color:var(--text-dim);font-size:.75rem;margin:16px 0;line-height:1.6;text-align:left">O modo online requer Firebase.<br><br>1. Crie projeto em console.firebase.google.com<br>2. Habilite Realtime Database<br>3. Edite game-online.js com sua config</p><button class="btn btn-secondary" onclick="closeOverlay();showScreen(\'screen-mode\')">OK</button></div></div>';
         return;
     }
-    const savedName = localStorage.getItem('impostor_player_name');
-    if (savedName) document.getElementById('online-player-name').value = savedName;
+    
     if (!playerId) {
         playerId = localStorage.getItem('impostor_player_id');
         if (!playerId) { playerId = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('impostor_player_id', playerId); }
@@ -176,6 +182,7 @@ function setupRoomListeners() {
     roomRef.child('voteRequests').on('value', s => { onlineState.voteRequests = s.val() || {}; checkVoteMajority(); updateVoteRequestStatus(); });
     roomRef.child('readyPlayers').on('value', s => { onlineState.readyPlayers = s.val() ? Object.keys(s.val()) : []; updateReadyStatus(); checkAllReady(); });
     roomRef.child('scoreHistory').on('value', s => { onlineState.scoreHistory = s.val() || []; });
+    roomRef.child('previousImpostors').on('value', s => { onlineState.previousImpostors = s.val() || []; });
     roomRef.child('kicked/' + playerId).on('value', s => { if (s.val()) { showToast('Você foi removido'); leaveRoom(); } });
     roomRef.child('players/' + playerId + '/online').onDisconnect().set(false);
     db.ref('.info/connected').on('value', s => { if (s.val()) roomRef.child('players/' + playerId + '/online').set(true); });
@@ -256,8 +263,27 @@ function startOnlineGame() {
     var avail = onlineState.allCategories ? cats : onlineState.selectedCategories.map(function(i) { return cats[i]; });
     var catData = avail[Math.floor(Math.random() * avail.length)];
     var word = catData.words[Math.floor(Math.random() * catData.words.length)];
-    var shuffled = shuffle(pids);
-    var impIds = shuffled.slice(0, impCount);
+    
+    // Weighted impostor selection - previous impostors have half the chance
+    var prevImps = onlineState.previousImpostors || [];
+    var weightedPool = [];
+    pids.forEach(function(pid) {
+        if (prevImps.includes(pid)) {
+            weightedPool.push(pid); // Previous impostor: 1x (half chance)
+        } else {
+            weightedPool.push(pid); // Normal player: 2x (full chance)
+            weightedPool.push(pid);
+        }
+    });
+    
+    var shuffledPool = shuffle(weightedPool);
+    var impIds = [];
+    for (var i = 0; i < shuffledPool.length && impIds.length < impCount; i++) {
+        if (!impIds.includes(shuffledPool[i])) {
+            impIds.push(shuffledPool[i]);
+        }
+    }
+    
     var simWords = {};
     // Generate ONE similar word for ALL impostors (so they can identify each other)
     if (!onlineState.impostorKnows) {
@@ -268,6 +294,7 @@ function startOnlineGame() {
     roomRef.child('gameState').set({ phase: 'playing', round: 1, word: word, category: catData.category, impostorIds: impIds, impostorKnows: onlineState.impostorKnows, similarWords: simWords, eliminated: [], votingRound: 0, roundPlayers: pids });
     roomRef.child('votes').remove(); roomRef.child('voteRequests').remove(); roomRef.child('readyPlayers').remove();
     roomRef.child('scoreHistory').remove(); // Clear score history for new game
+    roomRef.child('previousImpostors').remove(); // Clear previous impostors for new game
     roomRef.child('lastActivity').set(firebase.database.ServerValue.TIMESTAMP);
     // Clear isNew flag for all players
     pids.forEach(function(id) { roomRef.child('players/' + id + '/isNew').remove(); });
@@ -964,6 +991,9 @@ function checkAllReady() {
 }
 
 function startNextOnlineRound() {
+    // Save current impostors as previous before starting new round
+    roomRef.child('previousImpostors').set(onlineState.impostorIds);
+    
     var nr = onlineState.round + 1;
     var cats = getWordCategories(onlineState.roomLang);
     var avail = onlineState.allCategories ? cats : onlineState.selectedCategories.map(function(i) { return cats[i]; });
@@ -974,8 +1004,27 @@ function startNextOnlineRound() {
     var maxP = Math.floor((pids.length - 1) / 2);
     var actMax = Math.min(onlineState.maxImpostors, maxP);
     var impCount = Math.floor(Math.random() * actMax) + 1;
-    var shuffled = shuffle(pids);
-    var impIds = shuffled.slice(0, impCount);
+    
+    // Weighted impostor selection - previous impostors have half the chance
+    var prevImps = onlineState.impostorIds || []; // Current impostors will be previous
+    var weightedPool = [];
+    pids.forEach(function(pid) {
+        if (prevImps.includes(pid)) {
+            weightedPool.push(pid); // Previous impostor: 1x (half chance)
+        } else {
+            weightedPool.push(pid); // Normal player: 2x (full chance)
+            weightedPool.push(pid);
+        }
+    });
+    
+    var shuffledPool = shuffle(weightedPool);
+    var impIds = [];
+    for (var i = 0; i < shuffledPool.length && impIds.length < impCount; i++) {
+        if (!impIds.includes(shuffledPool[i])) {
+            impIds.push(shuffledPool[i]);
+        }
+    }
+    
     var simWords = {};
     // Generate ONE similar word for ALL impostors (so they can identify each other)
     if (!onlineState.impostorKnows) {
