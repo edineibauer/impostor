@@ -573,6 +573,24 @@ function updateGamePlayersList() {
     }).join('');
 }
 
+// Show list of players to choose who wants to review their word
+function showReviewWordList() {
+    let playerButtonsHTML = localState.players.map((name, idx) => {
+        return '<button class="player-vote-btn" onclick="closeOverlay();reviewPlayerWord(' + idx + ')">' + name + '</button>';
+    }).join('');
+
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                <h3>${t('reviewWord')}</h3>
+                <p style="color:var(--text-dim);font-size:.75rem;margin-bottom:14px">${t('reviewWordChoosePlayer')}</p>
+                <div class="player-vote-list">${playerButtonsHTML}</div>
+                <button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:18px">${t('cancel')}</button>
+            </div>
+        </div>
+    `;
+}
+
 // Allow a player to re-view their word
 function reviewPlayerWord(playerIdx) {
     const playerName = localState.players[playerIdx];

@@ -125,7 +125,9 @@ const translations = {
         pointsLost: "-{n} ponto(s)",
         selectCategories: "Selecione pelo menos uma categoria",
         reviewWordInstruction: "Passe o celular para o jogador. Toque no botão abaixo para ver a palavra.",
-        tapPlayerToReview: "Toque em um nome para rever a palavra"
+        tapPlayerToReview: "Toque em um nome para rever a palavra",
+        reviewWord: "👁️ REVER PALAVRA",
+        reviewWordChoosePlayer: "Escolha o jogador que quer rever sua palavra:"
     },
     en: {
         title: "THE IMPOSTOR",
@@ -252,7 +254,9 @@ const translations = {
         pointsLost: "-{n} point(s)",
         selectCategories: "Select at least one category",
         reviewWordInstruction: "Pass the phone to the player. Tap the button below to see the word.",
-        tapPlayerToReview: "Tap a name to review their word"
+        tapPlayerToReview: "Tap a name to review their word",
+        reviewWord: "👁️ REVIEW WORD",
+        reviewWordChoosePlayer: "Choose the player who wants to review their word:"
     },
     es: {
         title: "EL IMPOSTOR",
@@ -379,7 +383,9 @@ const translations = {
         pointsLost: "-{n} punto(s)",
         selectCategories: "Selecciona al menos una categoría",
         reviewWordInstruction: "Pasa el celular al jugador. Toca el botón de abajo para ver la palabra.",
-        tapPlayerToReview: "Toca un nombre para volver a ver la palabra"
+        tapPlayerToReview: "Toca un nombre para volver a ver la palabra",
+        reviewWord: "👁️ REVER PALABRA",
+        reviewWordChoosePlayer: "Elige el jugador que quiere volver a ver su palabra:"
     }
 };
 
