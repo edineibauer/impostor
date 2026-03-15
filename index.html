@@ -281,6 +281,7 @@
 
         <!-- LOCAL MODE: TURN SCREEN -->
         <div id="screen-turn" class="screen">
+            <button class="back-btn" onclick="confirmNewGame()" title="Menu">✕</button>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1><span data-i18n="round">RODADA</span> <span id="turn-round-num">1</span></h1></div>
             <div class="player-turn-card"><div class="player-turn-name" id="current-player-name">JOGADOR</div><p class="player-turn-instruction" data-i18n="pickUpPhone">Pegue o celular e veja sua palavra</p></div>
             <div class="card"><h2 class="card-title" data-i18n="progress">📋 Progresso</h2><div class="players-summary" id="players-progress"></div></div>
@@ -289,6 +290,7 @@
 
         <!-- LOCAL MODE: WORD SCREEN -->
         <div id="screen-word" class="screen">
+            <button class="back-btn" onclick="confirmNewGame()" title="Menu">✕</button>
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="yourMission">SUA MISSÃO</h1></div>
             <div class="card"><div class="word-container"><div id="word-display" class="word-reveal-animation"><div class="word-text" id="word-text"></div><div class="category-tag" id="category-tag"></div></div></div></div>
             <p style="text-align:center;color:var(--text-dim);font-size:.7rem;margin-bottom:18px" data-i18n="memorizePass">Memorize e passe o celular</p>
@@ -304,6 +306,7 @@
                 <div id="starter-player-info" style="background:var(--bg-card);padding:12px;border-radius:10px;text-align:center;margin:12px 0;font-weight:600;border:2px solid var(--primary)"></div>
                 <p style="font-size:.75rem;color:var(--text-dim);line-height:1.5" data-i18n="playInstructions">Cada um fala uma palavra relacionada. Quando suspeitarem de alguém, votem!</p>
                 <div class="players-summary" id="game-players" style="margin-top:14px"></div>
+                <p id="review-word-hint" style="font-size:.6rem;color:var(--text-dim);text-align:center;margin-top:8px;opacity:.7" data-i18n="tapPlayerToReview">Toque em um nome para rever a palavra</p>
             </div>
             <button class="btn btn-warning" onclick="showVoteScreen()" data-i18n="chooseImpostor">🗳️ ESCOLHER IMPOSTOR</button>
             <button class="btn btn-secondary" onclick="showRanking()" data-i18n="seeRanking">🏆 VER RANKING</button>

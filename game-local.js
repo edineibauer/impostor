@@ -338,23 +338,39 @@ function generatePlayerInputs() {
     }
 }
 
-// FIND SIMILAR WORD
+// FIND DISTINCT WORD (same category but clearly different from original)
 function findSimilarWord(originalWord, category) {
     const categories = getWordCategories();
     const categoryData = categories.find(c => c.category === category);
-    
-    if (categoryData && categoryData.similar && categoryData.similar[originalWord]) {
-        const similarOptions = categoryData.similar[originalWord];
-        return similarOptions[Math.floor(Math.random() * similarOptions.length)];
+
+    if (!categoryData) return originalWord;
+
+    // Collect words to EXCLUDE: the original word + all its similar/near-synonym words
+    const excludeWords = [originalWord];
+    if (categoryData.similar && categoryData.similar[originalWord]) {
+        excludeWords.push(...categoryData.similar[originalWord]);
     }
-    
-    if (categoryData) {
-        const otherWords = categoryData.words.filter(w => w !== originalWord);
-        if (otherWords.length > 0) {
-            return otherWords[Math.floor(Math.random() * otherWords.length)];
-        }
+    // Also exclude words that list the original as their similar
+    if (categoryData.similar) {
+        Object.entries(categoryData.similar).forEach(([word, similars]) => {
+            if (similars.includes(originalWord)) {
+                excludeWords.push(word);
+            }
+        });
     }
-    
+
+    // Pick from words that are NOT similar to the original
+    const distinctWords = categoryData.words.filter(w => !excludeWords.includes(w));
+    if (distinctWords.length > 0) {
+        return distinctWords[Math.floor(Math.random() * distinctWords.length)];
+    }
+
+    // Fallback: pick any other word from the category
+    const otherWords = categoryData.words.filter(w => w !== originalWord);
+    if (otherWords.length > 0) {
+        return otherWords[Math.floor(Math.random() * otherWords.length)];
+    }
+
     return originalWord;
 }
 
@@ -527,7 +543,7 @@ function showGameScreen() {
     document.getElementById('total-players').textContent = localState.players.length;
     const impostorDisplay = localState.maxImpostors > 1 ? '1-' + localState.maxImpostors : '1';
     document.getElementById('impostor-count-display').textContent = impostorDisplay;
-    
+
     // Show who starts talking this round
     const starterName = localState.players[localState.starterPlayerIndex];
     const starterInfo = document.getElementById('starter-player-info');
@@ -535,8 +551,15 @@ function showGameScreen() {
         starterInfo.innerHTML = '<span style="color:var(--primary)">🎤 ' + starterName + '</span> ' + t('startsTalking');
         starterInfo.style.display = 'block';
     }
-    
+
     updateGamePlayersList();
+
+    // Show hint about tapping player names
+    const reviewHint = document.getElementById('review-word-hint');
+    if (reviewHint) {
+        reviewHint.textContent = t('tapPlayerToReview');
+    }
+
     saveLocalState('screen-game');
     showScreen('screen-game');
 }
@@ -546,8 +569,66 @@ function updateGamePlayersList() {
     gamePlayers.innerHTML = localState.players.map((name, idx) => {
         let cls = 'player-chip';
         if (localState.eliminatedPlayers.includes(idx)) cls += ' eliminated';
-        return '<span class="' + cls + '">' + name + '</span>';
+        return '<span class="' + cls + '" onclick="reviewPlayerWord(' + idx + ')" style="cursor:pointer">' + name + '</span>';
     }).join('');
+}
+
+// Allow a player to re-view their word
+function reviewPlayerWord(playerIdx) {
+    const playerName = localState.players[playerIdx];
+
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box" onclick="event.stopPropagation()">
+                <h3>👤 ${playerName}</h3>
+                <p style="color:var(--text-dim);font-size:.8rem;margin:14px 0">${t('reviewWordInstruction')}</p>
+                <div id="review-word-container" style="display:none;margin:20px 0">
+                    <div class="word-container">
+                        <div id="review-word-display" class="word-reveal-animation">
+                            <div class="word-text" id="review-word-text"></div>
+                            <div class="category-tag" id="review-category-tag"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="review-show-btn" onclick="showReviewWord(${playerIdx})">${t('seeWord')}</button>
+                <button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:8px">${t('close')}</button>
+            </div>
+        </div>
+    `;
+}
+
+function showReviewWord(playerIdx) {
+    const isImpostor = localState.impostorIndices.includes(playerIdx);
+    const wordText = document.getElementById('review-word-text');
+    const categoryTag = document.getElementById('review-category-tag');
+    const container = document.getElementById('review-word-container');
+    const showBtn = document.getElementById('review-show-btn');
+
+    showBtn.style.display = 'none';
+    container.style.display = 'block';
+
+    if (isImpostor) {
+        if (localState.impostorKnows) {
+            wordText.textContent = t('impostor');
+            wordText.className = 'word-text is-impostor';
+            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
+        } else {
+            const similarWord = localState.similarWords[playerIdx] || localState.word;
+            wordText.textContent = similarWord;
+            wordText.className = 'word-text is-word';
+            categoryTag.style.display = 'none';
+        }
+    } else {
+        wordText.textContent = localState.word;
+        wordText.className = 'word-text is-word';
+        if (localState.impostorKnows) {
+            categoryTag.textContent = localState.category;
+            categoryTag.style.display = 'block';
+        } else {
+            categoryTag.style.display = 'none';
+        }
+    }
 }
 
 // VOTING SYSTEM

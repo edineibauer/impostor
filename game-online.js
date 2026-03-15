@@ -301,7 +301,23 @@ function startOnlineGame() {
 }
 
 function findSimilarWordOnline(word, catData) {
-    if (catData.similar && catData.similar[word]) return catData.similar[word][Math.floor(Math.random() * catData.similar[word].length)];
+    // Collect words to EXCLUDE: the original + all near-synonyms
+    var excludeWords = [word];
+    if (catData.similar && catData.similar[word]) {
+        excludeWords = excludeWords.concat(catData.similar[word]);
+    }
+    // Also exclude words that list the original as their similar
+    if (catData.similar) {
+        Object.keys(catData.similar).forEach(function(w) {
+            if (catData.similar[w].indexOf(word) !== -1) {
+                excludeWords.push(w);
+            }
+        });
+    }
+    // Pick a word that is clearly different
+    var distinctWords = catData.words.filter(function(w) { return excludeWords.indexOf(w) === -1; });
+    if (distinctWords.length > 0) return distinctWords[Math.floor(Math.random() * distinctWords.length)];
+    // Fallback: any other word
     var other = catData.words.filter(function(w) { return w !== word; });
     return other.length ? other[Math.floor(Math.random() * other.length)] : word;
 }

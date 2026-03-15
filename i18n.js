@@ -123,7 +123,9 @@ const translations = {
         firstRoundCatch: "Descoberto na 1ª rodada",
         pointsGained: "+{n} ponto(s)",
         pointsLost: "-{n} ponto(s)",
-        selectCategories: "Selecione pelo menos uma categoria"
+        selectCategories: "Selecione pelo menos uma categoria",
+        reviewWordInstruction: "Passe o celular para o jogador. Toque no botão abaixo para ver a palavra.",
+        tapPlayerToReview: "Toque em um nome para rever a palavra"
     },
     en: {
         title: "THE IMPOSTOR",
@@ -248,7 +250,9 @@ const translations = {
         firstRoundCatch: "Caught in 1st round",
         pointsGained: "+{n} point(s)",
         pointsLost: "-{n} point(s)",
-        selectCategories: "Select at least one category"
+        selectCategories: "Select at least one category",
+        reviewWordInstruction: "Pass the phone to the player. Tap the button below to see the word.",
+        tapPlayerToReview: "Tap a name to review their word"
     },
     es: {
         title: "EL IMPOSTOR",
@@ -373,7 +377,9 @@ const translations = {
         firstRoundCatch: "Atrapado en 1ª ronda",
         pointsGained: "+{n} punto(s)",
         pointsLost: "-{n} punto(s)",
-        selectCategories: "Selecciona al menos una categoría"
+        selectCategories: "Selecciona al menos una categoría",
+        reviewWordInstruction: "Pasa el celular al jugador. Toca el botón de abajo para ver la palabra.",
+        tapPlayerToReview: "Toca un nombre para volver a ver la palabra"
     }
 };
 

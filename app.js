@@ -40,26 +40,29 @@ function retryOnlineConnection() {
 
 // ROOM CLEANUP - Remove inactive rooms (older than 24 hours)
 function cleanupInactiveRooms() {
-    if (!db) return;
-    
+    if (!db) {
+        // Try to init Firebase if not yet initialized
+        if (!initFirebase()) return;
+    }
+
     const cutoffTime = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
-    
+
     db.ref('rooms').once('value').then(snapshot => {
         if (!snapshot.exists()) return;
-        
+
         const rooms = snapshot.val();
         const deletePromises = [];
-        
+
         Object.entries(rooms).forEach(([roomCode, roomData]) => {
-            // Check lastActivity or createdAt
+            // Check lastActivity or createdAt; if neither exists, treat as old
             const lastActivity = roomData.lastActivity || roomData.createdAt || 0;
-            
+
             if (lastActivity < cutoffTime) {
                 console.log('Cleaning up inactive room:', roomCode);
                 deletePromises.push(db.ref('rooms/' + roomCode).remove());
             }
         });
-        
+
         if (deletePromises.length > 0) {
             Promise.all(deletePromises).then(() => {
                 console.log('Cleaned up', deletePromises.length, 'inactive rooms');
@@ -291,6 +294,10 @@ function selectMode(mode) {
     } else {
         initOnlineMenu();
         showScreen('screen-online-menu');
+        // Run room cleanup when entering online mode
+        if (initFirebase()) {
+            setTimeout(cleanupInactiveRooms, 1000);
+        }
     }
 }
 
@@ -466,6 +473,10 @@ function init() {
     } else {
         applyTranslations();
         showScreen('screen-mode');
+        // Run room cleanup in background on regular app start
+        if (initFirebase()) {
+            setTimeout(cleanupInactiveRooms, 3000);
+        }
     }
 }
 

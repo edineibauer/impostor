@@ -140,24 +140,39 @@ function generatePlayerInputs() {
     }
 }
 
-// FIND SIMILAR WORD (not synonym, but related/close)
+// FIND DISTINCT WORD (same category but clearly different from original)
 function findSimilarWord(originalWord, category) {
     const categories = getWordCategories();
     const categoryData = categories.find(c => c.category === category);
-    
-    if (categoryData && categoryData.similar && categoryData.similar[originalWord]) {
-        const similarOptions = categoryData.similar[originalWord];
-        return similarOptions[Math.floor(Math.random() * similarOptions.length)];
+
+    if (!categoryData) return originalWord;
+
+    // Collect words to EXCLUDE: the original word + all its similar/near-synonym words
+    const excludeWords = [originalWord];
+    if (categoryData.similar && categoryData.similar[originalWord]) {
+        excludeWords.push(...categoryData.similar[originalWord]);
     }
-    
-    // Fallback: pick another word from same category
-    if (categoryData) {
-        const otherWords = categoryData.words.filter(w => w !== originalWord);
-        if (otherWords.length > 0) {
-            return otherWords[Math.floor(Math.random() * otherWords.length)];
-        }
+    // Also exclude words that list the original as their similar
+    if (categoryData.similar) {
+        Object.entries(categoryData.similar).forEach(([word, similars]) => {
+            if (similars.includes(originalWord)) {
+                excludeWords.push(word);
+            }
+        });
     }
-    
+
+    // Pick from words that are NOT similar to the original
+    const distinctWords = categoryData.words.filter(w => !excludeWords.includes(w));
+    if (distinctWords.length > 0) {
+        return distinctWords[Math.floor(Math.random() * distinctWords.length)];
+    }
+
+    // Fallback: pick any other word from the category
+    const otherWords = categoryData.words.filter(w => w !== originalWord);
+    if (otherWords.length > 0) {
+        return otherWords[Math.floor(Math.random() * otherWords.length)];
+    }
+
     return originalWord;
 }
 
