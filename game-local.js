@@ -146,14 +146,14 @@ function showWordDirectly() {
     
     const isImpostor = localState.impostorIndices.includes(localState.currentPlayerIndex);
 
-    updateWordHint(isImpostor);
+    const hintShown = updateWordHint(isImpostor);
 
     if (isImpostor) {
         if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
             wordText.className = 'word-text is-impostor';
             categoryTag.textContent = localState.category;
-            categoryTag.style.display = 'block';
+            categoryTag.style.display = hintShown ? 'none' : 'block';
         } else {
             const similarWord = localState.similarWords[localState.currentPlayerIndex] || localState.word;
             wordText.textContent = similarWord;
@@ -170,7 +170,7 @@ function showWordDirectly() {
             categoryTag.style.display = 'none';
         }
     }
-    
+
     showScreen('screen-word');
 }
 
@@ -577,16 +577,20 @@ function showPlayerTurn() {
     showScreen('screen-turn');
 }
 
+// Shows the position hint for a badly positioned impostor (talks 1st/2nd).
+// Returns true when the hint is visible — in that case the category is hidden,
+// since the similar word already implies the category (avoids hint stacking).
 function updateWordHint(isImpostor) {
     const hintEl = document.getElementById('word-hint');
-    if (!hintEl) return;
+    if (!hintEl) return false;
     const hint = localState.impostorHints ? localState.impostorHints[localState.currentPlayerIndex] : null;
     if (isImpostor && localState.impostorKnows && hint) {
         hintEl.textContent = t('hintSimilarTo') + ': ' + hint;
         hintEl.style.display = 'block';
-    } else {
-        hintEl.style.display = 'none';
+        return true;
     }
+    hintEl.style.display = 'none';
+    return false;
 }
 
 function showWord() {
@@ -599,14 +603,14 @@ function showWord() {
     void wordDisplay.offsetWidth;
     wordDisplay.classList.add('word-reveal-animation');
 
-    updateWordHint(isImpostor);
+    const hintShown = updateWordHint(isImpostor);
 
     if (isImpostor) {
         if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
             wordText.className = 'word-text is-impostor';
             categoryTag.textContent = localState.category;
-            categoryTag.style.display = 'block';
+            categoryTag.style.display = hintShown ? 'none' : 'block';
         } else {
             const similarWord = localState.similarWords[localState.currentPlayerIndex] || localState.word;
             wordText.textContent = similarWord;
