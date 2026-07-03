@@ -262,6 +262,14 @@
                 <p class="impostor-count-info" data-i18n="impostorModeInfo">Se desativado, impostor recebe palavra similar</p>
             </div>
             <div class="card">
+                <h2 class="card-title" data-i18n="questionsMode">❓ Modo Perguntas</h2>
+                <div class="toggle-option">
+                    <span data-i18n="questionsModeToggle">Jogar com perguntas guiadas</span>
+                    <div class="toggle-switch" id="toggle-questions-mode" onclick="toggleQuestionsMode()"></div>
+                </div>
+                <p class="impostor-count-info" data-i18n="questionsModeInfo">A cada rodada de conversa, o app mostra uma pergunta pronta e todos respondem na ordem</p>
+            </div>
+            <div class="card">
                 <h2 class="card-title" data-i18n="maxPoints">🏆 Pontuação Máxima</h2>
                 <input type="number" id="max-points-input" placeholder="∞ Sem limite" min="1" max="100">
                 <p class="impostor-count-info" data-i18n="maxPointsInfo">Deixe vazio para jogar sem limite de pontos</p>
@@ -290,7 +298,7 @@
         <!-- LOCAL MODE: WORD SCREEN -->
         <div id="screen-word" class="screen">
             <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="yourMission">SUA MISSÃO</h1></div>
-            <div class="card"><div class="word-container"><div id="word-display" class="word-reveal-animation"><div class="word-text" id="word-text"></div><div class="category-tag" id="category-tag"></div></div></div></div>
+            <div class="card"><div class="word-container"><div id="word-display" class="word-reveal-animation"><div class="word-text" id="word-text"></div><div class="category-tag" id="category-tag"></div><div id="word-hint" style="display:none;margin-top:14px;padding:10px 14px;background:rgba(255,200,0,0.08);border:1px dashed var(--warning);border-radius:10px;font-size:.8rem;color:var(--warning)"></div></div></div></div>
             <p style="text-align:center;color:var(--text-dim);font-size:.7rem;margin-bottom:18px" data-i18n="memorizePass">Memorize e passe o celular</p>
             <button class="btn btn-success" onclick="nextPlayer()" data-i18n="gotItNext">✓ ENTENDI, PRÓXIMO</button>
         </div>
@@ -302,6 +310,7 @@
             <div class="card">
                 <h2 class="card-title" data-i18n="timeToPlay">🎭 Hora de Jogar!</h2>
                 <div id="starter-player-info" style="background:var(--bg-card);padding:12px;border-radius:10px;text-align:center;margin:12px 0;font-weight:600;border:2px solid var(--primary)"></div>
+                <div id="question-box" style="display:none;background:var(--bg-card);padding:14px;border-radius:10px;text-align:center;margin:12px 0;border:2px solid var(--warning)"></div>
                 <p style="font-size:.75rem;color:var(--text-dim);line-height:1.5" data-i18n="playInstructions">Cada um fala uma palavra relacionada. Quando suspeitarem de alguém, votem!</p>
                 <div class="players-summary" id="game-players" style="margin-top:14px"></div>
             </div>

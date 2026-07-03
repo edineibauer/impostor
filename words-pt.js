@@ -1,180 +1,1269 @@
-// WORDS-PT.JS - Palavras em Português (Revisado)
-// Regras para palavras similares:
-// 1. Devem ser da MESMA categoria conceitual
-// 2. Devem permitir descrições parecidas
-// 3. Não devem ser sinônimos óbvios
-// 4. O impostor deve conseguir "se passar" falando sobre o tema
+// WORDS-PT.JS - Palavras em Português (Brasil) — Revisado
+//
+// Regras deste arquivo:
+// 1. Só entram palavras COMUNS, que qualquer pessoa conhece e sobre as quais
+//    há muito o que falar (descartadas palavras obscuras ou difíceis).
+// 2. TODA palavra tem entrada em `similar` com exatamente 3 opções, ordenadas
+//    por proximidade: [0] = muito próxima (impostor demora a se descobrir),
+//    [1] = média (equilíbrio ideal), [2] = mais distante (impostor percebe
+//    antes, mas ainda consegue disfarçar).
+//    A palavra similar nunca é sinônimo da original (senão o impostor nunca
+//    se descobre) nem de outro universo (senão ele se entrega na primeira fala).
+// 3. `questions` são as perguntas do Modo Perguntas, adequadas à categoria:
+//    valem tanto para a palavra verdadeira quanto para a palavra do impostor.
+
+const genericQuestionsPT = [
+    'Onde você costuma ver isso?',
+    'Com que frequência isso aparece na sua vida?',
+    'Você daria isso de presente? Para quem?',
+    'Isso combina mais com criança ou com adulto?',
+    'Que sentimento isso te traz?',
+    'Isso é caro ou barato?',
+    'O que você usaria junto com isso?',
+    'Em que época do ano isso aparece mais?'
+];
+
+const animalQuestionsPT = [
+    'Onde esse ser vive?',
+    'O que ele come?',
+    'Você teria um em casa?',
+    'Ele te dá mais medo ou mais vontade de fazer carinho?',
+    'Ele é maior ou menor que um cachorro?',
+    'Ele é mais rápido ou mais lento que você?',
+    'Que outro animal vive perto dele?',
+    'Você já viu um de verdade? Onde?'
+];
+
+const comidaQuestionsPT = [
+    'Com o que você come isso?',
+    'Em qual refeição isso aparece?',
+    'Onde você costuma comer isso?',
+    'Quem você conhece que prepara isso bem?',
+    'É comida de dia comum ou de ocasião especial?',
+    'O que você bebe junto com isso?',
+    'Come com a mão ou com talher?',
+    'Combina mais com calor ou com frio?'
+];
+
+const objetoQuestionsPT = [
+    'Em que lugar da casa isso costuma ficar?',
+    'Com que frequência você usa isso?',
+    'Quanto isso custa, mais ou menos?',
+    'De que material isso é feito?',
+    'O seu foi comprado ou ganhado?',
+    'Cabe na sua mão ou é maior que você?',
+    'Você empresta isso pra alguém?',
+    'O que acontece se isso quebrar ou sumir?'
+];
+
+const lugarQuestionsPT = [
+    'O que você faz nesse lugar?',
+    'Com quem você costuma ir a esse lugar?',
+    'Com que frequência você vai?',
+    'O que você leva quando vai pra lá?',
+    'É um lugar barulhento ou silencioso?',
+    'Você vai mais de dia ou de noite?',
+    'Que cheiro tem esse lugar?',
+    'Criança gosta de ir nesse lugar?'
+];
 
 const wordCategoriesPT = [
-    { 
-        category: 'Frutas', 
-        words: ['BANANA', 'MAÇÃ', 'LARANJA', 'ABACAXI', 'MORANGO', 'UVA', 'MANGA', 'MELANCIA', 'PERA', 'MAMÃO', 'LIMÃO', 'COCO', 'CEREJA', 'GOIABA', 'MARACUJÁ', 'ABACATE', 'MELÃO', 'KIWI', 'PÊSSEGO', 'TANGERINA', 'AMEIXA', 'AÇAÍ', 'JABUTICABA', 'FRAMBOESA', 'PITANGA', 'ROMÃ', 'FIGO', 'DAMASCO', 'AMORA', 'CAJU', 'JACA', 'GRAVIOLA', 'LICHIA', 'CARAMBOLA', 'NECTARINA', 'CUPUAÇU'],
-        similar: { 'BANANA': ['MAMÃO', 'MANGA'], 'MAÇÃ': ['PERA', 'PÊSSEGO'], 'LARANJA': ['TANGERINA', 'LIMÃO'], 'MORANGO': ['FRAMBOESA', 'AMORA'], 'MELANCIA': ['MELÃO', 'MAMÃO'], 'UVA': ['JABUTICABA', 'AMORA'], 'MANGA': ['MAMÃO', 'PÊSSEGO'], 'PERA': ['MAÇÃ', 'PÊSSEGO'], 'ABACAXI': ['MANGA', 'MELÃO'], 'LIMÃO': ['LARANJA', 'TANGERINA'], 'COCO': ['JACA', 'ABACATE'], 'PÊSSEGO': ['AMEIXA', 'NECTARINA'], 'TANGERINA': ['LARANJA', 'LIMÃO'], 'KIWI': ['MARACUJÁ', 'FIGO'], 'ABACATE': ['MAMÃO', 'MANGA'], 'CEREJA': ['MORANGO', 'FRAMBOESA'], 'GOIABA': ['PERA', 'MAÇÃ'], 'MAMÃO': ['MANGA', 'MELÃO'], 'MELÃO': ['MELANCIA', 'MAMÃO'], 'MARACUJÁ': ['KIWI', 'GOIABA'] }
+    {
+        category: 'Frutas',
+        words: ['BANANA', 'MAÇÃ', 'LARANJA', 'ABACAXI', 'MORANGO', 'UVA', 'MANGA', 'MELANCIA', 'PERA', 'MAMÃO', 'LIMÃO', 'COCO', 'GOIABA', 'MARACUJÁ', 'ABACATE', 'MELÃO', 'KIWI', 'PÊSSEGO', 'TANGERINA', 'AÇAÍ', 'JABUTICABA', 'CAJU', 'JACA', 'AMEIXA', 'CEREJA'],
+        similar: {
+            'BANANA': ['MAMÃO', 'MANGA', 'ABACAXI'],
+            'MAÇÃ': ['PERA', 'PÊSSEGO', 'UVA'],
+            'LARANJA': ['TANGERINA', 'LIMÃO', 'ABACAXI'],
+            'ABACAXI': ['MANGA', 'MELÃO', 'LARANJA'],
+            'MORANGO': ['CEREJA', 'UVA', 'MELANCIA'],
+            'UVA': ['JABUTICABA', 'CEREJA', 'MORANGO'],
+            'MANGA': ['MAMÃO', 'PÊSSEGO', 'ABACAXI'],
+            'MELANCIA': ['MELÃO', 'MAMÃO', 'ABACAXI'],
+            'PERA': ['MAÇÃ', 'PÊSSEGO', 'GOIABA'],
+            'MAMÃO': ['MELÃO', 'MANGA', 'BANANA'],
+            'LIMÃO': ['LARANJA', 'TANGERINA', 'MARACUJÁ'],
+            'COCO': ['ABACAXI', 'JACA', 'MELÃO'],
+            'GOIABA': ['PÊSSEGO', 'MAÇÃ', 'MANGA'],
+            'MARACUJÁ': ['KIWI', 'GOIABA', 'LIMÃO'],
+            'ABACATE': ['MANGA', 'MAMÃO', 'COCO'],
+            'MELÃO': ['MELANCIA', 'MAMÃO', 'ABACAXI'],
+            'KIWI': ['MARACUJÁ', 'MORANGO', 'UVA'],
+            'PÊSSEGO': ['AMEIXA', 'GOIABA', 'MAÇÃ'],
+            'TANGERINA': ['LARANJA', 'LIMÃO', 'UVA'],
+            'AÇAÍ': ['JABUTICABA', 'UVA', 'MORANGO'],
+            'JABUTICABA': ['UVA', 'AÇAÍ', 'CEREJA'],
+            'CAJU': ['GOIABA', 'MANGA', 'ABACAXI'],
+            'JACA': ['MANGA', 'ABACAXI', 'COCO'],
+            'AMEIXA': ['PÊSSEGO', 'UVA', 'MAÇÃ'],
+            'CEREJA': ['MORANGO', 'UVA', 'MAÇÃ']
+        },
+        questions: [
+            'Com o que você come essa fruta?',
+            'Que bebida dá pra fazer com ela?',
+            'Você come com casca ou sem casca?',
+            'Ela é mais doce ou mais azeda?',
+            'Em que momento do dia você comeria?',
+            'Onde você compra essa fruta?',
+            'Ela cabe na palma da sua mão?',
+            'Que sobremesa leva essa fruta?'
+        ]
     },
-    { 
-        category: 'Animais de Estimação', 
-        words: ['CACHORRO', 'GATO', 'HAMSTER', 'COELHO', 'PEIXE', 'TARTARUGA', 'PAPAGAIO', 'PERIQUITO', 'CALOPSITA', 'CANÁRIO', 'PORQUINHO DA ÍNDIA', 'FURÃO', 'CHINCHILA', 'IGUANA', 'GECKO', 'JABUTI'],
-        similar: { 'CACHORRO': ['GATO', 'COELHO'], 'GATO': ['CACHORRO', 'COELHO'], 'HAMSTER': ['PORQUINHO DA ÍNDIA', 'CHINCHILA'], 'COELHO': ['HAMSTER', 'PORQUINHO DA ÍNDIA'], 'PEIXE': ['TARTARUGA', 'JABUTI'], 'PAPAGAIO': ['PERIQUITO', 'CALOPSITA'], 'PERIQUITO': ['CALOPSITA', 'CANÁRIO'], 'TARTARUGA': ['JABUTI', 'IGUANA'], 'PORQUINHO DA ÍNDIA': ['HAMSTER', 'CHINCHILA'] }
+    {
+        category: 'Animais de Estimação',
+        words: ['CACHORRO', 'GATO', 'HAMSTER', 'COELHO', 'PEIXE', 'TARTARUGA', 'JABUTI', 'PAPAGAIO', 'PERIQUITO', 'CALOPSITA', 'CANÁRIO', 'PORQUINHO DA ÍNDIA'],
+        similar: {
+            'CACHORRO': ['GATO', 'COELHO', 'HAMSTER'],
+            'GATO': ['CACHORRO', 'COELHO', 'HAMSTER'],
+            'HAMSTER': ['PORQUINHO DA ÍNDIA', 'COELHO', 'GATO'],
+            'COELHO': ['HAMSTER', 'PORQUINHO DA ÍNDIA', 'GATO'],
+            'PEIXE': ['TARTARUGA', 'JABUTI', 'HAMSTER'],
+            'TARTARUGA': ['JABUTI', 'PEIXE', 'HAMSTER'],
+            'JABUTI': ['TARTARUGA', 'PEIXE', 'COELHO'],
+            'PAPAGAIO': ['ARARA', 'PERIQUITO', 'CANÁRIO'],
+            'PERIQUITO': ['CALOPSITA', 'CANÁRIO', 'PAPAGAIO'],
+            'CALOPSITA': ['PERIQUITO', 'PAPAGAIO', 'CANÁRIO'],
+            'CANÁRIO': ['PERIQUITO', 'CALOPSITA', 'PAPAGAIO'],
+            'PORQUINHO DA ÍNDIA': ['HAMSTER', 'COELHO', 'GATO']
+        },
+        questions: animalQuestionsPT
     },
-    { 
-        category: 'Animais da Fazenda', 
-        words: ['VACA', 'CAVALO', 'PORCO', 'GALINHA', 'PATO', 'OVELHA', 'CABRA', 'BURRO', 'GALO', 'PERU', 'GANSO', 'BODE', 'CARNEIRO', 'ÉGUA', 'JUMENTO', 'MULA', 'LEITÃO', 'PINTINHO', 'CORDEIRO'],
-        similar: { 'VACA': ['CABRA', 'OVELHA'], 'CAVALO': ['BURRO', 'MULA'], 'PORCO': ['LEITÃO', 'JAVALI'], 'GALINHA': ['PATO', 'PERU'], 'PATO': ['GANSO', 'GALINHA'], 'OVELHA': ['CABRA', 'CARNEIRO'], 'CABRA': ['OVELHA', 'BODE'], 'BURRO': ['CAVALO', 'MULA'], 'GALO': ['PERU', 'GALINHA'], 'PERU': ['GALINHA', 'GANSO'] }
+    {
+        category: 'Animais da Fazenda',
+        words: ['VACA', 'BOI', 'CAVALO', 'PORCO', 'GALINHA', 'GALO', 'PINTINHO', 'PATO', 'GANSO', 'PERU', 'OVELHA', 'CARNEIRO', 'CABRA', 'BODE', 'BURRO'],
+        similar: {
+            'VACA': ['BOI', 'CABRA', 'OVELHA'],
+            'BOI': ['VACA', 'CAVALO', 'CABRA'],
+            'CAVALO': ['BURRO', 'BOI', 'CABRA'],
+            'PORCO': ['JAVALI', 'VACA', 'CABRA'],
+            'GALINHA': ['PATO', 'PERU', 'GANSO'],
+            'GALO': ['GALINHA', 'PERU', 'PATO'],
+            'PINTINHO': ['GALINHA', 'PATO', 'PERU'],
+            'PATO': ['GANSO', 'GALINHA', 'PERU'],
+            'GANSO': ['PATO', 'GALINHA', 'CISNE'],
+            'PERU': ['GALINHA', 'GANSO', 'PATO'],
+            'OVELHA': ['CARNEIRO', 'CABRA', 'VACA'],
+            'CARNEIRO': ['OVELHA', 'BODE', 'CABRA'],
+            'CABRA': ['BODE', 'OVELHA', 'VACA'],
+            'BODE': ['CABRA', 'CARNEIRO', 'BURRO'],
+            'BURRO': ['CAVALO', 'BOI', 'BODE']
+        },
+        questions: animalQuestionsPT
     },
-    { 
-        category: 'Animais Selvagens', 
-        words: ['LEÃO', 'TIGRE', 'URSO', 'LOBO', 'RAPOSA', 'ELEFANTE', 'GIRAFA', 'ZEBRA', 'MACACO', 'GORILA', 'HIPOPÓTAMO', 'RINOCERONTE', 'CROCODILO', 'JACARÉ', 'ONÇA', 'LEOPARDO', 'GUEPARDO', 'HIENA', 'BÚFALO', 'CERVO', 'VEADO', 'CANGURU', 'COALA', 'PANDA', 'PREGUIÇA', 'TATU', 'TAMANDUÁ', 'CAPIVARA'],
-        similar: { 'LEÃO': ['TIGRE', 'ONÇA'], 'TIGRE': ['LEÃO', 'LEOPARDO'], 'URSO': ['GORILA', 'PANDA'], 'LOBO': ['RAPOSA', 'HIENA'], 'RAPOSA': ['LOBO', 'HIENA'], 'ELEFANTE': ['RINOCERONTE', 'HIPOPÓTAMO'], 'GIRAFA': ['ZEBRA', 'CERVO'], 'ZEBRA': ['GIRAFA', 'CAVALO'], 'MACACO': ['GORILA', 'CHIMPANZÉ'], 'HIPOPÓTAMO': ['RINOCERONTE', 'ELEFANTE'], 'CROCODILO': ['JACARÉ', 'LAGARTO'], 'ONÇA': ['LEOPARDO', 'TIGRE'], 'CANGURU': ['COALA', 'VEADO'], 'PANDA': ['URSO', 'COALA'] }
+    {
+        category: 'Animais Selvagens',
+        words: ['LEÃO', 'TIGRE', 'URSO', 'LOBO', 'RAPOSA', 'ELEFANTE', 'GIRAFA', 'ZEBRA', 'MACACO', 'GORILA', 'HIPOPÓTAMO', 'RINOCERONTE', 'JACARÉ', 'COBRA', 'ONÇA', 'CANGURU', 'COALA', 'PANDA', 'PREGUIÇA', 'TATU', 'TAMANDUÁ', 'CAPIVARA', 'VEADO'],
+        similar: {
+            'LEÃO': ['TIGRE', 'ONÇA', 'LOBO'],
+            'TIGRE': ['LEÃO', 'ONÇA', 'LOBO'],
+            'URSO': ['PANDA', 'GORILA', 'LOBO'],
+            'LOBO': ['RAPOSA', 'CACHORRO', 'URSO'],
+            'RAPOSA': ['LOBO', 'CACHORRO', 'ONÇA'],
+            'ELEFANTE': ['RINOCERONTE', 'HIPOPÓTAMO', 'GIRAFA'],
+            'GIRAFA': ['ZEBRA', 'ELEFANTE', 'CAVALO'],
+            'ZEBRA': ['CAVALO', 'GIRAFA', 'VEADO'],
+            'MACACO': ['GORILA', 'PREGUIÇA', 'COALA'],
+            'GORILA': ['MACACO', 'URSO', 'PANDA'],
+            'HIPOPÓTAMO': ['RINOCERONTE', 'ELEFANTE', 'JACARÉ'],
+            'RINOCERONTE': ['HIPOPÓTAMO', 'ELEFANTE', 'JACARÉ'],
+            'JACARÉ': ['CROCODILO', 'HIPOPÓTAMO', 'COBRA'],
+            'COBRA': ['LAGARTO', 'JACARÉ', 'ARANHA'],
+            'ONÇA': ['TIGRE', 'LEÃO', 'LOBO'],
+            'CANGURU': ['COALA', 'VEADO', 'MACACO'],
+            'COALA': ['PANDA', 'PREGUIÇA', 'MACACO'],
+            'PANDA': ['URSO', 'COALA', 'GORILA'],
+            'PREGUIÇA': ['COALA', 'MACACO', 'TAMANDUÁ'],
+            'TATU': ['TAMANDUÁ', 'TARTARUGA', 'CAPIVARA'],
+            'TAMANDUÁ': ['TATU', 'PREGUIÇA', 'CAPIVARA'],
+            'CAPIVARA': ['HIPOPÓTAMO', 'TATU', 'VEADO'],
+            'VEADO': ['ZEBRA', 'CAVALO', 'CANGURU']
+        },
+        questions: animalQuestionsPT
     },
-    { 
-        category: 'Animais do Mar', 
-        words: ['TUBARÃO', 'BALEIA', 'GOLFINHO', 'POLVO', 'LULA', 'CARANGUEJO', 'CAMARÃO', 'LAGOSTA', 'ESTRELA DO MAR', 'ÁGUA VIVA', 'CAVALO MARINHO', 'TARTARUGA MARINHA', 'FOCA', 'LEÃO MARINHO', 'MORSA', 'ARRAIA', 'ENGUIA', 'SALMÃO', 'ATUM', 'SARDINHA', 'OSTRA', 'MEXILHÃO'],
-        similar: { 'TUBARÃO': ['ARRAIA', 'BALEIA'], 'BALEIA': ['GOLFINHO', 'FOCA'], 'GOLFINHO': ['BALEIA', 'FOCA'], 'POLVO': ['LULA', 'ÁGUA VIVA'], 'CARANGUEJO': ['LAGOSTA', 'CAMARÃO'], 'CAMARÃO': ['LAGOSTA', 'CARANGUEJO'], 'FOCA': ['LEÃO MARINHO', 'MORSA'], 'TARTARUGA MARINHA': ['FOCA', 'GOLFINHO'], 'SALMÃO': ['ATUM', 'SARDINHA'], 'OSTRA': ['MEXILHÃO', 'CAMARÃO'] }
+    {
+        category: 'Animais do Mar',
+        words: ['TUBARÃO', 'BALEIA', 'GOLFINHO', 'POLVO', 'LULA', 'CARANGUEJO', 'CAMARÃO', 'LAGOSTA', 'ESTRELA DO MAR', 'ÁGUA-VIVA', 'CAVALO-MARINHO', 'FOCA', 'PINGUIM', 'ARRAIA', 'ATUM', 'SARDINHA', 'OSTRA'],
+        similar: {
+            'TUBARÃO': ['BALEIA', 'GOLFINHO', 'ARRAIA'],
+            'BALEIA': ['GOLFINHO', 'TUBARÃO', 'FOCA'],
+            'GOLFINHO': ['BALEIA', 'FOCA', 'TUBARÃO'],
+            'POLVO': ['LULA', 'ÁGUA-VIVA', 'CARANGUEJO'],
+            'LULA': ['POLVO', 'ÁGUA-VIVA', 'CAMARÃO'],
+            'CARANGUEJO': ['SIRI', 'LAGOSTA', 'CAMARÃO'],
+            'CAMARÃO': ['LAGOSTA', 'CARANGUEJO', 'LULA'],
+            'LAGOSTA': ['CAMARÃO', 'CARANGUEJO', 'POLVO'],
+            'ESTRELA DO MAR': ['ÁGUA-VIVA', 'CAVALO-MARINHO', 'POLVO'],
+            'ÁGUA-VIVA': ['POLVO', 'ESTRELA DO MAR', 'LULA'],
+            'CAVALO-MARINHO': ['ESTRELA DO MAR', 'ÁGUA-VIVA', 'CAMARÃO'],
+            'FOCA': ['LEÃO-MARINHO', 'GOLFINHO', 'PINGUIM'],
+            'PINGUIM': ['FOCA', 'PATO', 'GOLFINHO'],
+            'ARRAIA': ['TUBARÃO', 'ÁGUA-VIVA', 'POLVO'],
+            'ATUM': ['SARDINHA', 'SALMÃO', 'TUBARÃO'],
+            'SARDINHA': ['ATUM', 'SALMÃO', 'CAMARÃO'],
+            'OSTRA': ['MEXILHÃO', 'CAMARÃO', 'CARANGUEJO']
+        },
+        questions: animalQuestionsPT
     },
-    { 
-        category: 'Aves', 
-        words: ['ÁGUIA', 'CORUJA', 'GAVIÃO', 'FALCÃO', 'PAPAGAIO', 'ARARA', 'TUCANO', 'BEIJA-FLOR', 'POMBO', 'PARDAL', 'ANDORINHA', 'PELICANO', 'FLAMINGO', 'CISNE', 'GARÇA', 'CEGONHA', 'AVESTRUZ', 'PAVÃO', 'PINGUIM', 'CORVO', 'CANÁRIO', 'PERIQUITO', 'PICA-PAU', 'SABIÁ'],
-        similar: { 'ÁGUIA': ['GAVIÃO', 'FALCÃO'], 'CORUJA': ['GAVIÃO', 'FALCÃO'], 'PAPAGAIO': ['ARARA', 'PERIQUITO'], 'ARARA': ['PAPAGAIO', 'TUCANO'], 'TUCANO': ['ARARA', 'PAPAGAIO'], 'POMBO': ['PARDAL', 'ANDORINHA'], 'FLAMINGO': ['GARÇA', 'CEGONHA'], 'CISNE': ['GARÇA', 'FLAMINGO'], 'PINGUIM': ['PATO', 'FOCA'], 'BEIJA-FLOR': ['ANDORINHA', 'CANÁRIO'], 'CORVO': ['GAVIÃO', 'URUBU'] }
+    {
+        category: 'Aves',
+        words: ['ÁGUIA', 'CORUJA', 'GAVIÃO', 'FALCÃO', 'PAPAGAIO', 'ARARA', 'TUCANO', 'BEIJA-FLOR', 'POMBO', 'PARDAL', 'ANDORINHA', 'FLAMINGO', 'CISNE', 'GARÇA', 'AVESTRUZ', 'PAVÃO', 'PINGUIM', 'CORVO', 'PICA-PAU', 'SABIÁ', 'BEM-TE-VI', 'URUBU', 'GAIVOTA', 'CANÁRIO'],
+        similar: {
+            'ÁGUIA': ['GAVIÃO', 'FALCÃO', 'CORUJA'],
+            'CORUJA': ['GAVIÃO', 'ÁGUIA', 'CORVO'],
+            'GAVIÃO': ['FALCÃO', 'ÁGUIA', 'URUBU'],
+            'FALCÃO': ['GAVIÃO', 'ÁGUIA', 'CORVO'],
+            'PAPAGAIO': ['ARARA', 'PERIQUITO', 'TUCANO'],
+            'ARARA': ['PAPAGAIO', 'TUCANO', 'PERIQUITO'],
+            'TUCANO': ['ARARA', 'PAPAGAIO', 'PICA-PAU'],
+            'BEIJA-FLOR': ['ANDORINHA', 'CANÁRIO', 'PARDAL'],
+            'POMBO': ['PARDAL', 'ANDORINHA', 'GAIVOTA'],
+            'PARDAL': ['ANDORINHA', 'POMBO', 'SABIÁ'],
+            'ANDORINHA': ['PARDAL', 'POMBO', 'BEIJA-FLOR'],
+            'FLAMINGO': ['GARÇA', 'CISNE', 'CEGONHA'],
+            'CISNE': ['GARÇA', 'PATO', 'FLAMINGO'],
+            'GARÇA': ['CISNE', 'FLAMINGO', 'CEGONHA'],
+            'AVESTRUZ': ['EMA', 'FLAMINGO', 'PAVÃO'],
+            'PAVÃO': ['FLAMINGO', 'AVESTRUZ', 'ARARA'],
+            'PINGUIM': ['PATO', 'FOCA', 'AVESTRUZ'],
+            'CORVO': ['URUBU', 'GAVIÃO', 'POMBO'],
+            'PICA-PAU': ['TUCANO', 'SABIÁ', 'PARDAL'],
+            'SABIÁ': ['CANÁRIO', 'BEM-TE-VI', 'PARDAL'],
+            'BEM-TE-VI': ['SABIÁ', 'CANÁRIO', 'PARDAL'],
+            'URUBU': ['CORVO', 'GAVIÃO', 'ÁGUIA'],
+            'GAIVOTA': ['POMBO', 'GARÇA', 'ANDORINHA'],
+            'CANÁRIO': ['SABIÁ', 'PARDAL', 'PERIQUITO']
+        },
+        questions: animalQuestionsPT
     },
-    { 
-        category: 'Comidas', 
-        words: ['PIZZA', 'HAMBÚRGUER', 'MACARRÃO', 'ARROZ', 'FEIJÃO', 'LASANHA', 'CHURRASCO', 'FRANGO ASSADO', 'BIFE', 'SALADA', 'SOPA', 'PASTEL', 'COXINHA', 'PÃO', 'SANDUÍCHE', 'CACHORRO QUENTE', 'BATATA FRITA', 'OMELETE', 'ESTROGONOFE', 'FEIJOADA', 'MOQUECA', 'RISOTO', 'SUSHI', 'YAKISSOBA', 'TAPIOCA', 'TORTA SALGADA', 'QUICHE', 'ESFIHA', 'EMPADA', 'CARNE ASSADA'],
-        similar: { 'PIZZA': ['ESFIHA', 'QUICHE'], 'HAMBÚRGUER': ['SANDUÍCHE', 'CACHORRO QUENTE'], 'MACARRÃO': ['LASANHA', 'NHOQUE'], 'LASANHA': ['MACARRÃO', 'CANELONE'], 'FRANGO ASSADO': ['CARNE ASSADA', 'CHURRASCO'], 'BIFE': ['CARNE ASSADA', 'CHURRASCO'], 'PASTEL': ['EMPADA', 'ESFIHA'], 'COXINHA': ['EMPADA', 'QUIBE'], 'SANDUÍCHE': ['HAMBÚRGUER', 'CACHORRO QUENTE'], 'SOPA': ['CALDO', 'CREME'], 'SUSHI': ['TEMAKI', 'YAKISSOBA'], 'FEIJOADA': ['MOQUECA', 'ESTROGONOFE'], 'RISOTO': ['ARROZ', 'PAELLA'] }
+    {
+        category: 'Comidas',
+        words: ['PIZZA', 'HAMBÚRGUER', 'CACHORRO-QUENTE', 'SANDUÍCHE', 'MACARRÃO', 'LASANHA', 'NHOQUE', 'ARROZ', 'FEIJÃO', 'FEIJOADA', 'CHURRASCO', 'BIFE', 'FRANGO ASSADO', 'SALADA', 'SOPA', 'PASTEL', 'COXINHA', 'ESFIHA', 'EMPADA', 'QUIBE', 'PÃO', 'PÃO DE QUEIJO', 'TAPIOCA', 'PANQUECA', 'OMELETE', 'ESTROGONOFE', 'SUSHI', 'BATATA FRITA', 'PURÊ', 'FAROFA'],
+        similar: {
+            'PIZZA': ['ESFIHA', 'LASANHA', 'PASTEL'],
+            'HAMBÚRGUER': ['SANDUÍCHE', 'CACHORRO-QUENTE', 'PIZZA'],
+            'CACHORRO-QUENTE': ['HAMBÚRGUER', 'SANDUÍCHE', 'PASTEL'],
+            'SANDUÍCHE': ['HAMBÚRGUER', 'CACHORRO-QUENTE', 'PÃO'],
+            'MACARRÃO': ['NHOQUE', 'LASANHA', 'ARROZ'],
+            'LASANHA': ['MACARRÃO', 'NHOQUE', 'PIZZA'],
+            'NHOQUE': ['MACARRÃO', 'LASANHA', 'PURÊ'],
+            'ARROZ': ['MACARRÃO', 'PURÊ', 'FEIJÃO'],
+            'FEIJÃO': ['FEIJOADA', 'ARROZ', 'SOPA'],
+            'FEIJOADA': ['FEIJÃO', 'ESTROGONOFE', 'CHURRASCO'],
+            'CHURRASCO': ['BIFE', 'FRANGO ASSADO', 'HAMBÚRGUER'],
+            'BIFE': ['CHURRASCO', 'FRANGO ASSADO', 'HAMBÚRGUER'],
+            'FRANGO ASSADO': ['CHURRASCO', 'BIFE', 'ESTROGONOFE'],
+            'SALADA': ['SOPA', 'OMELETE', 'SANDUÍCHE'],
+            'SOPA': ['CALDO', 'SALADA', 'FEIJÃO'],
+            'PASTEL': ['COXINHA', 'ESFIHA', 'EMPADA'],
+            'COXINHA': ['PASTEL', 'QUIBE', 'EMPADA'],
+            'ESFIHA': ['PASTEL', 'PIZZA', 'EMPADA'],
+            'EMPADA': ['COXINHA', 'PASTEL', 'PÃO DE QUEIJO'],
+            'QUIBE': ['COXINHA', 'ESFIHA', 'BIFE'],
+            'PÃO': ['TORRADA', 'PÃO DE QUEIJO', 'BOLO'],
+            'PÃO DE QUEIJO': ['PÃO', 'COXINHA', 'TAPIOCA'],
+            'TAPIOCA': ['PANQUECA', 'CREPE', 'PÃO DE QUEIJO'],
+            'PANQUECA': ['CREPE', 'TAPIOCA', 'OMELETE'],
+            'OMELETE': ['PANQUECA', 'OVO FRITO', 'TAPIOCA'],
+            'ESTROGONOFE': ['RISOTO', 'FEIJOADA', 'MACARRÃO'],
+            'SUSHI': ['TEMAKI', 'YAKISSOBA', 'SALADA'],
+            'BATATA FRITA': ['MANDIOCA FRITA', 'PURÊ', 'FAROFA'],
+            'PURÊ': ['NHOQUE', 'BATATA FRITA', 'ARROZ'],
+            'FAROFA': ['ARROZ', 'PURÊ', 'FEIJÃO']
+        },
+        questions: comidaQuestionsPT
     },
-    { 
-        category: 'Doces e Sobremesas', 
-        words: ['BOLO', 'TORTA', 'PUDIM', 'SORVETE', 'BRIGADEIRO', 'CHOCOLATE', 'BISCOITO', 'COOKIE', 'BROWNIE', 'CHEESECAKE', 'MOUSSE', 'PAVÊ', 'BOMBOM', 'TRUFA', 'GELATINA', 'PICOLÉ', 'DONUT', 'CHURROS', 'CUPCAKE', 'PAÇOCA', 'COCADA', 'BEIJINHO', 'QUINDIM', 'SONHO', 'CROISSANT', 'WAFFLE', 'PANQUECA', 'MILKSHAKE', 'AÇAÍ'],
-        similar: { 'BOLO': ['TORTA', 'PUDIM'], 'TORTA': ['BOLO', 'CHEESECAKE'], 'PUDIM': ['FLAN', 'MOUSSE'], 'SORVETE': ['PICOLÉ', 'AÇAÍ'], 'BRIGADEIRO': ['BEIJINHO', 'TRUFA'], 'BISCOITO': ['COOKIE', 'BOLACHA'], 'BROWNIE': ['BOLO', 'COOKIE'], 'MOUSSE': ['PUDIM', 'CREME'], 'BOMBOM': ['TRUFA', 'CHOCOLATE'], 'DONUT': ['SONHO', 'CHURROS'], 'CUPCAKE': ['BOLO', 'MUFFIN'], 'PAÇOCA': ['COCADA', 'PÉ DE MOLEQUE'], 'WAFFLE': ['PANQUECA', 'CREPE'] }
+    {
+        category: 'Doces e Sobremesas',
+        words: ['BOLO', 'TORTA', 'PUDIM', 'SORVETE', 'PICOLÉ', 'BRIGADEIRO', 'BEIJINHO', 'CHOCOLATE', 'BISCOITO', 'BROWNIE', 'MOUSSE', 'PAVÊ', 'BOMBOM', 'GELATINA', 'CHURROS', 'SONHO', 'PAÇOCA', 'COCADA', 'PÉ DE MOLEQUE', 'QUINDIM', 'MILKSHAKE', 'DOCE DE LEITE', 'GOIABADA', 'ALGODÃO DOCE', 'PIRULITO', 'BALA', 'CHICLETE'],
+        similar: {
+            'BOLO': ['TORTA', 'BROWNIE', 'PUDIM'],
+            'TORTA': ['BOLO', 'PAVÊ', 'PUDIM'],
+            'PUDIM': ['QUINDIM', 'MOUSSE', 'GELATINA'],
+            'SORVETE': ['PICOLÉ', 'MILKSHAKE', 'MOUSSE'],
+            'PICOLÉ': ['SORVETE', 'GELADINHO', 'MILKSHAKE'],
+            'BRIGADEIRO': ['BEIJINHO', 'BOMBOM', 'CHOCOLATE'],
+            'BEIJINHO': ['BRIGADEIRO', 'COCADA', 'BOMBOM'],
+            'CHOCOLATE': ['BOMBOM', 'BRIGADEIRO', 'BISCOITO'],
+            'BISCOITO': ['BOLACHA', 'BROWNIE', 'BOLO'],
+            'BROWNIE': ['BOLO', 'CHOCOLATE', 'BISCOITO'],
+            'MOUSSE': ['PUDIM', 'GELATINA', 'SORVETE'],
+            'PAVÊ': ['TORTA', 'MOUSSE', 'PUDIM'],
+            'BOMBOM': ['CHOCOLATE', 'BRIGADEIRO', 'BALA'],
+            'GELATINA': ['MOUSSE', 'PUDIM', 'GELADINHO'],
+            'CHURROS': ['SONHO', 'DONUT', 'BOLO'],
+            'SONHO': ['CHURROS', 'DONUT', 'BOLO'],
+            'PAÇOCA': ['PÉ DE MOLEQUE', 'COCADA', 'DOCE DE LEITE'],
+            'COCADA': ['BEIJINHO', 'PAÇOCA', 'PÉ DE MOLEQUE'],
+            'PÉ DE MOLEQUE': ['PAÇOCA', 'COCADA', 'DOCE DE LEITE'],
+            'QUINDIM': ['PUDIM', 'COCADA', 'BEIJINHO'],
+            'MILKSHAKE': ['SORVETE', 'VITAMINA', 'PICOLÉ'],
+            'DOCE DE LEITE': ['LEITE CONDENSADO', 'GOIABADA', 'PAÇOCA'],
+            'GOIABADA': ['GELEIA', 'DOCE DE LEITE', 'GELATINA'],
+            'ALGODÃO DOCE': ['PIRULITO', 'BALA', 'CHURROS'],
+            'PIRULITO': ['BALA', 'CHICLETE', 'BOMBOM'],
+            'BALA': ['PIRULITO', 'CHICLETE', 'BOMBOM'],
+            'CHICLETE': ['BALA', 'PIRULITO', 'BOMBOM']
+        },
+        questions: [
+            'Em que festa esse doce aparece?',
+            'Você come isso com colher ou com a mão?',
+            'Derrete ou não derrete?',
+            'Quem você conhece que faz isso bem?',
+            'Combina com bolo de aniversário?',
+            'Você compraria isso na padaria ou no mercado?',
+            'É mais de criança ou de adulto?',
+            'Dá pra guardar na geladeira?'
+        ]
     },
-    { 
-        category: 'Bebidas', 
-        words: ['ÁGUA', 'CAFÉ', 'CHÁ', 'LEITE', 'SUCO', 'REFRIGERANTE', 'CERVEJA', 'VINHO', 'CHOCOLATE QUENTE', 'LIMONADA', 'VITAMINA', 'MILKSHAKE', 'CAPPUCCINO', 'SMOOTHIE', 'ÁGUA DE COCO', 'CHIMARRÃO', 'ENERGÉTICO', 'ISOTÔNICO', 'CAIPIRINHA', 'MOJITO', 'BATIDA', 'CHAMPANHE', 'CHOPP', 'WHISKY'],
-        similar: { 'CAFÉ': ['CHÁ', 'CAPPUCCINO'], 'CHÁ': ['CAFÉ', 'CHIMARRÃO'], 'SUCO': ['VITAMINA', 'SMOOTHIE'], 'REFRIGERANTE': ['SUCO', 'ENERGÉTICO'], 'CERVEJA': ['CHOPP', 'VINHO'], 'VINHO': ['CHAMPANHE', 'CERVEJA'], 'CHOCOLATE QUENTE': ['CAFÉ', 'CAPPUCCINO'], 'LIMONADA': ['SUCO', 'ÁGUA DE COCO'], 'VITAMINA': ['MILKSHAKE', 'SMOOTHIE'], 'MILKSHAKE': ['VITAMINA', 'SMOOTHIE'], 'CAPPUCCINO': ['CAFÉ', 'CHOCOLATE QUENTE'], 'CAIPIRINHA': ['MOJITO', 'BATIDA'] }
+    {
+        category: 'Bebidas',
+        words: ['ÁGUA', 'CAFÉ', 'CHÁ', 'LEITE', 'SUCO', 'REFRIGERANTE', 'GUARANÁ', 'CERVEJA', 'CHOPP', 'VINHO', 'CHAMPANHE', 'CHOCOLATE QUENTE', 'CAPPUCCINO', 'LIMONADA', 'VITAMINA', 'ÁGUA DE COCO', 'CHIMARRÃO', 'ENERGÉTICO', 'CAIPIRINHA', 'WHISKY', 'VODKA'],
+        similar: {
+            'ÁGUA': ['ÁGUA DE COCO', 'SUCO', 'CHÁ'],
+            'CAFÉ': ['CAPPUCCINO', 'CHÁ', 'CHOCOLATE QUENTE'],
+            'CHÁ': ['CAFÉ', 'CHIMARRÃO', 'ÁGUA'],
+            'LEITE': ['VITAMINA', 'IOGURTE', 'CHOCOLATE QUENTE'],
+            'SUCO': ['VITAMINA', 'LIMONADA', 'REFRIGERANTE'],
+            'REFRIGERANTE': ['GUARANÁ', 'SUCO', 'ENERGÉTICO'],
+            'GUARANÁ': ['REFRIGERANTE', 'SUCO', 'ENERGÉTICO'],
+            'CERVEJA': ['CHOPP', 'VINHO', 'CAIPIRINHA'],
+            'CHOPP': ['CERVEJA', 'CHAMPANHE', 'VINHO'],
+            'VINHO': ['CHAMPANHE', 'CERVEJA', 'WHISKY'],
+            'CHAMPANHE': ['VINHO', 'CHOPP', 'CAIPIRINHA'],
+            'CHOCOLATE QUENTE': ['CAPPUCCINO', 'CAFÉ', 'LEITE'],
+            'CAPPUCCINO': ['CAFÉ', 'CHOCOLATE QUENTE', 'MILKSHAKE'],
+            'LIMONADA': ['SUCO', 'ÁGUA DE COCO', 'CAIPIRINHA'],
+            'VITAMINA': ['MILKSHAKE', 'SUCO', 'LEITE'],
+            'ÁGUA DE COCO': ['ÁGUA', 'LIMONADA', 'SUCO'],
+            'CHIMARRÃO': ['CHÁ', 'TERERÉ', 'CAFÉ'],
+            'ENERGÉTICO': ['REFRIGERANTE', 'ISOTÔNICO', 'CAFÉ'],
+            'CAIPIRINHA': ['BATIDA', 'CERVEJA', 'VINHO'],
+            'WHISKY': ['VODKA', 'VINHO', 'CERVEJA'],
+            'VODKA': ['WHISKY', 'CACHAÇA', 'CAIPIRINHA']
+        },
+        questions: [
+            'Em que momento do dia você bebe isso?',
+            'Você prefere quente ou gelado?',
+            'Com que comida isso combina?',
+            'É pra todo dia ou pra ocasião especial?',
+            'Criança pode beber?',
+            'Você bebe em copo, xícara ou garrafa?',
+            'Combina com festa ou com descanso?',
+            'Onde você compraria isso?'
+        ]
     },
-    { 
-        category: 'Esportes com Bola', 
-        words: ['FUTEBOL', 'BASQUETE', 'VÔLEI', 'TÊNIS', 'HANDEBOL', 'FUTSAL', 'RUGBY', 'GOLFE', 'BOLICHE', 'SINUCA', 'PING PONG', 'BEISEBOL', 'POLO AQUÁTICO', 'FUTEBOL AMERICANO', 'SQUASH', 'BADMINTON', 'FRESCOBOL', 'PETECA'],
-        similar: { 'FUTEBOL': ['FUTSAL', 'RUGBY'], 'BASQUETE': ['VÔLEI', 'HANDEBOL'], 'VÔLEI': ['BASQUETE', 'HANDEBOL'], 'TÊNIS': ['PING PONG', 'SQUASH'], 'HANDEBOL': ['BASQUETE', 'VÔLEI'], 'GOLFE': ['SINUCA', 'BOLICHE'], 'BOLICHE': ['GOLFE', 'SINUCA'], 'PING PONG': ['TÊNIS', 'BADMINTON'], 'FUTSAL': ['FUTEBOL', 'HANDEBOL'], 'RUGBY': ['FUTEBOL AMERICANO', 'FUTEBOL'], 'BADMINTON': ['TÊNIS', 'PETECA'] }
+    {
+        category: 'Esportes com Bola',
+        words: ['FUTEBOL', 'FUTSAL', 'BASQUETE', 'VÔLEI', 'HANDEBOL', 'TÊNIS', 'PING PONG', 'GOLFE', 'BOLICHE', 'SINUCA', 'BEISEBOL', 'FUTEBOL AMERICANO', 'FUTEVÔLEI', 'FRESCOBOL'],
+        similar: {
+            'FUTEBOL': ['FUTSAL', 'FUTEVÔLEI', 'HANDEBOL'],
+            'FUTSAL': ['FUTEBOL', 'HANDEBOL', 'FUTEVÔLEI'],
+            'BASQUETE': ['HANDEBOL', 'VÔLEI', 'FUTEBOL'],
+            'VÔLEI': ['FUTEVÔLEI', 'HANDEBOL', 'BASQUETE'],
+            'HANDEBOL': ['BASQUETE', 'FUTSAL', 'VÔLEI'],
+            'TÊNIS': ['PING PONG', 'FRESCOBOL', 'VÔLEI'],
+            'PING PONG': ['TÊNIS', 'FRESCOBOL', 'SINUCA'],
+            'GOLFE': ['SINUCA', 'BOLICHE', 'BEISEBOL'],
+            'BOLICHE': ['SINUCA', 'GOLFE', 'BASQUETE'],
+            'SINUCA': ['BOLICHE', 'GOLFE', 'PING PONG'],
+            'BEISEBOL': ['FUTEBOL AMERICANO', 'GOLFE', 'TÊNIS'],
+            'FUTEBOL AMERICANO': ['RUGBY', 'BEISEBOL', 'FUTEBOL'],
+            'FUTEVÔLEI': ['VÔLEI', 'FUTEBOL', 'FRESCOBOL'],
+            'FRESCOBOL': ['PING PONG', 'TÊNIS', 'FUTEVÔLEI']
+        },
+        questions: [
+            'Onde se pratica esse esporte?',
+            'Quantas pessoas jogam ao mesmo tempo?',
+            'O que você precisa pra jogar, além da bola?',
+            'Usa mais a mão ou o pé?',
+            'Você já jogou isso na escola?',
+            'É mais assistido na TV ou jogado com amigos?',
+            'É jogo de time ou dá pra jogar em dupla?',
+            'Que parte do corpo cansa mais?'
+        ]
     },
-    { 
-        category: 'Esportes Individuais', 
-        words: ['NATAÇÃO', 'CORRIDA', 'CICLISMO', 'GINÁSTICA', 'ATLETISMO', 'SKATE', 'PATINAÇÃO', 'SURFE', 'ESCALADA', 'BOXE', 'JUDÔ', 'KARATÊ', 'TAEKWONDO', 'JIU-JITSU', 'WRESTLING', 'ESGRIMA', 'ARCO E FLECHA', 'TIRO', 'LEVANTAMENTO DE PESO', 'MARATONA', 'TRIATHLON', 'MERGULHO'],
-        similar: { 'NATAÇÃO': ['MERGULHO', 'POLO AQUÁTICO'], 'CORRIDA': ['MARATONA', 'CICLISMO'], 'CICLISMO': ['CORRIDA', 'TRIATHLON'], 'GINÁSTICA': ['PATINAÇÃO', 'DANÇA'], 'BOXE': ['KICKBOXING', 'WRESTLING'], 'JUDÔ': ['JIU-JITSU', 'KARATÊ'], 'KARATÊ': ['TAEKWONDO', 'JUDÔ'], 'SURFE': ['SKATE', 'WINDSURF'], 'SKATE': ['PATINAÇÃO', 'SURFE'], 'ESCALADA': ['RAPEL', 'MONTANHISMO'], 'MARATONA': ['CORRIDA', 'TRIATHLON'] }
+    {
+        category: 'Esportes Individuais',
+        words: ['NATAÇÃO', 'CORRIDA', 'MARATONA', 'CICLISMO', 'GINÁSTICA', 'SKATE', 'PATINAÇÃO', 'SURFE', 'BOXE', 'JUDÔ', 'KARATÊ', 'JIU-JITSU', 'MUSCULAÇÃO', 'YOGA', 'PILATES', 'CROSSFIT', 'MERGULHO', 'ESCALADA', 'PESCA'],
+        similar: {
+            'NATAÇÃO': ['MERGULHO', 'SURFE', 'CORRIDA'],
+            'CORRIDA': ['MARATONA', 'CICLISMO', 'NATAÇÃO'],
+            'MARATONA': ['CORRIDA', 'CICLISMO', 'NATAÇÃO'],
+            'CICLISMO': ['CORRIDA', 'SKATE', 'PATINAÇÃO'],
+            'GINÁSTICA': ['YOGA', 'PILATES', 'PATINAÇÃO'],
+            'SKATE': ['PATINAÇÃO', 'SURFE', 'CICLISMO'],
+            'PATINAÇÃO': ['SKATE', 'GINÁSTICA', 'CICLISMO'],
+            'SURFE': ['SKATE', 'NATAÇÃO', 'MERGULHO'],
+            'BOXE': ['KARATÊ', 'JIU-JITSU', 'MUSCULAÇÃO'],
+            'JUDÔ': ['JIU-JITSU', 'KARATÊ', 'BOXE'],
+            'KARATÊ': ['JUDÔ', 'BOXE', 'JIU-JITSU'],
+            'JIU-JITSU': ['JUDÔ', 'KARATÊ', 'BOXE'],
+            'MUSCULAÇÃO': ['CROSSFIT', 'GINÁSTICA', 'BOXE'],
+            'YOGA': ['PILATES', 'ALONGAMENTO', 'GINÁSTICA'],
+            'PILATES': ['YOGA', 'GINÁSTICA', 'ALONGAMENTO'],
+            'CROSSFIT': ['MUSCULAÇÃO', 'GINÁSTICA', 'CORRIDA'],
+            'MERGULHO': ['NATAÇÃO', 'PESCA', 'SURFE'],
+            'ESCALADA': ['TRILHA', 'GINÁSTICA', 'CICLISMO'],
+            'PESCA': ['MERGULHO', 'TRILHA', 'NATAÇÃO']
+        },
+        questions: [
+            'Onde se pratica isso?',
+            'Que roupa ou equipamento precisa?',
+            'É mais de força ou de fôlego?',
+            'Você faria isso de manhã cedo?',
+            'Sua ou não sua muito?',
+            'Precisa de professor pra começar?',
+            'É perigoso se fizer errado?',
+            'Que tipo de pessoa você imagina praticando?'
+        ]
     },
-    { 
-        category: 'Instrumentos Musicais', 
-        words: ['VIOLÃO', 'GUITARRA', 'PIANO', 'TECLADO', 'BATERIA', 'BAIXO', 'VIOLINO', 'FLAUTA', 'SAXOFONE', 'TROMPETE', 'SANFONA', 'ACORDEÃO', 'GAITA', 'CAVAQUINHO', 'UKULELE', 'PANDEIRO', 'TAMBOR', 'TRIÂNGULO', 'HARPA', 'CLARINETE', 'TROMBONE', 'BERIMBAU', 'VIOLONCELO', 'CONTRABAIXO'],
-        similar: { 'VIOLÃO': ['GUITARRA', 'CAVAQUINHO'], 'GUITARRA': ['VIOLÃO', 'BAIXO'], 'PIANO': ['TECLADO', 'ÓRGÃO'], 'TECLADO': ['PIANO', 'SINTETIZADOR'], 'BATERIA': ['PANDEIRO', 'TAMBOR'], 'VIOLINO': ['VIOLA', 'VIOLONCELO'], 'FLAUTA': ['CLARINETE', 'SAXOFONE'], 'SAXOFONE': ['CLARINETE', 'TROMPETE'], 'TROMPETE': ['TROMBONE', 'SAXOFONE'], 'SANFONA': ['ACORDEÃO', 'GAITA'], 'CAVAQUINHO': ['UKULELE', 'VIOLÃO'], 'PANDEIRO': ['TAMBOR', 'TRIÂNGULO'], 'HARPA': ['VIOLÃO', 'PIANO'] }
+    {
+        category: 'Instrumentos Musicais',
+        words: ['VIOLÃO', 'GUITARRA', 'BAIXO', 'PIANO', 'TECLADO', 'BATERIA', 'VIOLINO', 'FLAUTA', 'SAXOFONE', 'TROMPETE', 'SANFONA', 'GAITA', 'CAVAQUINHO', 'UKULELE', 'PANDEIRO', 'TAMBOR', 'TRIÂNGULO', 'HARPA', 'BERIMBAU'],
+        similar: {
+            'VIOLÃO': ['CAVAQUINHO', 'GUITARRA', 'UKULELE'],
+            'GUITARRA': ['VIOLÃO', 'BAIXO', 'CAVAQUINHO'],
+            'BAIXO': ['GUITARRA', 'VIOLÃO', 'TECLADO'],
+            'PIANO': ['TECLADO', 'HARPA', 'VIOLÃO'],
+            'TECLADO': ['PIANO', 'SANFONA', 'GUITARRA'],
+            'BATERIA': ['TAMBOR', 'PANDEIRO', 'TRIÂNGULO'],
+            'VIOLINO': ['VIOLONCELO', 'VIOLÃO', 'HARPA'],
+            'FLAUTA': ['GAITA', 'SAXOFONE', 'TROMPETE'],
+            'SAXOFONE': ['TROMPETE', 'CLARINETE', 'FLAUTA'],
+            'TROMPETE': ['SAXOFONE', 'TROMBONE', 'FLAUTA'],
+            'SANFONA': ['GAITA', 'TECLADO', 'PIANO'],
+            'GAITA': ['FLAUTA', 'SANFONA', 'SAXOFONE'],
+            'CAVAQUINHO': ['UKULELE', 'VIOLÃO', 'GUITARRA'],
+            'UKULELE': ['CAVAQUINHO', 'VIOLÃO', 'GUITARRA'],
+            'PANDEIRO': ['TAMBOR', 'CHOCALHO', 'BATERIA'],
+            'TAMBOR': ['PANDEIRO', 'BATERIA', 'BERIMBAU'],
+            'TRIÂNGULO': ['CHOCALHO', 'PANDEIRO', 'TAMBOR'],
+            'HARPA': ['VIOLINO', 'PIANO', 'VIOLÃO'],
+            'BERIMBAU': ['PANDEIRO', 'TAMBOR', 'CHOCALHO']
+        },
+        questions: [
+            'Em que estilo de música isso aparece?',
+            'Toca com a mão, com baqueta ou com sopro?',
+            'É pesado de carregar?',
+            'É fácil ou difícil de aprender?',
+            'Aparece em festa junina, igreja ou show de rock?',
+            'Que famoso você imagina tocando isso?',
+            'Faz som grave ou agudo?',
+            'Cabe numa mochila?'
+        ]
     },
-    { 
-        category: 'Profissões', 
-        words: ['MÉDICO', 'ENFERMEIRO', 'DENTISTA', 'VETERINÁRIO', 'PROFESSOR', 'ADVOGADO', 'ENGENHEIRO', 'ARQUITETO', 'POLICIAL', 'BOMBEIRO', 'PILOTO', 'MOTORISTA', 'COZINHEIRO', 'PADEIRO', 'GARÇOM', 'PEDREIRO', 'ELETRICISTA', 'ENCANADOR', 'MECÂNICO', 'PINTOR', 'CABELEIREIRO', 'FOTÓGRAFO', 'JORNALISTA', 'ATOR', 'CANTOR', 'MÚSICO', 'ARTISTA', 'CIENTISTA', 'PROGRAMADOR', 'CONTADOR'],
-        similar: { 'MÉDICO': ['ENFERMEIRO', 'DENTISTA'], 'ENFERMEIRO': ['MÉDICO', 'VETERINÁRIO'], 'DENTISTA': ['MÉDICO', 'VETERINÁRIO'], 'PROFESSOR': ['INSTRUTOR', 'TUTOR'], 'ADVOGADO': ['JUIZ', 'PROMOTOR'], 'ENGENHEIRO': ['ARQUITETO', 'TÉCNICO'], 'POLICIAL': ['BOMBEIRO', 'SEGURANÇA'], 'BOMBEIRO': ['POLICIAL', 'SALVA-VIDAS'], 'PILOTO': ['MOTORISTA', 'CAPITÃO'], 'COZINHEIRO': ['PADEIRO', 'CONFEITEIRO'], 'PEDREIRO': ['PINTOR', 'ELETRICISTA'], 'ELETRICISTA': ['ENCANADOR', 'MECÂNICO'], 'CABELEIREIRO': ['MAQUIADOR', 'BARBEIRO'], 'JORNALISTA': ['REPÓRTER', 'ESCRITOR'], 'ATOR': ['CANTOR', 'COMEDIANTE'], 'PROGRAMADOR': ['ANALISTA', 'TÉCNICO'] }
+    {
+        category: 'Profissões',
+        words: ['MÉDICO', 'ENFERMEIRO', 'DENTISTA', 'VETERINÁRIO', 'PROFESSOR', 'ADVOGADO', 'JUIZ', 'ENGENHEIRO', 'ARQUITETO', 'POLICIAL', 'BOMBEIRO', 'SEGURANÇA', 'PORTEIRO', 'PILOTO', 'MOTORISTA', 'MOTOBOY', 'COZINHEIRO', 'PADEIRO', 'GARÇOM', 'PEDREIRO', 'ELETRICISTA', 'ENCANADOR', 'MECÂNICO', 'PINTOR', 'CABELEIREIRO', 'FOTÓGRAFO', 'JORNALISTA', 'ATOR', 'CANTOR', 'JOGADOR DE FUTEBOL', 'VENDEDOR', 'PSICÓLOGO', 'PROGRAMADOR', 'FAXINEIRO', 'JARDINEIRO', 'CARTEIRO'],
+        similar: {
+            'MÉDICO': ['ENFERMEIRO', 'DENTISTA', 'VETERINÁRIO'],
+            'ENFERMEIRO': ['MÉDICO', 'DENTISTA', 'PSICÓLOGO'],
+            'DENTISTA': ['MÉDICO', 'ENFERMEIRO', 'VETERINÁRIO'],
+            'VETERINÁRIO': ['MÉDICO', 'DENTISTA', 'ENFERMEIRO'],
+            'PROFESSOR': ['PSICÓLOGO', 'JORNALISTA', 'ADVOGADO'],
+            'ADVOGADO': ['JUIZ', 'JORNALISTA', 'PROFESSOR'],
+            'JUIZ': ['ADVOGADO', 'POLICIAL', 'PROFESSOR'],
+            'ENGENHEIRO': ['ARQUITETO', 'PEDREIRO', 'PROGRAMADOR'],
+            'ARQUITETO': ['ENGENHEIRO', 'PEDREIRO', 'PINTOR'],
+            'POLICIAL': ['SEGURANÇA', 'BOMBEIRO', 'JUIZ'],
+            'BOMBEIRO': ['POLICIAL', 'SEGURANÇA', 'ENFERMEIRO'],
+            'SEGURANÇA': ['POLICIAL', 'PORTEIRO', 'BOMBEIRO'],
+            'PORTEIRO': ['SEGURANÇA', 'FAXINEIRO', 'VENDEDOR'],
+            'PILOTO': ['MOTORISTA', 'MOTOBOY', 'MECÂNICO'],
+            'MOTORISTA': ['MOTOBOY', 'PILOTO', 'CARTEIRO'],
+            'MOTOBOY': ['MOTORISTA', 'CARTEIRO', 'PILOTO'],
+            'COZINHEIRO': ['PADEIRO', 'CONFEITEIRO', 'GARÇOM'],
+            'PADEIRO': ['COZINHEIRO', 'CONFEITEIRO', 'GARÇOM'],
+            'GARÇOM': ['COZINHEIRO', 'VENDEDOR', 'PADEIRO'],
+            'PEDREIRO': ['PINTOR', 'ELETRICISTA', 'ENGENHEIRO'],
+            'ELETRICISTA': ['ENCANADOR', 'PEDREIRO', 'MECÂNICO'],
+            'ENCANADOR': ['ELETRICISTA', 'PEDREIRO', 'MECÂNICO'],
+            'MECÂNICO': ['ELETRICISTA', 'ENCANADOR', 'MOTORISTA'],
+            'PINTOR': ['PEDREIRO', 'ENCANADOR', 'ELETRICISTA'],
+            'CABELEIREIRO': ['BARBEIRO', 'MANICURE', 'MAQUIADOR'],
+            'FOTÓGRAFO': ['JORNALISTA', 'YOUTUBER', 'ATOR'],
+            'JORNALISTA': ['FOTÓGRAFO', 'PROFESSOR', 'ADVOGADO'],
+            'ATOR': ['CANTOR', 'YOUTUBER', 'JOGADOR DE FUTEBOL'],
+            'CANTOR': ['ATOR', 'DANÇARINO', 'YOUTUBER'],
+            'JOGADOR DE FUTEBOL': ['ATLETA', 'ATOR', 'CANTOR'],
+            'VENDEDOR': ['GARÇOM', 'PADEIRO', 'PORTEIRO'],
+            'PSICÓLOGO': ['MÉDICO', 'PROFESSOR', 'ENFERMEIRO'],
+            'PROGRAMADOR': ['ENGENHEIRO', 'YOUTUBER', 'FOTÓGRAFO'],
+            'FAXINEIRO': ['PORTEIRO', 'JARDINEIRO', 'PEDREIRO'],
+            'JARDINEIRO': ['FAXINEIRO', 'PEDREIRO', 'PINTOR'],
+            'CARTEIRO': ['MOTOBOY', 'PORTEIRO', 'MOTORISTA']
+        },
+        questions: [
+            'Onde essa pessoa trabalha?',
+            'Que roupa ela usa no trabalho?',
+            'Que ferramenta ou objeto ela mais usa?',
+            'Você já precisou dessa pessoa?',
+            'Ela trabalha mais de dia ou de noite?',
+            'Precisa de faculdade pra ser isso?',
+            'É um trabalho mais de força ou de conversa?',
+            'Criança costuma sonhar em ser isso?'
+        ]
     },
-    { 
-        category: 'Meios de Transporte', 
-        words: ['CARRO', 'MOTO', 'BICICLETA', 'ÔNIBUS', 'CAMINHÃO', 'TREM', 'METRÔ', 'AVIÃO', 'HELICÓPTERO', 'BARCO', 'NAVIO', 'LANCHA', 'JET SKI', 'PATINETE', 'SKATE', 'TAXI', 'AMBULÂNCIA', 'CAMINHONETE', 'VAN', 'BALSA', 'CANOA', 'VELEIRO', 'SUBMARINO', 'FOGUETE', 'TELEFÉRICO', 'BONDINHO'],
-        similar: { 'CARRO': ['MOTO', 'TAXI'], 'MOTO': ['BICICLETA', 'PATINETE'], 'BICICLETA': ['MOTO', 'PATINETE'], 'ÔNIBUS': ['VAN', 'TREM'], 'TREM': ['METRÔ', 'BONDINHO'], 'METRÔ': ['TREM', 'ÔNIBUS'], 'AVIÃO': ['HELICÓPTERO', 'JATO'], 'HELICÓPTERO': ['AVIÃO', 'DRONE'], 'BARCO': ['LANCHA', 'CANOA'], 'NAVIO': ['BALSA', 'VELEIRO'], 'LANCHA': ['JET SKI', 'BARCO'], 'CAMINHÃO': ['CAMINHONETE', 'VAN'], 'PATINETE': ['SKATE', 'BICICLETA'] }
+    {
+        category: 'Meios de Transporte',
+        words: ['CARRO', 'MOTO', 'BICICLETA', 'ÔNIBUS', 'CAMINHÃO', 'CAMINHONETE', 'VAN', 'TREM', 'METRÔ', 'AVIÃO', 'HELICÓPTERO', 'BARCO', 'NAVIO', 'LANCHA', 'JET SKI', 'PATINETE', 'SKATE', 'TÁXI', 'AMBULÂNCIA', 'CANOA', 'SUBMARINO', 'FOGUETE', 'TRATOR'],
+        similar: {
+            'CARRO': ['TÁXI', 'CAMINHONETE', 'MOTO'],
+            'MOTO': ['BICICLETA', 'PATINETE', 'CARRO'],
+            'BICICLETA': ['PATINETE', 'MOTO', 'SKATE'],
+            'ÔNIBUS': ['VAN', 'METRÔ', 'TREM'],
+            'CAMINHÃO': ['CAMINHONETE', 'TRATOR', 'VAN'],
+            'CAMINHONETE': ['CAMINHÃO', 'CARRO', 'VAN'],
+            'VAN': ['ÔNIBUS', 'CAMINHONETE', 'CARRO'],
+            'TREM': ['METRÔ', 'ÔNIBUS', 'NAVIO'],
+            'METRÔ': ['TREM', 'ÔNIBUS', 'VAN'],
+            'AVIÃO': ['HELICÓPTERO', 'FOGUETE', 'NAVIO'],
+            'HELICÓPTERO': ['AVIÃO', 'DRONE', 'FOGUETE'],
+            'BARCO': ['LANCHA', 'CANOA', 'NAVIO'],
+            'NAVIO': ['BARCO', 'LANCHA', 'SUBMARINO'],
+            'LANCHA': ['BARCO', 'JET SKI', 'NAVIO'],
+            'JET SKI': ['LANCHA', 'MOTO', 'BARCO'],
+            'PATINETE': ['BICICLETA', 'SKATE', 'MOTO'],
+            'SKATE': ['PATINETE', 'BICICLETA', 'PATINS'],
+            'TÁXI': ['CARRO', 'VAN', 'ÔNIBUS'],
+            'AMBULÂNCIA': ['VAN', 'TÁXI', 'CAMINHONETE'],
+            'CANOA': ['CAIAQUE', 'BARCO', 'LANCHA'],
+            'SUBMARINO': ['NAVIO', 'BARCO', 'AVIÃO'],
+            'FOGUETE': ['AVIÃO', 'HELICÓPTERO', 'SUBMARINO'],
+            'TRATOR': ['CAMINHÃO', 'CAMINHONETE', 'VAN']
+        },
+        questions: [
+            'Quando você usaria isso?',
+            'Quantas pessoas cabem dentro?',
+            'É rápido ou lento?',
+            'Anda na terra, na água ou no ar?',
+            'Você já andou nisso?',
+            'Faz muito barulho?',
+            'Precisa de habilitação pra conduzir?',
+            'Cabe na sua garagem?'
+        ]
     },
-    { 
-        category: 'Móveis', 
-        words: ['SOFÁ', 'CAMA', 'MESA', 'CADEIRA', 'ARMÁRIO', 'ESTANTE', 'GUARDA-ROUPA', 'CÔMODA', 'CRIADO-MUDO', 'POLTRONA', 'BANCO', 'ESCRIVANINHA', 'BELICHE', 'BERÇO', 'PRATELEIRA', 'RACK', 'SAPATEIRA', 'PENTEADEIRA', 'CABECEIRA', 'PUFE', 'BANQUETA', 'APARADOR', 'BUFFET', 'CRISTALEIRA'],
-        similar: { 'SOFÁ': ['POLTRONA', 'PUFE'], 'CAMA': ['BELICHE', 'DIVÃ'], 'MESA': ['ESCRIVANINHA', 'BANCADA'], 'CADEIRA': ['POLTRONA', 'BANCO'], 'ARMÁRIO': ['GUARDA-ROUPA', 'ESTANTE'], 'ESTANTE': ['PRATELEIRA', 'RACK'], 'GUARDA-ROUPA': ['ARMÁRIO', 'CÔMODA'], 'CÔMODA': ['CRIADO-MUDO', 'GUARDA-ROUPA'], 'POLTRONA': ['SOFÁ', 'CADEIRA'], 'ESCRIVANINHA': ['MESA', 'BANCADA'], 'BANCO': ['BANQUETA', 'CADEIRA'] }
+    {
+        category: 'Móveis',
+        words: ['SOFÁ', 'POLTRONA', 'CAMA', 'BELICHE', 'BERÇO', 'MESA', 'CADEIRA', 'BANQUETA', 'ARMÁRIO', 'GUARDA-ROUPA', 'ESTANTE', 'PRATELEIRA', 'CÔMODA', 'CRIADO-MUDO', 'ESCRIVANINHA', 'RACK', 'SAPATEIRA', 'PUFE', 'REDE'],
+        similar: {
+            'SOFÁ': ['POLTRONA', 'PUFE', 'CAMA'],
+            'POLTRONA': ['SOFÁ', 'CADEIRA', 'PUFE'],
+            'CAMA': ['BELICHE', 'SOFÁ', 'REDE'],
+            'BELICHE': ['CAMA', 'BERÇO', 'SOFÁ'],
+            'BERÇO': ['CAMA', 'BELICHE', 'REDE'],
+            'MESA': ['ESCRIVANINHA', 'RACK', 'ESTANTE'],
+            'CADEIRA': ['BANQUETA', 'POLTRONA', 'SOFÁ'],
+            'BANQUETA': ['CADEIRA', 'PUFE', 'POLTRONA'],
+            'ARMÁRIO': ['GUARDA-ROUPA', 'ESTANTE', 'CÔMODA'],
+            'GUARDA-ROUPA': ['ARMÁRIO', 'CÔMODA', 'SAPATEIRA'],
+            'ESTANTE': ['PRATELEIRA', 'RACK', 'ARMÁRIO'],
+            'PRATELEIRA': ['ESTANTE', 'RACK', 'ARMÁRIO'],
+            'CÔMODA': ['CRIADO-MUDO', 'GUARDA-ROUPA', 'ARMÁRIO'],
+            'CRIADO-MUDO': ['CÔMODA', 'MESA', 'PRATELEIRA'],
+            'ESCRIVANINHA': ['MESA', 'CRIADO-MUDO', 'RACK'],
+            'RACK': ['ESTANTE', 'PRATELEIRA', 'MESA'],
+            'SAPATEIRA': ['GUARDA-ROUPA', 'CÔMODA', 'ESTANTE'],
+            'PUFE': ['BANQUETA', 'POLTRONA', 'SOFÁ'],
+            'REDE': ['CAMA', 'SOFÁ', 'PUFE']
+        },
+        questions: [
+            'Em que cômodo isso costuma ficar?',
+            'O que você guarda ou coloca nele?',
+            'Dá pra sentar ou deitar nele?',
+            'É pesado de mudar de lugar?',
+            'De que material costuma ser?',
+            'Toda casa tem um?',
+            'Fica encostado na parede?',
+            'Criança sobe nele?'
+        ]
     },
-    { 
-        category: 'Eletrodomésticos', 
-        words: ['GELADEIRA', 'FOGÃO', 'MICRO-ONDAS', 'LIQUIDIFICADOR', 'BATEDEIRA', 'TORRADEIRA', 'CAFETEIRA', 'MÁQUINA DE LAVAR', 'SECADORA', 'ASPIRADOR', 'VENTILADOR', 'AR CONDICIONADO', 'AQUECEDOR', 'FERRO DE PASSAR', 'FRITADEIRA', 'PANELA ELÉTRICA', 'FORNO ELÉTRICO', 'FREEZER', 'LAVA-LOUÇAS', 'PURIFICADOR', 'MIXER', 'ESPREMEDOR', 'PROCESSADOR'],
-        similar: { 'GELADEIRA': ['FREEZER', 'FRIGOBAR'], 'FOGÃO': ['FORNO', 'COOKTOP'], 'MICRO-ONDAS': ['FORNO ELÉTRICO', 'AIRFRYER'], 'LIQUIDIFICADOR': ['MIXER', 'PROCESSADOR'], 'BATEDEIRA': ['MIXER', 'LIQUIDIFICADOR'], 'CAFETEIRA': ['CHALEIRA', 'MÁQUINA DE CAFÉ'], 'MÁQUINA DE LAVAR': ['SECADORA', 'LAVA-LOUÇAS'], 'VENTILADOR': ['AR CONDICIONADO', 'CLIMATIZADOR'], 'ASPIRADOR': ['VASSOURA ELÉTRICA', 'ROBÔ'], 'TORRADEIRA': ['SANDUICHEIRA', 'GRILL'], 'FRITADEIRA': ['AIRFRYER', 'FORNO'] }
+    {
+        category: 'Eletrodomésticos',
+        words: ['GELADEIRA', 'FREEZER', 'FOGÃO', 'FORNO', 'MICRO-ONDAS', 'AIRFRYER', 'LIQUIDIFICADOR', 'BATEDEIRA', 'CAFETEIRA', 'TORRADEIRA', 'SANDUICHEIRA', 'MÁQUINA DE LAVAR', 'SECADORA', 'FERRO DE PASSAR', 'ASPIRADOR', 'VENTILADOR', 'AR-CONDICIONADO', 'LAVA-LOUÇAS', 'PANELA ELÉTRICA'],
+        similar: {
+            'GELADEIRA': ['FREEZER', 'FRIGOBAR', 'MÁQUINA DE LAVAR'],
+            'FREEZER': ['GELADEIRA', 'FRIGOBAR', 'AR-CONDICIONADO'],
+            'FOGÃO': ['FORNO', 'MICRO-ONDAS', 'AIRFRYER'],
+            'FORNO': ['FOGÃO', 'AIRFRYER', 'MICRO-ONDAS'],
+            'MICRO-ONDAS': ['FORNO', 'AIRFRYER', 'TORRADEIRA'],
+            'AIRFRYER': ['FORNO', 'MICRO-ONDAS', 'SANDUICHEIRA'],
+            'LIQUIDIFICADOR': ['BATEDEIRA', 'MIXER', 'CAFETEIRA'],
+            'BATEDEIRA': ['LIQUIDIFICADOR', 'MIXER', 'SANDUICHEIRA'],
+            'CAFETEIRA': ['CHALEIRA', 'LIQUIDIFICADOR', 'TORRADEIRA'],
+            'TORRADEIRA': ['SANDUICHEIRA', 'MICRO-ONDAS', 'AIRFRYER'],
+            'SANDUICHEIRA': ['TORRADEIRA', 'AIRFRYER', 'PANELA ELÉTRICA'],
+            'MÁQUINA DE LAVAR': ['SECADORA', 'LAVA-LOUÇAS', 'GELADEIRA'],
+            'SECADORA': ['MÁQUINA DE LAVAR', 'LAVA-LOUÇAS', 'FERRO DE PASSAR'],
+            'FERRO DE PASSAR': ['SECADORA', 'MÁQUINA DE LAVAR', 'ASPIRADOR'],
+            'ASPIRADOR': ['VENTILADOR', 'FERRO DE PASSAR', 'MÁQUINA DE LAVAR'],
+            'VENTILADOR': ['AR-CONDICIONADO', 'ASPIRADOR', 'GELADEIRA'],
+            'AR-CONDICIONADO': ['VENTILADOR', 'GELADEIRA', 'FREEZER'],
+            'LAVA-LOUÇAS': ['MÁQUINA DE LAVAR', 'SECADORA', 'GELADEIRA'],
+            'PANELA ELÉTRICA': ['AIRFRYER', 'MICRO-ONDAS', 'SANDUICHEIRA']
+        },
+        questions: [
+            'Em que cômodo isso fica?',
+            'Você usa isso todo dia?',
+            'Esquenta, esfria ou nenhum dos dois?',
+            'Faz barulho quando liga?',
+            'É grande ou cabe em cima da pia?',
+            'O que acontece se ele quebrar?',
+            'Gasta muita energia?',
+            'Sua casa tem um?'
+        ]
     },
-    { 
-        category: 'Eletrônicos', 
-        words: ['TELEVISÃO', 'CELULAR', 'COMPUTADOR', 'NOTEBOOK', 'TABLET', 'VIDEOGAME', 'CONTROLE', 'FONE DE OUVIDO', 'CAIXA DE SOM', 'CÂMERA', 'RELÓGIO DIGITAL', 'MOUSE', 'TECLADO', 'IMPRESSORA', 'MONITOR', 'PENDRIVE', 'HD EXTERNO', 'DRONE', 'PROJETOR', 'SMARTWATCH', 'KINDLE', 'CONSOLE', 'ROTEADOR'],
-        similar: { 'TELEVISÃO': ['MONITOR', 'PROJETOR'], 'CELULAR': ['TABLET', 'SMARTPHONE'], 'COMPUTADOR': ['NOTEBOOK', 'TABLET'], 'NOTEBOOK': ['COMPUTADOR', 'TABLET'], 'VIDEOGAME': ['CONSOLE', 'ARCADE'], 'FONE DE OUVIDO': ['CAIXA DE SOM', 'HEADSET'], 'CÂMERA': ['FILMADORA', 'WEBCAM'], 'MOUSE': ['TECLADO', 'TRACKPAD'], 'IMPRESSORA': ['SCANNER', 'COPIADORA'], 'MONITOR': ['TELEVISÃO', 'PROJETOR'], 'SMARTWATCH': ['RELÓGIO', 'PULSEIRA'] }
+    {
+        category: 'Eletrônicos',
+        words: ['TELEVISÃO', 'CELULAR', 'COMPUTADOR', 'NOTEBOOK', 'TABLET', 'VIDEOGAME', 'CONTROLE', 'FONE DE OUVIDO', 'CAIXA DE SOM', 'CÂMERA', 'MOUSE', 'TECLADO', 'IMPRESSORA', 'MONITOR', 'PENDRIVE', 'DRONE', 'PROJETOR', 'SMARTWATCH', 'ROTEADOR'],
+        similar: {
+            'TELEVISÃO': ['MONITOR', 'PROJETOR', 'TABLET'],
+            'CELULAR': ['TABLET', 'SMARTWATCH', 'NOTEBOOK'],
+            'COMPUTADOR': ['NOTEBOOK', 'TABLET', 'VIDEOGAME'],
+            'NOTEBOOK': ['COMPUTADOR', 'TABLET', 'CELULAR'],
+            'TABLET': ['CELULAR', 'NOTEBOOK', 'TELEVISÃO'],
+            'VIDEOGAME': ['COMPUTADOR', 'CONTROLE', 'TELEVISÃO'],
+            'CONTROLE': ['MOUSE', 'TECLADO', 'VIDEOGAME'],
+            'FONE DE OUVIDO': ['CAIXA DE SOM', 'MICROFONE', 'CELULAR'],
+            'CAIXA DE SOM': ['FONE DE OUVIDO', 'MICROFONE', 'TELEVISÃO'],
+            'CÂMERA': ['CELULAR', 'DRONE', 'PROJETOR'],
+            'MOUSE': ['TECLADO', 'CONTROLE', 'PENDRIVE'],
+            'TECLADO': ['MOUSE', 'CONTROLE', 'NOTEBOOK'],
+            'IMPRESSORA': ['SCANNER', 'COMPUTADOR', 'ROTEADOR'],
+            'MONITOR': ['TELEVISÃO', 'NOTEBOOK', 'PROJETOR'],
+            'PENDRIVE': ['CARTÃO DE MEMÓRIA', 'MOUSE', 'CARREGADOR'],
+            'DRONE': ['HELICÓPTERO', 'CÂMERA', 'CONTROLE'],
+            'PROJETOR': ['TELEVISÃO', 'MONITOR', 'CÂMERA'],
+            'SMARTWATCH': ['RELÓGIO', 'CELULAR', 'TABLET'],
+            'ROTEADOR': ['MODEM', 'IMPRESSORA', 'CAIXA DE SOM']
+        },
+        questions: [
+            'Onde isso fica na sua casa?',
+            'Você usa isso quantas vezes por dia?',
+            'Tem tela ou não tem?',
+            'Precisa de tomada ou usa bateria?',
+            'Cabe no bolso?',
+            'Quanto custa, mais ou menos?',
+            'Criança usa isso?',
+            'O que você faria se ele quebrasse hoje?'
+        ]
     },
-    { 
-        category: 'Roupas', 
-        words: ['CAMISETA', 'CALÇA', 'BERMUDA', 'SHORT', 'VESTIDO', 'SAIA', 'BLUSA', 'CAMISA', 'JAQUETA', 'CASACO', 'MOLETOM', 'SUÉTER', 'BLAZER', 'COLETE', 'PIJAMA', 'CUECA', 'CALCINHA', 'MEIA', 'BIQUÍNI', 'SUNGA', 'MAIÔ', 'CAMISOLA', 'ROUPÃO', 'GRAVATA', 'TERNO', 'JEANS', 'REGATA'],
-        similar: { 'CAMISETA': ['BLUSA', 'REGATA'], 'CALÇA': ['BERMUDA', 'JEANS'], 'BERMUDA': ['SHORT', 'CALÇA'], 'VESTIDO': ['SAIA', 'MACACÃO'], 'SAIA': ['VESTIDO', 'SHORT'], 'JAQUETA': ['CASACO', 'BLAZER'], 'CASACO': ['JAQUETA', 'SOBRETUDO'], 'MOLETOM': ['SUÉTER', 'CASACO'], 'BLAZER': ['PALETÓ', 'COLETE'], 'PIJAMA': ['CAMISOLA', 'ROUPÃO'], 'CUECA': ['CALCINHA', 'BOXER'], 'BIQUÍNI': ['MAIÔ', 'SUNGA'] }
+    {
+        category: 'Roupas',
+        words: ['CAMISETA', 'CAMISA', 'BLUSA', 'REGATA', 'MOLETOM', 'CASACO', 'JAQUETA', 'BLAZER', 'CALÇA', 'BERMUDA', 'SHORT', 'SAIA', 'VESTIDO', 'MACACÃO', 'PIJAMA', 'ROUPÃO', 'CUECA', 'CALCINHA', 'SUTIÃ', 'MEIA', 'BIQUÍNI', 'MAIÔ', 'SUNGA', 'GRAVATA', 'TERNO'],
+        similar: {
+            'CAMISETA': ['REGATA', 'BLUSA', 'CAMISA'],
+            'CAMISA': ['CAMISETA', 'BLUSA', 'BLAZER'],
+            'BLUSA': ['CAMISETA', 'MOLETOM', 'REGATA'],
+            'REGATA': ['CAMISETA', 'BLUSA', 'SHORT'],
+            'MOLETOM': ['CASACO', 'BLUSA', 'JAQUETA'],
+            'CASACO': ['JAQUETA', 'MOLETOM', 'BLAZER'],
+            'JAQUETA': ['CASACO', 'MOLETOM', 'BLAZER'],
+            'BLAZER': ['TERNO', 'JAQUETA', 'CAMISA'],
+            'CALÇA': ['BERMUDA', 'SHORT', 'SAIA'],
+            'BERMUDA': ['SHORT', 'CALÇA', 'SUNGA'],
+            'SHORT': ['BERMUDA', 'SAIA', 'CALÇA'],
+            'SAIA': ['VESTIDO', 'SHORT', 'CALÇA'],
+            'VESTIDO': ['SAIA', 'MACACÃO', 'BLUSA'],
+            'MACACÃO': ['VESTIDO', 'CALÇA', 'PIJAMA'],
+            'PIJAMA': ['CAMISOLA', 'ROUPÃO', 'MOLETOM'],
+            'ROUPÃO': ['PIJAMA', 'CASACO', 'VESTIDO'],
+            'CUECA': ['SUNGA', 'CALCINHA', 'SHORT'],
+            'CALCINHA': ['CUECA', 'BIQUÍNI', 'SUTIÃ'],
+            'SUTIÃ': ['BIQUÍNI', 'CALCINHA', 'REGATA'],
+            'MEIA': ['LUVA', 'CUECA', 'CACHECOL'],
+            'BIQUÍNI': ['MAIÔ', 'SUNGA', 'CALCINHA'],
+            'MAIÔ': ['BIQUÍNI', 'SUNGA', 'VESTIDO'],
+            'SUNGA': ['BERMUDA', 'BIQUÍNI', 'CUECA'],
+            'GRAVATA': ['TERNO', 'BLAZER', 'CACHECOL'],
+            'TERNO': ['BLAZER', 'GRAVATA', 'CAMISA']
+        },
+        questions: [
+            'Em que ocasião você usa isso?',
+            'Usa na parte de cima ou de baixo do corpo?',
+            'Combina mais com calor ou com frio?',
+            'Você usaria isso numa festa?',
+            'Com que outra peça isso combina?',
+            'Você tem quantos desses?',
+            'Passa ferro nisso?',
+            'Usa por cima ou por baixo de outra roupa?'
+        ]
     },
-    { 
-        category: 'Calçados', 
-        words: ['TÊNIS', 'SAPATO', 'SANDÁLIA', 'CHINELO', 'BOTA', 'SAPATILHA', 'MOCASSIM', 'CHUTEIRA', 'TAMANCO', 'RASTEIRINHA', 'SALTO ALTO', 'SAPATÊNIS', 'CROCS', 'HAVAIANAS', 'ALPARGATA', 'COTURNO', 'PANTUFAS', 'GALOCHA'],
-        similar: { 'TÊNIS': ['SAPATÊNIS', 'CHUTEIRA'], 'SAPATO': ['MOCASSIM', 'OXFORD'], 'SANDÁLIA': ['CHINELO', 'RASTEIRINHA'], 'CHINELO': ['HAVAIANAS', 'SANDÁLIA'], 'BOTA': ['COTURNO', 'BOTINA'], 'SAPATILHA': ['RASTEIRINHA', 'MOCASSIM'], 'TAMANCO': ['SANDÁLIA', 'CROCS'], 'SALTO ALTO': ['SCARPIN', 'SANDÁLIA'], 'PANTUFAS': ['CHINELO', 'MEIAS'] }
+    {
+        category: 'Calçados',
+        words: ['TÊNIS', 'SAPATO', 'SANDÁLIA', 'CHINELO', 'BOTA', 'SAPATILHA', 'CHUTEIRA', 'SALTO ALTO', 'PANTUFA', 'CROCS'],
+        similar: {
+            'TÊNIS': ['SAPATÊNIS', 'CHUTEIRA', 'SAPATO'],
+            'SAPATO': ['MOCASSIM', 'TÊNIS', 'BOTA'],
+            'SANDÁLIA': ['CHINELO', 'RASTEIRINHA', 'SAPATILHA'],
+            'CHINELO': ['SANDÁLIA', 'CROCS', 'PANTUFA'],
+            'BOTA': ['COTURNO', 'GALOCHA', 'SAPATO'],
+            'SAPATILHA': ['RASTEIRINHA', 'SANDÁLIA', 'SAPATO'],
+            'CHUTEIRA': ['TÊNIS', 'SAPATÊNIS', 'BOTA'],
+            'SALTO ALTO': ['SANDÁLIA', 'SAPATILHA', 'BOTA'],
+            'PANTUFA': ['CHINELO', 'MEIA', 'CROCS'],
+            'CROCS': ['CHINELO', 'SANDÁLIA', 'PANTUFA']
+        },
+        questions: [
+            'Em que ocasião você usa isso?',
+            'É confortável ou aperta?',
+            'Usa com meia ou sem meia?',
+            'Serve pra praia?',
+            'Serve pra fazer esporte?',
+            'Faz barulho quando anda?',
+            'É fácil de calçar com pressa?',
+            'Você usaria isso o dia inteiro?'
+        ]
     },
-    { 
-        category: 'Acessórios', 
-        words: ['RELÓGIO', 'ÓCULOS', 'BOLSA', 'CARTEIRA', 'MOCHILA', 'CINTO', 'CHAPÉU', 'BONÉ', 'LENÇO', 'CACHECOL', 'LUVA', 'PULSEIRA', 'COLAR', 'BRINCO', 'ANEL', 'ALIANÇA', 'CORRENTE', 'PINGENTE', 'TIARA', 'PRESILHA', 'ÓCULOS DE SOL', 'POCHETE', 'GUARDA-CHUVA'],
-        similar: { 'RELÓGIO': ['PULSEIRA', 'SMARTWATCH'], 'ÓCULOS': ['ÓCULOS DE SOL', 'LENTE'], 'BOLSA': ['MOCHILA', 'POCHETE'], 'CARTEIRA': ['PORTA-CARTÃO', 'BOLSA'], 'MOCHILA': ['BOLSA', 'MALA'], 'CHAPÉU': ['BONÉ', 'VISEIRA'], 'BONÉ': ['CHAPÉU', 'TOUCA'], 'CACHECOL': ['LENÇO', 'ECHARPE'], 'PULSEIRA': ['BRACELETE', 'RELÓGIO'], 'COLAR': ['CORRENTE', 'PINGENTE'], 'BRINCO': ['ANEL', 'COLAR'], 'GUARDA-CHUVA': ['SOMBRINHA', 'CAPA DE CHUVA'] }
+    {
+        category: 'Acessórios',
+        words: ['RELÓGIO', 'ÓCULOS', 'ÓCULOS DE SOL', 'BOLSA', 'CARTEIRA', 'MOCHILA', 'CINTO', 'CHAPÉU', 'BONÉ', 'TOUCA', 'CACHECOL', 'LUVA', 'PULSEIRA', 'COLAR', 'BRINCO', 'ANEL', 'ALIANÇA', 'TIARA', 'POCHETE', 'GUARDA-CHUVA'],
+        similar: {
+            'RELÓGIO': ['PULSEIRA', 'SMARTWATCH', 'ANEL'],
+            'ÓCULOS': ['ÓCULOS DE SOL', 'BONÉ', 'CHAPÉU'],
+            'ÓCULOS DE SOL': ['ÓCULOS', 'BONÉ', 'CHAPÉU'],
+            'BOLSA': ['MOCHILA', 'POCHETE', 'CARTEIRA'],
+            'CARTEIRA': ['BOLSA', 'POCHETE', 'MOCHILA'],
+            'MOCHILA': ['BOLSA', 'MALA', 'POCHETE'],
+            'CINTO': ['SUSPENSÓRIO', 'PULSEIRA', 'GRAVATA'],
+            'CHAPÉU': ['BONÉ', 'TOUCA', 'TIARA'],
+            'BONÉ': ['CHAPÉU', 'VISEIRA', 'TOUCA'],
+            'TOUCA': ['GORRO', 'BONÉ', 'CHAPÉU'],
+            'CACHECOL': ['LENÇO', 'GORRO', 'LUVA'],
+            'LUVA': ['MEIA', 'TOUCA', 'CACHECOL'],
+            'PULSEIRA': ['COLAR', 'RELÓGIO', 'ANEL'],
+            'COLAR': ['CORRENTE', 'PULSEIRA', 'BRINCO'],
+            'BRINCO': ['PIERCING', 'COLAR', 'ANEL'],
+            'ANEL': ['ALIANÇA', 'PULSEIRA', 'BRINCO'],
+            'ALIANÇA': ['ANEL', 'PULSEIRA', 'COLAR'],
+            'TIARA': ['PRESILHA', 'TOUCA', 'BONÉ'],
+            'POCHETE': ['BOLSA', 'MOCHILA', 'CARTEIRA'],
+            'GUARDA-CHUVA': ['SOMBRINHA', 'CAPA DE CHUVA', 'CHAPÉU'],
+            'SMARTWATCH': ['RELÓGIO', 'PULSEIRA', 'CELULAR']
+        },
+        questions: [
+            'Em que parte do corpo isso se usa?',
+            'Você usa isso todo dia?',
+            'É mais enfeite ou mais utilidade?',
+            'Custa caro?',
+            'Você já perdeu um desses?',
+            'Combina com festa ou com dia a dia?',
+            'Dá de presente pra quem?',
+            'Homem e mulher usam igual?'
+        ]
     },
-    { 
-        category: 'Partes da Casa', 
-        words: ['QUARTO', 'SALA', 'COZINHA', 'BANHEIRO', 'VARANDA', 'GARAGEM', 'JARDIM', 'QUINTAL', 'ESCRITÓRIO', 'LAVANDERIA', 'CORREDOR', 'SÓTÃO', 'PORÃO', 'TERRAÇO', 'SACADA', 'DESPENSA', 'CLOSET', 'SUÍTE', 'ÁREA DE SERVIÇO', 'CHURRASQUEIRA', 'PISCINA', 'ENTRADA', 'HALL', 'COPA'],
-        similar: { 'QUARTO': ['SUÍTE', 'ESCRITÓRIO'], 'SALA': ['COPA', 'HALL'], 'COZINHA': ['COPA', 'DESPENSA'], 'BANHEIRO': ['LAVABO', 'SUÍTE'], 'VARANDA': ['SACADA', 'TERRAÇO'], 'GARAGEM': ['ESTACIONAMENTO', 'COCHEIRA'], 'JARDIM': ['QUINTAL', 'PÁTIO'], 'ESCRITÓRIO': ['HOME OFFICE', 'BIBLIOTECA'], 'LAVANDERIA': ['ÁREA DE SERVIÇO', 'DESPENSA'], 'SÓTÃO': ['PORÃO', 'DEPÓSITO'], 'CLOSET': ['GUARDA-ROUPA', 'QUARTO'] }
+    {
+        category: 'Partes da Casa',
+        words: ['QUARTO', 'SALA', 'COZINHA', 'BANHEIRO', 'LAVANDERIA', 'VARANDA', 'GARAGEM', 'JARDIM', 'QUINTAL', 'ESCRITÓRIO', 'CORREDOR', 'SÓTÃO', 'PORÃO', 'DESPENSA', 'CLOSET', 'SUÍTE', 'CHURRASQUEIRA', 'PISCINA', 'TELHADO', 'ESCADA'],
+        similar: {
+            'QUARTO': ['SUÍTE', 'SALA', 'CLOSET'],
+            'SALA': ['QUARTO', 'VARANDA', 'ESCRITÓRIO'],
+            'COZINHA': ['COPA', 'DESPENSA', 'LAVANDERIA'],
+            'BANHEIRO': ['LAVABO', 'SUÍTE', 'LAVANDERIA'],
+            'LAVANDERIA': ['COZINHA', 'BANHEIRO', 'DESPENSA'],
+            'VARANDA': ['SACADA', 'QUINTAL', 'JARDIM'],
+            'GARAGEM': ['QUINTAL', 'PORÃO', 'CORREDOR'],
+            'JARDIM': ['QUINTAL', 'VARANDA', 'PISCINA'],
+            'QUINTAL': ['JARDIM', 'VARANDA', 'GARAGEM'],
+            'ESCRITÓRIO': ['QUARTO', 'SALA', 'CLOSET'],
+            'CORREDOR': ['HALL', 'ESCADA', 'SALA'],
+            'SÓTÃO': ['PORÃO', 'DESPENSA', 'CLOSET'],
+            'PORÃO': ['SÓTÃO', 'GARAGEM', 'DESPENSA'],
+            'DESPENSA': ['CLOSET', 'COZINHA', 'SÓTÃO'],
+            'CLOSET': ['DESPENSA', 'QUARTO', 'SÓTÃO'],
+            'SUÍTE': ['QUARTO', 'BANHEIRO', 'CLOSET'],
+            'CHURRASQUEIRA': ['VARANDA', 'QUINTAL', 'COZINHA'],
+            'PISCINA': ['QUINTAL', 'JARDIM', 'BANHEIRO'],
+            'TELHADO': ['SÓTÃO', 'VARANDA', 'GARAGEM'],
+            'ESCADA': ['CORREDOR', 'HALL', 'VARANDA']
+        },
+        questions: [
+            'O que você faz nesse lugar?',
+            'Quanto tempo por dia você passa nele?',
+            'Que móvel não pode faltar nele?',
+            'É dentro ou fora da casa?',
+            'Visita entra nesse lugar?',
+            'É o lugar mais quente ou mais fresco da casa?',
+            'O que se guarda nesse lugar?',
+            'Toda casa tem um desses?'
+        ]
     },
-    { 
-        category: 'Lugares da Cidade', 
-        words: ['ESCOLA', 'HOSPITAL', 'SHOPPING', 'SUPERMERCADO', 'PADARIA', 'FARMÁCIA', 'BANCO', 'IGREJA', 'PRAÇA', 'PARQUE', 'CINEMA', 'TEATRO', 'MUSEU', 'BIBLIOTECA', 'RESTAURANTE', 'LANCHONETE', 'ACADEMIA', 'DELEGACIA', 'PREFEITURA', 'CORREIOS', 'POSTO DE GASOLINA', 'AEROPORTO', 'RODOVIÁRIA', 'ESTAÇÃO', 'FEIRA', 'MERCADO', 'AÇOUGUE', 'LIVRARIA', 'PET SHOP'],
-        similar: { 'ESCOLA': ['FACULDADE', 'CRECHE'], 'HOSPITAL': ['CLÍNICA', 'UPA'], 'SHOPPING': ['MERCADO', 'GALERIA'], 'SUPERMERCADO': ['MERCADO', 'ATACADO'], 'PADARIA': ['CONFEITARIA', 'LANCHONETE'], 'FARMÁCIA': ['DROGARIA', 'HOSPITAL'], 'PRAÇA': ['PARQUE', 'JARDIM'], 'CINEMA': ['TEATRO', 'AUDITÓRIO'], 'RESTAURANTE': ['LANCHONETE', 'PIZZARIA'], 'ACADEMIA': ['CLUBE', 'GINÁSIO'], 'AEROPORTO': ['RODOVIÁRIA', 'ESTAÇÃO'], 'FEIRA': ['MERCADO', 'SACOLÃO'] }
+    {
+        category: 'Lugares da Cidade',
+        words: ['ESCOLA', 'HOSPITAL', 'SHOPPING', 'SUPERMERCADO', 'PADARIA', 'FARMÁCIA', 'BANCO', 'IGREJA', 'PRAÇA', 'PARQUE', 'ZOOLÓGICO', 'CINEMA', 'TEATRO', 'MUSEU', 'BIBLIOTECA', 'RESTAURANTE', 'LANCHONETE', 'PIZZARIA', 'SORVETERIA', 'ACADEMIA', 'DELEGACIA', 'CORREIOS', 'POSTO DE GASOLINA', 'AEROPORTO', 'RODOVIÁRIA', 'FEIRA', 'AÇOUGUE', 'LIVRARIA', 'PET SHOP', 'SALÃO DE BELEZA', 'HOTEL'],
+        similar: {
+            'ESCOLA': ['FACULDADE', 'CRECHE', 'BIBLIOTECA'],
+            'HOSPITAL': ['CLÍNICA', 'FARMÁCIA', 'DELEGACIA'],
+            'SHOPPING': ['SUPERMERCADO', 'FEIRA', 'CINEMA'],
+            'SUPERMERCADO': ['FEIRA', 'AÇOUGUE', 'SHOPPING'],
+            'PADARIA': ['CONFEITARIA', 'LANCHONETE', 'SUPERMERCADO'],
+            'FARMÁCIA': ['CLÍNICA', 'HOSPITAL', 'SUPERMERCADO'],
+            'BANCO': ['LOTÉRICA', 'CORREIOS', 'SUPERMERCADO'],
+            'IGREJA': ['MUSEU', 'TEATRO', 'BIBLIOTECA'],
+            'PRAÇA': ['PARQUE', 'CLUBE', 'FEIRA'],
+            'PARQUE': ['PRAÇA', 'ZOOLÓGICO', 'CLUBE'],
+            'ZOOLÓGICO': ['PARQUE', 'CIRCO', 'PET SHOP'],
+            'CINEMA': ['TEATRO', 'SHOPPING', 'MUSEU'],
+            'TEATRO': ['CINEMA', 'MUSEU', 'IGREJA'],
+            'MUSEU': ['TEATRO', 'BIBLIOTECA', 'CINEMA'],
+            'BIBLIOTECA': ['LIVRARIA', 'MUSEU', 'ESCOLA'],
+            'RESTAURANTE': ['LANCHONETE', 'PIZZARIA', 'PADARIA'],
+            'LANCHONETE': ['RESTAURANTE', 'PADARIA', 'PIZZARIA'],
+            'PIZZARIA': ['RESTAURANTE', 'LANCHONETE', 'PADARIA'],
+            'SORVETERIA': ['LANCHONETE', 'PADARIA', 'PIZZARIA'],
+            'ACADEMIA': ['CLUBE', 'PARQUE', 'ESCOLA'],
+            'DELEGACIA': ['FÓRUM', 'PREFEITURA', 'BANCO'],
+            'CORREIOS': ['BANCO', 'LOTÉRICA', 'PREFEITURA'],
+            'POSTO DE GASOLINA': ['OFICINA', 'LAVA-RÁPIDO', 'SUPERMERCADO'],
+            'AEROPORTO': ['RODOVIÁRIA', 'PORTO', 'SHOPPING'],
+            'RODOVIÁRIA': ['AEROPORTO', 'PORTO', 'POSTO DE GASOLINA'],
+            'FEIRA': ['SACOLÃO', 'SUPERMERCADO', 'SHOPPING'],
+            'AÇOUGUE': ['PEIXARIA', 'SUPERMERCADO', 'FEIRA'],
+            'LIVRARIA': ['PAPELARIA', 'BIBLIOTECA', 'MUSEU'],
+            'PET SHOP': ['VETERINÁRIO', 'SALÃO DE BELEZA', 'FARMÁCIA'],
+            'SALÃO DE BELEZA': ['BARBEARIA', 'ACADEMIA', 'FARMÁCIA'],
+            'HOTEL': ['POUSADA', 'RESORT', 'RODOVIÁRIA']
+        },
+        questions: lugarQuestionsPT
     },
-    { 
-        category: 'Natureza', 
-        words: ['PRAIA', 'MONTANHA', 'FLORESTA', 'RIO', 'LAGO', 'CACHOEIRA', 'ILHA', 'DESERTO', 'CAVERNA', 'VULCÃO', 'CAMPO', 'VALE', 'PENHASCO', 'GRUTA', 'MANGUE', 'PANTANAL', 'SAVANA', 'SELVA', 'BOSQUE', 'COLINA', 'ROCHEDO', 'OCEANO', 'MAR', 'DUNAS', 'GELEIRA', 'RECIFE', 'LAGOA', 'NASCENTE'],
-        similar: { 'PRAIA': ['LITORAL', 'COSTA'], 'MONTANHA': ['SERRA', 'MORRO'], 'FLORESTA': ['MATA', 'SELVA'], 'RIO': ['RIACHO', 'CÓRREGO'], 'LAGO': ['LAGOA', 'REPRESA'], 'CACHOEIRA': ['CASCATA', 'QUEDA DÁGUA'], 'ILHA': ['ARQUIPÉLAGO', 'ATOL'], 'DESERTO': ['DUNAS', 'SAVANA'], 'CAVERNA': ['GRUTA', 'TÚNEL'], 'OCEANO': ['MAR', 'GOLFO'], 'CAMPO': ['PLANÍCIE', 'PASTO'], 'BOSQUE': ['PARQUE', 'JARDIM'] }
+    {
+        category: 'Natureza',
+        words: ['PRAIA', 'MAR', 'ILHA', 'RIO', 'LAGO', 'CACHOEIRA', 'MONTANHA', 'MORRO', 'FLORESTA', 'CAMPO', 'DESERTO', 'CAVERNA', 'VULCÃO'],
+        similar: {
+            'PRAIA': ['ILHA', 'MAR', 'LAGO'],
+            'MAR': ['PRAIA', 'LAGO', 'RIO'],
+            'ILHA': ['PRAIA', 'MAR', 'LAGO'],
+            'RIO': ['LAGO', 'CACHOEIRA', 'MAR'],
+            'LAGO': ['RIO', 'REPRESA', 'MAR'],
+            'CACHOEIRA': ['RIO', 'LAGO', 'MONTANHA'],
+            'MONTANHA': ['MORRO', 'VULCÃO', 'CAVERNA'],
+            'MORRO': ['MONTANHA', 'CAMPO', 'VULCÃO'],
+            'FLORESTA': ['MATA', 'CAMPO', 'MONTANHA'],
+            'CAMPO': ['FAZENDA', 'MORRO', 'FLORESTA'],
+            'DESERTO': ['PRAIA', 'CAMPO', 'MONTANHA'],
+            'CAVERNA': ['GRUTA', 'MONTANHA', 'VULCÃO'],
+            'VULCÃO': ['MONTANHA', 'CAVERNA', 'DESERTO']
+        },
+        questions: [
+            'O que você faria nesse lugar?',
+            'Que roupa combina com esse lugar?',
+            'Tem água nesse lugar?',
+            'Faz calor ou frio lá?',
+            'Você levaria quem pra conhecer?',
+            'Dá pra passar o dia inteiro lá?',
+            'Que animal vive nesse lugar?',
+            'Fica perto ou longe de onde você mora?'
+        ]
     },
-    { 
-        category: 'Clima e Tempo', 
-        words: ['SOL', 'CHUVA', 'VENTO', 'NEVE', 'NUVEM', 'TEMPESTADE', 'TROVÃO', 'RAIO', 'ARCO-ÍRIS', 'NEBLINA', 'GEADA', 'GRANIZO', 'TORNADO', 'FURACÃO', 'CALOR', 'FRIO', 'SECA', 'ENCHENTE', 'MARÉ', 'BRISA', 'VENTANIA'],
-        similar: { 'SOL': ['CALOR', 'LUZ'], 'CHUVA': ['TEMPORAL', 'GAROA'], 'VENTO': ['BRISA', 'VENTANIA'], 'NEVE': ['GEADA', 'GRANIZO'], 'TEMPESTADE': ['TEMPORAL', 'CHUVA'], 'TROVÃO': ['RAIO', 'RELÂMPAGO'], 'NEBLINA': ['NÉVOA', 'CERRAÇÃO'], 'TORNADO': ['FURACÃO', 'CICLONE'], 'CALOR': ['SOL', 'VERÃO'], 'FRIO': ['GEADA', 'INVERNO'], 'SECA': ['ESTIAGEM', 'CALOR'] }
+    {
+        category: 'Clima e Tempo',
+        words: ['SOL', 'CHUVA', 'GAROA', 'VENTO', 'NEVE', 'NUVEM', 'TEMPESTADE', 'TROVÃO', 'RAIO', 'ARCO-ÍRIS', 'NEBLINA', 'GEADA', 'GRANIZO', 'TORNADO', 'FURACÃO', 'CALOR', 'FRIO', 'ENCHENTE'],
+        similar: {
+            'SOL': ['CALOR', 'NUVEM', 'ARCO-ÍRIS'],
+            'CHUVA': ['GAROA', 'TEMPESTADE', 'ENCHENTE'],
+            'GAROA': ['CHUVA', 'NEBLINA', 'TEMPESTADE'],
+            'VENTO': ['TEMPESTADE', 'TORNADO', 'FRIO'],
+            'NEVE': ['GEADA', 'GRANIZO', 'FRIO'],
+            'NUVEM': ['NEBLINA', 'CHUVA', 'SOL'],
+            'TEMPESTADE': ['CHUVA', 'TROVÃO', 'FURACÃO'],
+            'TROVÃO': ['RAIO', 'TEMPESTADE', 'CHUVA'],
+            'RAIO': ['TROVÃO', 'TEMPESTADE', 'SOL'],
+            'ARCO-ÍRIS': ['SOL', 'CHUVA', 'NUVEM'],
+            'NEBLINA': ['GAROA', 'NUVEM', 'GEADA'],
+            'GEADA': ['NEVE', 'NEBLINA', 'FRIO'],
+            'GRANIZO': ['NEVE', 'CHUVA', 'GEADA'],
+            'TORNADO': ['FURACÃO', 'TEMPESTADE', 'VENTO'],
+            'FURACÃO': ['TORNADO', 'TEMPESTADE', 'ENCHENTE'],
+            'CALOR': ['SOL', 'VERÃO', 'VENTO'],
+            'FRIO': ['GEADA', 'NEVE', 'VENTO'],
+            'ENCHENTE': ['CHUVA', 'TEMPESTADE', 'FURACÃO']
+        },
+        questions: [
+            'O que você faz quando o tempo está assim?',
+            'Que roupa combina com isso?',
+            'Isso te deixa feliz ou de mau humor?',
+            'Acontece muito na sua cidade?',
+            'É perigoso?',
+            'Faz barulho?',
+            'Em que época do ano isso acontece mais?',
+            'Dá pra sair de casa quando está assim?'
+        ]
     },
-    { 
-        category: 'Material Escolar', 
-        words: ['LÁPIS', 'CANETA', 'BORRACHA', 'CADERNO', 'LIVRO', 'MOCHILA', 'ESTOJO', 'RÉGUA', 'TESOURA', 'COLA', 'APONTADOR', 'FICHÁRIO', 'PASTA', 'MARCA-TEXTO', 'COMPASSO', 'TRANSFERIDOR', 'ESQUADRO', 'CALCULADORA', 'AGENDA', 'BLOCO', 'PAPEL', 'GRAMPEADOR', 'FURADOR', 'CLIPS', 'POST-IT', 'CORRETIVO'],
-        similar: { 'LÁPIS': ['CANETA', 'LAPISEIRA'], 'CANETA': ['LÁPIS', 'CANETINHA'], 'BORRACHA': ['CORRETIVO', 'APAGADOR'], 'CADERNO': ['FICHÁRIO', 'BLOCO'], 'LIVRO': ['APOSTILA', 'REVISTA'], 'MOCHILA': ['PASTA', 'BOLSA'], 'RÉGUA': ['ESQUADRO', 'TRANSFERIDOR'], 'TESOURA': ['ESTILETE', 'CORTADOR'], 'COLA': ['FITA ADESIVA', 'DUREX'], 'APONTADOR': ['ESTILETE', 'LÂMINA'], 'MARCA-TEXTO': ['CANETA', 'GRIFADOR'], 'GRAMPEADOR': ['FURADOR', 'CLIPS'] }
+    {
+        category: 'Material Escolar',
+        words: ['LÁPIS', 'CANETA', 'LAPISEIRA', 'BORRACHA', 'CADERNO', 'LIVRO', 'MOCHILA', 'ESTOJO', 'RÉGUA', 'TESOURA', 'COLA', 'APONTADOR', 'PASTA', 'MARCA-TEXTO', 'CALCULADORA', 'AGENDA', 'PAPEL', 'GRAMPEADOR', 'CANETINHA', 'LÁPIS DE COR', 'GIZ DE CERA'],
+        similar: {
+            'LÁPIS': ['LAPISEIRA', 'CANETA', 'LÁPIS DE COR'],
+            'CANETA': ['LÁPIS', 'CANETINHA', 'MARCA-TEXTO'],
+            'LAPISEIRA': ['LÁPIS', 'CANETA', 'BORRACHA'],
+            'BORRACHA': ['CORRETIVO', 'APONTADOR', 'LÁPIS'],
+            'CADERNO': ['AGENDA', 'LIVRO', 'PAPEL'],
+            'LIVRO': ['CADERNO', 'REVISTA', 'AGENDA'],
+            'MOCHILA': ['PASTA', 'ESTOJO', 'BOLSA'],
+            'ESTOJO': ['PASTA', 'MOCHILA', 'CADERNO'],
+            'RÉGUA': ['ESQUADRO', 'COMPASSO', 'TESOURA'],
+            'TESOURA': ['ESTILETE', 'COLA', 'RÉGUA'],
+            'COLA': ['FITA ADESIVA', 'TESOURA', 'CORRETIVO'],
+            'APONTADOR': ['BORRACHA', 'LAPISEIRA', 'ESTOJO'],
+            'PASTA': ['ESTOJO', 'MOCHILA', 'CADERNO'],
+            'MARCA-TEXTO': ['CANETINHA', 'CANETA', 'GIZ DE CERA'],
+            'CALCULADORA': ['RÉGUA', 'CELULAR', 'AGENDA'],
+            'AGENDA': ['CADERNO', 'LIVRO', 'CALENDÁRIO'],
+            'PAPEL': ['CADERNO', 'CARTOLINA', 'LIVRO'],
+            'GRAMPEADOR': ['FURADOR', 'CLIPS', 'TESOURA'],
+            'CANETINHA': ['MARCA-TEXTO', 'LÁPIS DE COR', 'CANETA'],
+            'LÁPIS DE COR': ['GIZ DE CERA', 'CANETINHA', 'LÁPIS'],
+            'GIZ DE CERA': ['LÁPIS DE COR', 'CANETINHA', 'MARCA-TEXTO']
+        },
+        questions: [
+            'Pra que você usa isso na escola?',
+            'Cabe no estojo?',
+            'Você empresta isso pro colega?',
+            'Acaba, gasta ou dura pra sempre?',
+            'De que cor costuma ser o seu?',
+            'Você já perdeu um desses?',
+            'Adulto também usa no trabalho?',
+            'Custa caro na papelaria?'
+        ]
     },
-    { 
-        category: 'Brinquedos', 
-        words: ['BONECA', 'CARRINHO', 'BOLA', 'PIPA', 'QUEBRA-CABEÇA', 'LEGO', 'IOIÔ', 'PIÃO', 'PATINS', 'BICICLETA', 'SKATE', 'PETECA', 'BAMBOLÊ', 'CORDA', 'BALANÇO', 'ESCORREGADOR', 'GANGORRA', 'FANTASIA', 'MÁSCARA', 'PELÚCIA', 'VIDEOGAME', 'DOMINÓ', 'XADREZ', 'DAMAS', 'UNO', 'BARALHO', 'MASSINHA'],
-        similar: { 'BONECA': ['PELÚCIA', 'FANTOCHE'], 'CARRINHO': ['PISTA', 'AUTORAMA'], 'BOLA': ['PETECA', 'FRISBEE'], 'PIPA': ['AVIÃO DE PAPEL', 'BALÃO'], 'QUEBRA-CABEÇA': ['LEGO', 'CUBO MÁGICO'], 'PATINS': ['SKATE', 'PATINETE'], 'BICICLETA': ['TRICICLO', 'PATINETE'], 'BALANÇO': ['GANGORRA', 'ESCORREGADOR'], 'FANTASIA': ['MÁSCARA', 'CAPA'], 'XADREZ': ['DAMAS', 'DOMINÓ'], 'BARALHO': ['UNO', 'DOMINÓ'], 'MASSINHA': ['ARGILA', 'SLIME'] }
+    {
+        category: 'Brinquedos',
+        words: ['BONECA', 'CARRINHO', 'BOLA', 'PIPA', 'QUEBRA-CABEÇA', 'LEGO', 'IOIÔ', 'PIÃO', 'PATINS', 'BAMBOLÊ', 'CORDA', 'BALANÇO', 'ESCORREGADOR', 'GANGORRA', 'PELÚCIA', 'DOMINÓ', 'XADREZ', 'BARALHO', 'MASSINHA', 'SLIME', 'CAMA ELÁSTICA', 'BOLHA DE SABÃO'],
+        similar: {
+            'BONECA': ['PELÚCIA', 'FANTOCHE', 'CARRINHO'],
+            'CARRINHO': ['PIÃO', 'LEGO', 'BONECA'],
+            'BOLA': ['PETECA', 'BAMBOLÊ', 'PIPA'],
+            'PIPA': ['BALÃO', 'PETECA', 'BOLA'],
+            'QUEBRA-CABEÇA': ['LEGO', 'DOMINÓ', 'XADREZ'],
+            'LEGO': ['QUEBRA-CABEÇA', 'MASSINHA', 'CARRINHO'],
+            'IOIÔ': ['PIÃO', 'PETECA', 'BAMBOLÊ'],
+            'PIÃO': ['IOIÔ', 'PETECA', 'BOLA'],
+            'PATINS': ['SKATE', 'PATINETE', 'BICICLETA'],
+            'BAMBOLÊ': ['CORDA', 'BOLA', 'IOIÔ'],
+            'CORDA': ['BAMBOLÊ', 'ELÁSTICO', 'BOLA'],
+            'BALANÇO': ['GANGORRA', 'ESCORREGADOR', 'CAMA ELÁSTICA'],
+            'ESCORREGADOR': ['BALANÇO', 'GANGORRA', 'CAMA ELÁSTICA'],
+            'GANGORRA': ['BALANÇO', 'ESCORREGADOR', 'BAMBOLÊ'],
+            'PELÚCIA': ['BONECA', 'FANTOCHE', 'QUEBRA-CABEÇA'],
+            'DOMINÓ': ['BARALHO', 'XADREZ', 'QUEBRA-CABEÇA'],
+            'XADREZ': ['DAMAS', 'DOMINÓ', 'BARALHO'],
+            'BARALHO': ['DOMINÓ', 'DAMAS', 'XADREZ'],
+            'MASSINHA': ['SLIME', 'ARGILA', 'LEGO'],
+            'SLIME': ['MASSINHA', 'ARGILA', 'BOLHA DE SABÃO'],
+            'CAMA ELÁSTICA': ['ESCORREGADOR', 'BALANÇO', 'PISCINA DE BOLINHAS'],
+            'BOLHA DE SABÃO': ['BALÃO', 'PIPA', 'SLIME']
+        },
+        questions: [
+            'Brinca dentro ou fora de casa?',
+            'Brinca sozinho ou precisa de mais gente?',
+            'Você teve um desses na infância?',
+            'É de menino, de menina ou dos dois?',
+            'Precisa de pilha ou bateria?',
+            'Suja as mãos?',
+            'Dá pra brincar na chuva?',
+            'Cabe numa caixa de sapato?'
+        ]
     },
-    { 
-        category: 'Ferramentas', 
-        words: ['MARTELO', 'CHAVE DE FENDA', 'ALICATE', 'SERROTE', 'FURADEIRA', 'PREGO', 'PARAFUSO', 'PORCA', 'BROCA', 'TRENA', 'NÍVEL', 'ESCADA', 'LIXA', 'PINCEL', 'ROLO', 'ESPÁTULA', 'ENXADA', 'PÁ', 'RASTELO', 'MANGUEIRA', 'MACHADO', 'SERRA', 'CHAVE INGLESA', 'CHAVE DE BOCA', 'GRIFO'],
-        similar: { 'MARTELO': ['MARRETA', 'MACETE'], 'CHAVE DE FENDA': ['CHAVE PHILLIPS', 'CHAVE DE BOCA'], 'ALICATE': ['TORQUÊS', 'PINÇA'], 'SERROTE': ['SERRA', 'ARCO DE SERRA'], 'FURADEIRA': ['PARAFUSADEIRA', 'BROCA'], 'PREGO': ['PARAFUSO', 'TACHINHA'], 'TRENA': ['RÉGUA', 'FITA MÉTRICA'], 'PINCEL': ['ROLO', 'BROCHA'], 'ENXADA': ['PÁ', 'RASTELO'], 'ESCADA': ['ANDAIME', 'ESCADOTE'], 'MACHADO': ['FOICE', 'FACÃO'] }
+    {
+        category: 'Ferramentas',
+        words: ['MARTELO', 'CHAVE DE FENDA', 'CHAVE INGLESA', 'ALICATE', 'SERROTE', 'FURADEIRA', 'PREGO', 'PARAFUSO', 'TRENA', 'ESCADA', 'LIXA', 'PINCEL', 'ENXADA', 'PÁ', 'MANGUEIRA', 'MACHADO', 'VASSOURA', 'BALDE', 'REGADOR'],
+        similar: {
+            'MARTELO': ['MARRETA', 'MACHADO', 'ALICATE'],
+            'CHAVE DE FENDA': ['CHAVE INGLESA', 'PARAFUSADEIRA', 'ALICATE'],
+            'CHAVE INGLESA': ['CHAVE DE FENDA', 'ALICATE', 'MARTELO'],
+            'ALICATE': ['CHAVE INGLESA', 'MARTELO', 'CHAVE DE FENDA'],
+            'SERROTE': ['MACHADO', 'FACÃO', 'MARTELO'],
+            'FURADEIRA': ['PARAFUSADEIRA', 'CHAVE DE FENDA', 'MARTELO'],
+            'PREGO': ['PARAFUSO', 'MARTELO', 'ALICATE'],
+            'PARAFUSO': ['PREGO', 'CHAVE DE FENDA', 'FURADEIRA'],
+            'TRENA': ['FITA MÉTRICA', 'RÉGUA', 'ESCADA'],
+            'ESCADA': ['ANDAIME', 'BALDE', 'PÁ'],
+            'LIXA': ['ESPÁTULA', 'PINCEL', 'SERROTE'],
+            'PINCEL': ['ROLO DE TINTA', 'ESPÁTULA', 'LIXA'],
+            'ENXADA': ['PÁ', 'RASTELO', 'MACHADO'],
+            'PÁ': ['ENXADA', 'RASTELO', 'BALDE'],
+            'MANGUEIRA': ['REGADOR', 'BALDE', 'PÁ'],
+            'MACHADO': ['SERROTE', 'FACÃO', 'MARTELO'],
+            'VASSOURA': ['RODO', 'PÁ', 'ESFREGÃO'],
+            'BALDE': ['BACIA', 'REGADOR', 'PÁ'],
+            'REGADOR': ['MANGUEIRA', 'BALDE', 'PÁ']
+        },
+        questions: [
+            'Pra que serve isso?',
+            'Quem costuma usar isso?',
+            'Onde isso fica guardado na sua casa?',
+            'É perigoso pra criança?',
+            'Faz barulho quando usa?',
+            'Usa dentro ou fora de casa?',
+            'É pesado?',
+            'Você sabe usar isso direito?'
+        ]
     },
-    { 
-        category: 'Utensílios de Cozinha', 
-        words: ['PANELA', 'FRIGIDEIRA', 'CHALEIRA', 'ASSADEIRA', 'FORMA', 'COLHER DE PAU', 'ESPÁTULA', 'CONCHA', 'ESCUMADEIRA', 'PENEIRA', 'RALADOR', 'ABRIDOR', 'SACA-ROLHAS', 'TÁBUA', 'FACA', 'GARFO', 'COLHER', 'PRATO', 'TIGELA', 'COPO', 'CANECA', 'XÍCARA', 'JARRA', 'GARRAFA', 'TRAVESSA', 'BANDEJA'],
-        similar: { 'PANELA': ['CAÇAROLA', 'FRIGIDEIRA'], 'FRIGIDEIRA': ['PANELA', 'WOK'], 'CHALEIRA': ['BULE', 'LEITEIRA'], 'ASSADEIRA': ['FORMA', 'TRAVESSA'], 'COLHER DE PAU': ['ESPÁTULA', 'CONCHA'], 'PENEIRA': ['COADOR', 'ESCORREDOR'], 'FACA': ['GARFO', 'FACÃO'], 'PRATO': ['TIGELA', 'TRAVESSA'], 'COPO': ['CANECA', 'TAÇA'], 'XÍCARA': ['CANECA', 'COPO'], 'JARRA': ['GARRAFA', 'BULE'] }
+    {
+        category: 'Utensílios de Cozinha',
+        words: ['PANELA', 'FRIGIDEIRA', 'PANELA DE PRESSÃO', 'CHALEIRA', 'ASSADEIRA', 'COLHER DE PAU', 'ESPÁTULA', 'CONCHA', 'PENEIRA', 'RALADOR', 'ABRIDOR', 'TÁBUA', 'FACA', 'GARFO', 'COLHER', 'PRATO', 'TIGELA', 'COPO', 'CANECA', 'XÍCARA', 'JARRA', 'GARRAFA', 'BANDEJA', 'ESCORREDOR'],
+        similar: {
+            'PANELA': ['PANELA DE PRESSÃO', 'FRIGIDEIRA', 'CHALEIRA'],
+            'FRIGIDEIRA': ['PANELA', 'ASSADEIRA', 'CHALEIRA'],
+            'PANELA DE PRESSÃO': ['PANELA', 'CHALEIRA', 'FRIGIDEIRA'],
+            'CHALEIRA': ['BULE', 'JARRA', 'PANELA'],
+            'ASSADEIRA': ['TRAVESSA', 'FRIGIDEIRA', 'BANDEJA'],
+            'COLHER DE PAU': ['ESPÁTULA', 'CONCHA', 'COLHER'],
+            'ESPÁTULA': ['COLHER DE PAU', 'CONCHA', 'FACA'],
+            'CONCHA': ['ESCUMADEIRA', 'COLHER DE PAU', 'COLHER'],
+            'PENEIRA': ['ESCORREDOR', 'COADOR', 'RALADOR'],
+            'RALADOR': ['DESCASCADOR', 'PENEIRA', 'FACA'],
+            'ABRIDOR': ['SACA-ROLHAS', 'DESCASCADOR', 'FACA'],
+            'TÁBUA': ['BANDEJA', 'PRATO', 'FACA'],
+            'FACA': ['GARFO', 'COLHER', 'TESOURA'],
+            'GARFO': ['COLHER', 'FACA', 'COLHER DE PAU'],
+            'COLHER': ['GARFO', 'COLHER DE PAU', 'CONCHA'],
+            'PRATO': ['TIGELA', 'TRAVESSA', 'BANDEJA'],
+            'TIGELA': ['POTE', 'PRATO', 'JARRA'],
+            'COPO': ['CANECA', 'TAÇA', 'XÍCARA'],
+            'CANECA': ['XÍCARA', 'COPO', 'TAÇA'],
+            'XÍCARA': ['CANECA', 'COPO', 'TAÇA'],
+            'JARRA': ['GARRAFA', 'BULE', 'COPO'],
+            'GARRAFA': ['JARRA', 'COPO', 'CANECA'],
+            'BANDEJA': ['TÁBUA', 'PRATO', 'TRAVESSA'],
+            'ESCORREDOR': ['PENEIRA', 'COADOR', 'RALADOR']
+        },
+        questions: [
+            'Pra que serve isso na cozinha?',
+            'Vai ao fogo ou não pode?',
+            'De que material costuma ser?',
+            'Você usa isso todo dia?',
+            'Lava na mão ou pode na lava-louças?',
+            'Usa pra cozinhar ou pra servir?',
+            'Cabe na gaveta?',
+            'Quebra se cair no chão?'
+        ]
     },
-    { 
-        category: 'Cores', 
-        words: ['VERMELHO', 'AZUL', 'AMARELO', 'VERDE', 'LARANJA', 'ROXO', 'ROSA', 'MARROM', 'PRETO', 'BRANCO', 'CINZA', 'BEGE', 'DOURADO', 'PRATEADO', 'VIOLETA', 'TURQUESA', 'LILÁS', 'VINHO', 'CORAL', 'SALMÃO', 'CREME', 'CIANO'],
-        similar: { 'VERMELHO': ['VINHO', 'CORAL'], 'AZUL': ['TURQUESA', 'CIANO'], 'AMARELO': ['DOURADO', 'BEGE'], 'VERDE': ['TURQUESA', 'OLIVA'], 'LARANJA': ['CORAL', 'SALMÃO'], 'ROXO': ['VIOLETA', 'LILÁS'], 'ROSA': ['SALMÃO', 'CORAL'], 'MARROM': ['BEGE', 'CAFÉ'], 'CINZA': ['PRATA', 'CHUMBO'], 'PRETO': ['CINZA', 'CARVÃO'], 'BRANCO': ['BEGE', 'CREME'] }
+    {
+        category: 'Cores',
+        words: ['VERMELHO', 'AZUL', 'AMARELO', 'VERDE', 'LARANJA', 'ROXO', 'ROSA', 'MARROM', 'PRETO', 'BRANCO', 'CINZA', 'BEGE', 'DOURADO', 'PRATEADO', 'LILÁS', 'VINHO', 'TURQUESA'],
+        similar: {
+            'VERMELHO': ['VINHO', 'LARANJA', 'ROSA'],
+            'AZUL': ['TURQUESA', 'ROXO', 'VERDE'],
+            'AMARELO': ['DOURADO', 'LARANJA', 'BEGE'],
+            'VERDE': ['TURQUESA', 'AZUL', 'AMARELO'],
+            'LARANJA': ['AMARELO', 'SALMÃO', 'VERMELHO'],
+            'ROXO': ['LILÁS', 'VINHO', 'AZUL'],
+            'ROSA': ['LILÁS', 'SALMÃO', 'VERMELHO'],
+            'MARROM': ['BEGE', 'VINHO', 'PRETO'],
+            'PRETO': ['CINZA', 'MARROM', 'VINHO'],
+            'BRANCO': ['BEGE', 'CINZA', 'PRATEADO'],
+            'CINZA': ['PRATEADO', 'PRETO', 'BRANCO'],
+            'BEGE': ['BRANCO', 'MARROM', 'AMARELO'],
+            'DOURADO': ['AMARELO', 'PRATEADO', 'LARANJA'],
+            'PRATEADO': ['CINZA', 'DOURADO', 'BRANCO'],
+            'LILÁS': ['ROXO', 'ROSA', 'AZUL'],
+            'VINHO': ['VERMELHO', 'ROXO', 'MARROM'],
+            'TURQUESA': ['AZUL', 'VERDE', 'LILÁS']
+        },
+        questions: [
+            'O que na sua casa tem essa cor?',
+            'Que comida tem essa cor?',
+            'Você usaria uma roupa dessa cor?',
+            'Que sentimento essa cor passa?',
+            'É uma cor mais clara ou mais escura?',
+            'Que animal tem essa cor?',
+            'Combina com festa ou com dia a dia?',
+            'Que time ou bandeira usa essa cor?'
+        ]
     },
-    { 
-        category: 'Partes do Corpo', 
-        words: ['CABEÇA', 'OLHO', 'NARIZ', 'BOCA', 'ORELHA', 'PESCOÇO', 'OMBRO', 'BRAÇO', 'MÃO', 'DEDO', 'BARRIGA', 'COSTAS', 'PERNA', 'JOELHO', 'PÉ', 'CABELO', 'SOBRANCELHA', 'DENTE', 'LÍNGUA', 'COTOVELO', 'PULSO', 'TORNOZELO', 'COXA', 'CALCANHAR', 'PANTURRILHA', 'QUEIXO', 'TESTA', 'NUCA'],
-        similar: { 'OLHO': ['NARIZ', 'ORELHA'], 'NARIZ': ['BOCA', 'OLHO'], 'BOCA': ['NARIZ', 'QUEIXO'], 'ORELHA': ['OLHO', 'NARIZ'], 'BRAÇO': ['PERNA', 'MÃO'], 'MÃO': ['PÉ', 'BRAÇO'], 'DEDO': ['MÃO', 'PÉ'], 'PERNA': ['BRAÇO', 'COXA'], 'JOELHO': ['COTOVELO', 'TORNOZELO'], 'COTOVELO': ['JOELHO', 'PULSO'], 'CABELO': ['SOBRANCELHA', 'BARBA'], 'TESTA': ['QUEIXO', 'BOCHECHA'] }
+    {
+        category: 'Partes do Corpo',
+        words: ['CABEÇA', 'OLHO', 'NARIZ', 'BOCA', 'ORELHA', 'PESCOÇO', 'OMBRO', 'BRAÇO', 'MÃO', 'DEDO', 'UNHA', 'BARRIGA', 'COSTAS', 'PERNA', 'JOELHO', 'PÉ', 'CABELO', 'SOBRANCELHA', 'DENTE', 'LÍNGUA', 'COTOVELO', 'TORNOZELO', 'COXA', 'CALCANHAR', 'QUEIXO', 'TESTA'],
+        similar: {
+            'CABEÇA': ['TESTA', 'PESCOÇO', 'OMBRO'],
+            'OLHO': ['SOBRANCELHA', 'NARIZ', 'ORELHA'],
+            'NARIZ': ['BOCA', 'OLHO', 'ORELHA'],
+            'BOCA': ['LÍNGUA', 'DENTE', 'NARIZ'],
+            'ORELHA': ['NARIZ', 'OLHO', 'QUEIXO'],
+            'PESCOÇO': ['OMBRO', 'QUEIXO', 'COSTAS'],
+            'OMBRO': ['PESCOÇO', 'BRAÇO', 'COSTAS'],
+            'BRAÇO': ['PERNA', 'OMBRO', 'COTOVELO'],
+            'MÃO': ['PÉ', 'DEDO', 'BRAÇO'],
+            'DEDO': ['UNHA', 'MÃO', 'PÉ'],
+            'UNHA': ['DEDO', 'MÃO', 'CABELO'],
+            'BARRIGA': ['PEITO', 'COSTAS', 'COXA'],
+            'COSTAS': ['OMBRO', 'BARRIGA', 'PESCOÇO'],
+            'PERNA': ['COXA', 'BRAÇO', 'JOELHO'],
+            'JOELHO': ['COTOVELO', 'TORNOZELO', 'COXA'],
+            'PÉ': ['MÃO', 'TORNOZELO', 'CALCANHAR'],
+            'CABELO': ['SOBRANCELHA', 'BARBA', 'UNHA'],
+            'SOBRANCELHA': ['CÍLIOS', 'CABELO', 'OLHO'],
+            'DENTE': ['LÍNGUA', 'BOCA', 'UNHA'],
+            'LÍNGUA': ['DENTE', 'BOCA', 'LÁBIO'],
+            'COTOVELO': ['JOELHO', 'OMBRO', 'PULSO'],
+            'TORNOZELO': ['PULSO', 'JOELHO', 'CALCANHAR'],
+            'COXA': ['PERNA', 'JOELHO', 'BRAÇO'],
+            'CALCANHAR': ['TORNOZELO', 'PÉ', 'JOELHO'],
+            'QUEIXO': ['TESTA', 'BOCA', 'NARIZ'],
+            'TESTA': ['QUEIXO', 'SOBRANCELHA', 'CABEÇA']
+        },
+        questions: [
+            'Pra que serve essa parte do corpo?',
+            'Temos uma ou duas dela?',
+            'Fica mais pra cima ou mais pra baixo?',
+            'Dói muito quando machuca?',
+            'O que você usa pra cuidar dela?',
+            'Dá pra ver ou fica escondida pela roupa?',
+            'Alguma roupa ou acessório se usa nela?',
+            'Ela se mexe sozinha?'
+        ]
     },
-    { 
-        category: 'Festas e Celebrações', 
-        words: ['ANIVERSÁRIO', 'CASAMENTO', 'NATAL', 'ANO NOVO', 'PÁSCOA', 'CARNAVAL', 'FESTA JUNINA', 'HALLOWEEN', 'FORMATURA', 'BATIZADO', 'CHÁ DE BEBÊ', 'CHURRASCO', 'RÉVEILLON', 'DIA DAS MÃES', 'DIA DOS PAIS', 'DIA DOS NAMORADOS', 'BODAS', 'NOIVADO', 'BAILE', 'QUINZE ANOS', 'CONFRATERNIZAÇÃO'],
-        similar: { 'ANIVERSÁRIO': ['FESTA', 'COMEMORAÇÃO'], 'CASAMENTO': ['NOIVADO', 'BODAS'], 'NATAL': ['ANO NOVO', 'RÉVEILLON'], 'PÁSCOA': ['NATAL', 'FESTA'], 'CARNAVAL': ['BAILE', 'FESTA'], 'FESTA JUNINA': ['QUADRILHA', 'ARRAIAL'], 'FORMATURA': ['COLAÇÃO', 'BAILE'], 'BATIZADO': ['CRISMA', 'COMUNHÃO'], 'CHÁ DE BEBÊ': ['CHÁ DE PANELA', 'CHÁ BAR'], 'CHURRASCO': ['FESTA', 'CONFRATERNIZAÇÃO'], 'DIA DAS MÃES': ['DIA DOS PAIS', 'ANIVERSÁRIO'] }
+    {
+        category: 'Festas e Celebrações',
+        words: ['ANIVERSÁRIO', 'CASAMENTO', 'NATAL', 'ANO NOVO', 'PÁSCOA', 'CARNAVAL', 'FESTA JUNINA', 'HALLOWEEN', 'FORMATURA', 'BATIZADO', 'CHÁ DE BEBÊ', 'CHURRASCO', 'DIA DAS MÃES', 'DIA DOS PAIS', 'DIA DOS NAMORADOS', 'DIA DAS CRIANÇAS', 'NOIVADO', 'FESTA DE 15 ANOS'],
+        similar: {
+            'ANIVERSÁRIO': ['FESTA DE 15 ANOS', 'DIA DAS CRIANÇAS', 'FORMATURA'],
+            'CASAMENTO': ['NOIVADO', 'FORMATURA', 'BATIZADO'],
+            'NATAL': ['ANO NOVO', 'PÁSCOA', 'ANIVERSÁRIO'],
+            'ANO NOVO': ['NATAL', 'CARNAVAL', 'ANIVERSÁRIO'],
+            'PÁSCOA': ['NATAL', 'DIA DAS CRIANÇAS', 'ANIVERSÁRIO'],
+            'CARNAVAL': ['ANO NOVO', 'FESTA JUNINA', 'HALLOWEEN'],
+            'FESTA JUNINA': ['CARNAVAL', 'HALLOWEEN', 'ANIVERSÁRIO'],
+            'HALLOWEEN': ['CARNAVAL', 'FESTA JUNINA', 'PÁSCOA'],
+            'FORMATURA': ['CASAMENTO', 'FESTA DE 15 ANOS', 'ANIVERSÁRIO'],
+            'BATIZADO': ['CHÁ DE BEBÊ', 'CASAMENTO', 'ANIVERSÁRIO'],
+            'CHÁ DE BEBÊ': ['BATIZADO', 'ANIVERSÁRIO', 'CASAMENTO'],
+            'CHURRASCO': ['ANIVERSÁRIO', 'ANO NOVO', 'FESTA JUNINA'],
+            'DIA DAS MÃES': ['DIA DOS PAIS', 'DIA DAS CRIANÇAS', 'DIA DOS NAMORADOS'],
+            'DIA DOS PAIS': ['DIA DAS MÃES', 'DIA DAS CRIANÇAS', 'DIA DOS NAMORADOS'],
+            'DIA DOS NAMORADOS': ['DIA DAS MÃES', 'CASAMENTO', 'NOIVADO'],
+            'DIA DAS CRIANÇAS': ['DIA DAS MÃES', 'PÁSCOA', 'NATAL'],
+            'NOIVADO': ['CASAMENTO', 'DIA DOS NAMORADOS', 'FORMATURA'],
+            'FESTA DE 15 ANOS': ['ANIVERSÁRIO', 'FORMATURA', 'CASAMENTO']
+        },
+        questions: [
+            'O que se come nessa data?',
+            'Que música toca nessa festa?',
+            'O que você veste pra ir?',
+            'Tem presente envolvido?',
+            'Acontece uma vez por ano ou quando quiser?',
+            'É mais em família ou com amigos?',
+            'Tem decoração especial?',
+            'Qual foi a última vez que você foi numa dessas?'
+        ]
     },
-    { 
-        category: 'Jogos e Games', 
-        words: ['MINECRAFT', 'FORTNITE', 'FIFA', 'MARIO', 'SONIC', 'POKEMON', 'GTA', 'CALL OF DUTY', 'FREE FIRE', 'AMONG US', 'ROBLOX', 'VALORANT', 'LEAGUE OF LEGENDS', 'COUNTER STRIKE', 'THE SIMS', 'CANDY CRUSH', 'TETRIS', 'PACMAN', 'ZELDA', 'GOD OF WAR', 'RESIDENT EVIL'],
-        similar: { 'MINECRAFT': ['ROBLOX', 'TERRARIA'], 'FORTNITE': ['FREE FIRE', 'PUBG'], 'FIFA': ['PES', 'FUTEBOL'], 'MARIO': ['SONIC', 'DONKEY KONG'], 'POKEMON': ['DIGIMON', 'YU-GI-OH'], 'GTA': ['RED DEAD', 'WATCH DOGS'], 'CALL OF DUTY': ['BATTLEFIELD', 'COUNTER STRIKE'], 'FREE FIRE': ['FORTNITE', 'PUBG'], 'AMONG US': ['FALL GUYS', 'ROBLOX'], 'LEAGUE OF LEGENDS': ['DOTA', 'VALORANT'], 'THE SIMS': ['ANIMAL CROSSING', 'STARDEW'] }
+    {
+        category: 'Jogos e Games',
+        words: ['MINECRAFT', 'FORTNITE', 'FREE FIRE', 'ROBLOX', 'AMONG US', 'FIFA', 'GTA', 'MARIO', 'SONIC', 'POKEMON', 'CANDY CRUSH', 'CLASH ROYALE', 'TETRIS', 'PAC-MAN', 'VALORANT', 'COUNTER-STRIKE', 'THE SIMS', 'GOD OF WAR', 'MORTAL KOMBAT'],
+        similar: {
+            'MINECRAFT': ['ROBLOX', 'FORTNITE', 'THE SIMS'],
+            'FORTNITE': ['FREE FIRE', 'VALORANT', 'MINECRAFT'],
+            'FREE FIRE': ['FORTNITE', 'PUBG', 'VALORANT'],
+            'ROBLOX': ['MINECRAFT', 'FORTNITE', 'AMONG US'],
+            'AMONG US': ['ROBLOX', 'FALL GUYS', 'FREE FIRE'],
+            'FIFA': ['PES', 'ROCKET LEAGUE', 'FREE FIRE'],
+            'GTA': ['RED DEAD', 'FREE FIRE', 'MINECRAFT'],
+            'MARIO': ['SONIC', 'DONKEY KONG', 'PAC-MAN'],
+            'SONIC': ['MARIO', 'PAC-MAN', 'DONKEY KONG'],
+            'POKEMON': ['DIGIMON', 'MARIO', 'MINECRAFT'],
+            'CANDY CRUSH': ['TETRIS', 'CLASH ROYALE', 'PAC-MAN'],
+            'CLASH ROYALE': ['CLASH OF CLANS', 'CANDY CRUSH', 'FREE FIRE'],
+            'TETRIS': ['CANDY CRUSH', 'PAC-MAN', 'MARIO'],
+            'PAC-MAN': ['TETRIS', 'SONIC', 'MARIO'],
+            'VALORANT': ['COUNTER-STRIKE', 'FREE FIRE', 'FORTNITE'],
+            'COUNTER-STRIKE': ['VALORANT', 'FREE FIRE', 'CALL OF DUTY'],
+            'THE SIMS': ['MINECRAFT', 'ROBLOX', 'GTA'],
+            'GOD OF WAR': ['MORTAL KOMBAT', 'GTA', 'MINECRAFT'],
+            'MORTAL KOMBAT': ['STREET FIGHTER', 'GOD OF WAR', 'FREE FIRE']
+        },
+        questions: [
+            'Joga mais no celular, no computador ou no console?',
+            'Joga sozinho ou com amigos?',
+            'É um jogo mais calmo ou mais agitado?',
+            'Criança pode jogar?',
+            'Desde quando você conhece esse jogo?',
+            'A partida é rápida ou demora?',
+            'Precisa de internet pra jogar?',
+            'Que tipo de pessoa você imagina jogando?'
+        ]
     },
-    { 
-        category: 'Filmes e Séries', 
-        words: ['VINGADORES', 'HOMEM ARANHA', 'BATMAN', 'HARRY POTTER', 'STAR WARS', 'SENHOR DOS ANÉIS', 'AVATAR', 'TITANIC', 'FROZEN', 'TOY STORY', 'SHREK', 'REI LEÃO', 'PROCURANDO NEMO', 'MINIONS', 'STRANGER THINGS', 'FRIENDS', 'GAME OF THRONES', 'BREAKING BAD', 'THE OFFICE', 'NARUTO', 'DRAGON BALL'],
-        similar: { 'VINGADORES': ['LIGA DA JUSTIÇA', 'X-MEN'], 'HOMEM ARANHA': ['BATMAN', 'SUPERMAN'], 'HARRY POTTER': ['NARNIA', 'PERCY JACKSON'], 'STAR WARS': ['STAR TREK', 'AVATAR'], 'SENHOR DOS ANÉIS': ['HARRY POTTER', 'NARNIA'], 'FROZEN': ['MOANA', 'ENROLADOS'], 'TOY STORY': ['MONSTROS SA', 'CARROS'], 'SHREK': ['MADAGASCAR', 'KUNG FU PANDA'], 'REI LEÃO': ['MOGLI', 'TARZAN'], 'STRANGER THINGS': ['DARK', 'LOST'], 'FRIENDS': ['HOW I MET', 'THE OFFICE'], 'NARUTO': ['DRAGON BALL', 'ONE PIECE'] }
+    {
+        category: 'Filmes e Séries',
+        words: ['VINGADORES', 'HOMEM-ARANHA', 'BATMAN', 'SUPERMAN', 'HARRY POTTER', 'STAR WARS', 'SENHOR DOS ANÉIS', 'TITANIC', 'JURASSIC PARK', 'VELOZES E FURIOSOS', 'FROZEN', 'TOY STORY', 'SHREK', 'REI LEÃO', 'PROCURANDO NEMO', 'MINIONS', 'MOANA', 'DIVERTIDA MENTE', 'STRANGER THINGS', 'ROUND 6', 'LA CASA DE PAPEL', 'FRIENDS', 'GAME OF THRONES', 'BREAKING BAD', 'NARUTO', 'DRAGON BALL', 'ONE PIECE'],
+        similar: {
+            'VINGADORES': ['LIGA DA JUSTIÇA', 'HOMEM-ARANHA', 'X-MEN'],
+            'HOMEM-ARANHA': ['BATMAN', 'SUPERMAN', 'VINGADORES'],
+            'BATMAN': ['SUPERMAN', 'HOMEM-ARANHA', 'VINGADORES'],
+            'SUPERMAN': ['BATMAN', 'HOMEM-ARANHA', 'VINGADORES'],
+            'HARRY POTTER': ['SENHOR DOS ANÉIS', 'NARNIA', 'STAR WARS'],
+            'STAR WARS': ['STAR TREK', 'SENHOR DOS ANÉIS', 'VINGADORES'],
+            'SENHOR DOS ANÉIS': ['HARRY POTTER', 'GAME OF THRONES', 'STAR WARS'],
+            'TITANIC': ['JURASSIC PARK', 'STAR WARS', 'VELOZES E FURIOSOS'],
+            'JURASSIC PARK': ['KING KONG', 'GODZILLA', 'VELOZES E FURIOSOS'],
+            'VELOZES E FURIOSOS': ['MISSÃO IMPOSSÍVEL', 'JURASSIC PARK', 'VINGADORES'],
+            'FROZEN': ['MOANA', 'ENROLADOS', 'REI LEÃO'],
+            'TOY STORY': ['SHREK', 'MINIONS', 'PROCURANDO NEMO'],
+            'SHREK': ['MINIONS', 'TOY STORY', 'MADAGASCAR'],
+            'REI LEÃO': ['MADAGASCAR', 'PROCURANDO NEMO', 'FROZEN'],
+            'PROCURANDO NEMO': ['MOANA', 'REI LEÃO', 'TOY STORY'],
+            'MINIONS': ['SHREK', 'TOY STORY', 'DIVERTIDA MENTE'],
+            'MOANA': ['FROZEN', 'PROCURANDO NEMO', 'ENROLADOS'],
+            'DIVERTIDA MENTE': ['TOY STORY', 'MINIONS', 'FROZEN'],
+            'STRANGER THINGS': ['DARK', 'ROUND 6', 'HARRY POTTER'],
+            'ROUND 6': ['LA CASA DE PAPEL', 'STRANGER THINGS', 'BREAKING BAD'],
+            'LA CASA DE PAPEL': ['ROUND 6', 'BREAKING BAD', 'VELOZES E FURIOSOS'],
+            'FRIENDS': ['HOW I MET YOUR MOTHER', 'THE BIG BANG THEORY', 'STRANGER THINGS'],
+            'GAME OF THRONES': ['SENHOR DOS ANÉIS', 'VIKINGS', 'HARRY POTTER'],
+            'BREAKING BAD': ['LA CASA DE PAPEL', 'ROUND 6', 'GAME OF THRONES'],
+            'NARUTO': ['DRAGON BALL', 'ONE PIECE', 'POKEMON'],
+            'DRAGON BALL': ['NARUTO', 'ONE PIECE', 'POKEMON'],
+            'ONE PIECE': ['NARUTO', 'DRAGON BALL', 'POKEMON']
+        },
+        questions: [
+            'É melhor assistir no cinema ou em casa?',
+            'É pra rir, pra chorar ou pra ficar tenso?',
+            'Criança pode assistir?',
+            'Você assistiria de novo?',
+            'É antigo ou recente?',
+            'Pra quem você recomendaria?',
+            'Tem continuação?',
+            'Você assistiu com quem?'
+        ]
     },
-    { 
-        category: 'Personagens', 
-        words: ['MICKEY', 'MINNIE', 'PATO DONALD', 'PATETA', 'PLUTO', 'BOB ESPONJA', 'PATRICK', 'HOMER SIMPSON', 'BART SIMPSON', 'SCOOBY DOO', 'TOM', 'JERRY', 'PICA-PAU', 'GARFIELD', 'SNOOPY', 'CHARLIE BROWN', 'PEPPA PIG', 'PATRULHA CANINA', 'ELSA', 'WOODY', 'BUZZ LIGHTYEAR', 'SHREK', 'PIKACHU'],
-        similar: { 'MICKEY': ['MINNIE', 'PATETA'], 'BOB ESPONJA': ['PATRICK', 'LULA MOLUSCO'], 'HOMER SIMPSON': ['BART SIMPSON', 'PETER GRIFFIN'], 'TOM': ['JERRY', 'PICA-PAU'], 'GARFIELD': ['SNOOPY', 'ODIE'], 'PEPPA PIG': ['GEORGE PIG', 'PATRULHA CANINA'], 'ELSA': ['ANNA', 'RAPUNZEL'], 'WOODY': ['BUZZ LIGHTYEAR', 'JESSIE'], 'SHREK': ['BURRO', 'FIONA'], 'PIKACHU': ['CHARIZARD', 'ASH'] }
+    {
+        category: 'Personagens',
+        words: ['MICKEY', 'MINNIE', 'PATO DONALD', 'PATETA', 'BOB ESPONJA', 'PATRICK', 'LULA MOLUSCO', 'HOMER SIMPSON', 'SCOOBY-DOO', 'TOM', 'JERRY', 'PICA-PAU', 'GARFIELD', 'PEPPA PIG', 'ELSA', 'WOODY', 'BUZZ LIGHTYEAR', 'PIKACHU', 'GOKU', 'CHAVES', 'MÔNICA', 'CEBOLINHA', 'CASCÃO'],
+        similar: {
+            'MICKEY': ['MINNIE', 'PATO DONALD', 'PATETA'],
+            'MINNIE': ['MICKEY', 'MARGARIDA', 'PATETA'],
+            'PATO DONALD': ['MARGARIDA', 'MICKEY', 'PATETA'],
+            'PATETA': ['MICKEY', 'PATO DONALD', 'BOB ESPONJA'],
+            'BOB ESPONJA': ['PATRICK', 'LULA MOLUSCO', 'MICKEY'],
+            'PATRICK': ['BOB ESPONJA', 'LULA MOLUSCO', 'PATETA'],
+            'LULA MOLUSCO': ['BOB ESPONJA', 'PATRICK', 'PATO DONALD'],
+            'HOMER SIMPSON': ['BART SIMPSON', 'PETER GRIFFIN', 'PATETA'],
+            'SCOOBY-DOO': ['PLUTO', 'GARFIELD', 'TOM'],
+            'TOM': ['JERRY', 'GARFIELD', 'PICA-PAU'],
+            'JERRY': ['TOM', 'PICA-PAU', 'MICKEY'],
+            'PICA-PAU': ['TOM', 'JERRY', 'PATO DONALD'],
+            'GARFIELD': ['TOM', 'SNOOPY', 'SCOOBY-DOO'],
+            'PEPPA PIG': ['PATRULHA CANINA', 'BOB ESPONJA', 'MICKEY'],
+            'ELSA': ['ANNA', 'RAPUNZEL', 'MOANA'],
+            'WOODY': ['BUZZ LIGHTYEAR', 'SHREK', 'MICKEY'],
+            'BUZZ LIGHTYEAR': ['WOODY', 'MICKEY', 'BOB ESPONJA'],
+            'PIKACHU': ['SONIC', 'STITCH', 'SCOOBY-DOO'],
+            'GOKU': ['VEGETA', 'NARUTO', 'SUPERMAN'],
+            'CHAVES': ['CHAPOLIN', 'QUICO', 'HOMER SIMPSON'],
+            'MÔNICA': ['CEBOLINHA', 'MAGALI', 'CASCÃO'],
+            'CEBOLINHA': ['CASCÃO', 'MÔNICA', 'MAGALI'],
+            'CASCÃO': ['CEBOLINHA', 'MÔNICA', 'MAGALI']
+        },
+        questions: [
+            'É pessoa, bicho ou outra coisa?',
+            'Qual a principal característica dele?',
+            'Ele te faz rir?',
+            'É mais herói ou mais atrapalhado?',
+            'Criança de hoje conhece ele?',
+            'Ele fala ou só faz barulho?',
+            'De que cor ele é?',
+            'Ele tem um melhor amigo?'
+        ]
     }
 ];
 
@@ -188,18 +1277,18 @@ function getWordCategoriesPT() {
 function getRandomWordPT(categoryData) {
     const totalWords = wordCategoriesPT.reduce((sum, cat) => sum + cat.words.length, 0);
     const maxUsed = Math.floor(totalWords / 2);
-    
+
     if (usedWordsPT.length >= maxUsed) {
         usedWordsPT = [];
     }
-    
+
     const availableWords = categoryData.words.filter(w => !usedWordsPT.includes(w));
     const wordPool = availableWords.length > 0 ? availableWords : categoryData.words;
     const word = wordPool[Math.floor(Math.random() * wordPool.length)];
-    
+
     if (!usedWordsPT.includes(word)) {
         usedWordsPT.push(word);
     }
-    
+
     return word;
 }

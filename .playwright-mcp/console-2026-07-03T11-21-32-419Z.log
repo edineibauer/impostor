@@ -1,0 +1,1105 @@
+[-76742147ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://chatgpt.com/backend-api/celsius/ws/user:0
+[-122874397ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/ccm/s/collect?auid=1359862158.1782952337&gtm=45He66u1v895916766za20gzb894795928zd894795928xea:0
+[-143065471ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122873900ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://www.google.com.br/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&tid=G-VVV61GFPY5&cid=630151547.1782952338&gtm=45je66u1v9166197034z8895916766za200zb894795928zd894795928&rcb=7&aip=1&dma=0&gcs=G111&gcd=13v3v3v3v5l1&npa=0&frm=0&tag_exp=115938466~115938468~119027224~119576881~119576885~119576891~119576895&z=462689195:0
+[-143065466ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122873863ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://tags.creativecdn.com/AZKos2IkjglGfw2fUFkr.js:0
+[-143064784ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122873859ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://stats.g.doubleclick.net/g/collect?v=2&tid=G-VVV61GFPY5&cid=630151547.1782952338&gtm=45je66u1v9166197034z8895916766za200zb894795928zd894795928&rcb=7&aip=1&dma=0&gcs=G111&gcd=13v3v3v3v5l1&npa=0&frm=0&tag_exp=115938466~115938468~119027224~119576881~119576885~119576891~119576895:0
+[-143064781ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122873859ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ads.rubiconproject.com/prebid/17238_viva.js:0
+[-143064777ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122872188ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/activity;src=14092032;type=vivar0;cat=viva_0;rcb=16;ord=8607441946055;npa=0;auiddc=1359862158.1782952337;u1=www.vivareal.com.br;u2=%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u3=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u4=compra;u5=b2c;u6=%2Fvivareal%2Fresultado-pesquisa;u7=resultado-pesquisa;u8=false;u10=undefined;u11=undefined;u13=undefined;u15=undefined;u16=undefined;u17=undefined;u18=undefined;u19=undefined;u20=undefined;u21=undefined;u22=undefined;u23=undefined;u24=undefined;u25=undefined;u26=undefined;uaa=;uab=;uafvl=;uamb=0;uam=;uap=;uapv=;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe66u1v9190756523z8895916766za20gzb895916766zd894795928xea;gcs=G111;gcd=13v3v3v3v5l1;dma=0;dc_fmt=3;tag_exp=115938466~115938468~118395334~119027224~119576881~119576885~119576891~119576895;epver=2;dc_random=1782954819_4weLS_uQFctqgszyCc6FiXPY1iFVK2d4jg;~oref=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F?:0
+[-143064775ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122872170ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/activity;src=14092032;type=vivar0;cat=viva_0;rcb=16;ord=8607441946055;npa=0;auiddc=1359862158.1782952337;u1=www.vivareal.com.br;u2=%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u3=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u4=compra;u5=b2c;u6=%2Fvivareal%2Fresultado-pesquisa;u7=resultado-pesquisa;u8=false;u10=undefined;u11=undefined;u13=undefined;u15=undefined;u16=undefined;u17=undefined;u18=undefined;u19=undefined;u20=undefined;u21=undefined;u22=undefined;u23=undefined;u24=undefined;u25=undefined;u26=undefined;uaa=;uab=;uafvl=;uamb=0;uam=;uap=;uapv=;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe66u1v9190756523z8895916766za20gzb895916766zd894795928xea;gcs=G111;gcd=13v3v3v3v5l1;dma=0;dc_fmt=11;tag_exp=115938466~115938468~118395334~119027224~119576881~119576885~119576891~119576895;epver=2;dc_random=1782954819_4weLS_uQFctqgszyCc6FiXPY1iFVK2d4jg;~oref=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F?:0
+[-143064772ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122872170ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/activity;src=14092032;type=vivar0;cat=viva_000;rcb=16;ord=6528601635199;npa=0;auiddc=1359862158.1782952337;u1=www.vivareal.com.br;u2=%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u3=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u4=compra;u5=b2c;u6=%2Fvivareal%2Fresultado-pesquisa;u7=resultado-pesquisa;u8=false;u10=undefined;u11=undefined;u13=undefined;u15=undefined;u16=undefined;u17=undefined;u19=undefined;u20=undefined;u21=undefined;u22=undefined;u23=undefined;u24=undefined;u25=undefined;u26=undefined;uaa=;uab=;uafvl=;uamb=0;uam=;uap=;uapv=;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe66u1v9190756523z8895916766za20gzb895916766zd894795928xea;gcs=G111;gcd=13v3v3v3v5l1;dma=0;dc_fmt=3;tag_exp=115938466~115938468~118395334~119027224~119576881~119576885~119576891~119576895;epver=2;dc_random=1782954819_56dY8qh32EWkgHt290roWpzonxbU3a3Qyg;~oref=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F?:0
+[-143064770ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122872152ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/activity;src=14092032;type=vivar0;cat=viva_000;rcb=16;ord=6528601635199;npa=0;auiddc=1359862158.1782952337;u1=www.vivareal.com.br;u2=%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u3=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F;u4=compra;u5=b2c;u6=%2Fvivareal%2Fresultado-pesquisa;u7=resultado-pesquisa;u8=false;u10=undefined;u11=undefined;u13=undefined;u15=undefined;u16=undefined;u17=undefined;u19=undefined;u20=undefined;u21=undefined;u22=undefined;u23=undefined;u24=undefined;u25=undefined;u26=undefined;uaa=;uab=;uafvl=;uamb=0;uam=;uap=;uapv=;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe66u1v9190756523z8895916766za20gzb895916766zd894795928xea;gcs=G111;gcd=13v3v3v3v5l1;dma=0;dc_fmt=11;tag_exp=115938466~115938468~118395334~119027224~119576881~119576885~119576891~119576895;epver=2;dc_random=1782954819_56dY8qh32EWkgHt290roWpzonxbU3a3Qyg;~oref=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F?:0
+[-142930127ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122872144ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://googleads.g.doubleclick.net/pagead/viewthroughconversion/998762157/?random=1782954819468&cv=11&fst=1782954819468&bg=ffffff&guid=ON&async=1&en=listing_id&gtm=45be66u1v9179590802z8895916766za20gzb895916766zd894795928xea&gcd=13v3v3v3v5l1&dma=0&tag_exp=115616985~115938466~115938469~118395335~119027224~119576881~119576885~119576891~119576895&u_w=1024&u_h=768&url=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F&rcb=1&frm=0&tiba=Im%C3%B3veis%20para%20venda%20em%20Sombrio%2C%20SC%20-%20Viva%20Real&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1359862158.1782952337&uaa=&uab=&uafvl=&uamb=0&uam=&uap=&uapv=&uaw=0&_tu=CA&data=event%3Dlisting_id&ept=9&rfmt=3&fmt=4:0
+[-142930121ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871750ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://x.bidswitch.net/sync?dsp_id=46&user_id=k-LeUGClUjs8H_juHq-Gq8MvnW7Il3_IF1PDif2Q&expires=30:0
+[-142930021ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871749ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://cm.g.doubleclick.net/pixel?google_nid=cjp&google_sc&google_ula=913071&CriteoUserId=k-7u7mPlUjs8H_juHq-Gq8MvnW7Ikg8xL1DCWuKQ&google_cm&google_hm=ay03dTdtUGxVanM4SF9qdUhxLUdxOE12blc3SWtnOHhMMURDV3VLUQ:0
+[-142930020ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871749ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ib.adnxs.com/getuid?https://dis.criteo.com/dis/rtb/appnexus/cookiematch.aspx?appnxsid=$UID:0
+[-142930016ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871749ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://simage4.pubmatic.com/AdServer/SPug?partnerID=167352&partnerUID=uid:k-VNGcPVUjs8H_juHq-Gq8MvnW7IkyvsRfQMM1Ew:0
+[-142930015ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871749ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://r.casalemedia.com/rum?cm_dsp_id=20&external_user_id=k-T4d1vVUjs8H_juHq-Gq8MvnW7ImbSLr5CTv0nw:0
+[-142930011ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871749ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.360yield.com/match?publisher_dsp_id=38&external_user_id=k-RibW1VUjs8H_juHq-Gq8MvnW7IkksT3xTQTZTQ:0
+[-142930010ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122871748ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://i.liadm.com/s/28292?bidder_id=71340&bidder_uuid=k-dmXY8FUjs8H_juHq-Gq8MvnW7Im7Bj0lXjth0Q:0
+[-122871748ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://jadserve.postrelease.com/suid/1017?vk=k-aNHVJFUjs8H_juHq-Gq8MvnW7Ik2ZYYKOBi5sA:0
+[-122871748ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://simage2.pubmatic.com/AdServer/Pug?vcode=bz0yJnR5cGU9MSZjb2RlPTE5MjgmdGw9NDMyMDA=&piggybackCookie=uid:k-VNGcPVUjs8H_juHq-Gq8MvnW7IkyvsRfQMM1Ew:0
+[-122871748ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://trends.revcontent.com/cm/pixel_sync?bidder=151&bidder_uid=k-0DgGb1Ujs8H_juHq-Gq8MvnW7Ilmoy_rakStOg:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://pixel.rubiconproject.com/tap.php?v=6434&nid=2149&put=k-lF5qrlUjs8H_juHq-Gq8MvnW7In5eROdsUz1hg&expires=30:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://rtb-csync.smartadserver.com/redir/?partnerid=79&partneruserid=k-WkpN_1Ujs8H_juHq-Gq8MvnW7IlAA_QFWRGBwQ:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://criteo-sync.teads.tv/um?eid=80&uid=k-YJfXnFUjs8H_juHq-Gq8MvnW7IkaFfUZs4g9uw:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://criteo-partners.tremorhub.com/sync?UICR=k-yIssU1Ujs8H_juHq-Gq8MvnW7Ile4GtIUo5rFg:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ade.clmbtech.com/uid/sync.htm?pid=13079&cuid=k-3hgqeFUjs8H_juHq-Gq8MvnW7InfHd829SSdVQ:0
+[-122871747ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://eb2.3lift.com/xuid?mid=2711&xuid=k-EcMb11Ujs8H_juHq-Gq8MvnW7ImGPyhv3_FSzw&dongle=013b:0
+[-122871746ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://sync.1rx.io/usersync/criteodsp/k-lPOQrlUjs8H_juHq-Gq8MvnW7IlTRIQH7kH3_A:0
+[-122871682ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://googleads.g.doubleclick.net/pagead/viewthroughconversion/998762157/?random=1782954819468&cv=11&fst=1782954819468&fmt=3&bg=ffffff&guid=ON&async=1&en=listing_id&gtm=45be66u1v9179590802z8895916766za20gzb895916766zd894795928xea&gcd=13v3v3v3v5l1&dma=0&tag_exp=115616985~115938466~115938469~118395335~119027224~119576881~119576885~119576891~119576895&u_w=1024&u_h=768&url=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F&rcb=1&frm=0&tiba=Im%C3%B3veis%20para%20venda%20em%20Sombrio%2C%20SC%20-%20Viva%20Real&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1359862158.1782952337&uaa=&uab=&uafvl=&uamb=0&uam=&uap=&uapv=&uaw=0&_tu=CA&data=event%3Dlisting_id&ept=9:0
+[-122871594ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ib.adnxs.com/setuid?entity=52&code=k-XY9qgFUjs8H_juHq-Gq8MvnW7Il_0OG0ZnmOTA:0
+[-122871550ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://googleads.g.doubleclick.net/pagead/viewthroughconversion/1017003611/?random=197363333&cv=11&fst=1782954820037&fmt=8&bg=ffffff&guid=ON&async=1&en=conversion&gtm=45be66u1z8895916766za20gzb895916766zd894795928xea&gcs=G111&gcd=13v3v3v3v5l1&dma=0&tag_exp=115938466~115938468~119027224~119576881~119576885~119576891~119576895&u_w=1024&u_h=768&url=https%3A%2F%2Fwww.vivareal.com.br%2Fvenda%2Fsanta-catarina%2Fsombrio%2F&rcb=6&label=W-snCPCmxogDENv8-OQD&capi=1&frm=0&tiba=Im%C3%B3veis%20para%20venda%20em%20Sombrio%2C%20SC%20-%20Viva%20Real&value=0&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1359862158.1782952337&uaa=&uab=&uafvl=&uamb=0&uam=&uap=&uapv=&uaw=0&_tu=CA&gcl_ctr=2~0~0~0&category=acrcp_v1_512&ept=5&ct_cookie_present=false&crd=CLTesQII8t-xAgit4bECCK_hsQIIobixAgixwbECCLDBsQIIscOxAgiKxbECCMLJsQIItMaxAgiT2rECCNvcsQIIh9uxAgjTxbECCOvMsQII7c6xAgjVz7ECCPTasQII_eOxAgjJ47ECCJfUsQIIyduxAgjN5rECCLHhsQIIs-GxAgim3bECCLDesQIIgNuxAkordHJpZ2dlcjtuYXZpZ2F0aW9uLXNvdXJjZSwgbm90LWV2ZW50LXNvdXJjZVoDCgEBYgMKAQM&cerd=CgSnp74t&eitems=ChEI8PWS0gYQ9qLh5vPC1f6-ARIdAI5AZhKvtUVjXwNsiDkBSojx6G9bAqBB40D8aHk&fsk=ChEI8PWS0gYQ2cnGgPbT2efIARIsAHr4rAGyerqvfeAGUcOBLeoyW_bIfGqHUf5NyARejvYdFgT-A1GwkjBn6DgaAj8P&pscrd=IhMI0vLYpeiylQMVyVbdAh317Bt4OhxodHRwczovL3d3dy52aXZhcmVhbC5jb20uYnIvQlhDaEVJOFBXUzBnWVFfcVNsOWNfOGxObndBUkl0QUlTRWhIZElWdWlhWWxwVDRrOWljNFFSbUUyOXRLcEIwdHVOQ1ZjSjhtQmRjdzRhb0t5TS1CY2hER0pEegwICWIICAAQABgAIAA:0
+[-122871262ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://sync.crwdcntrl.net/qmap?c=16722&tp=MDAG&tpid=pjGLbl9XJTJGdFFQUVNHSllyTSUyQnVpNVJKN3BhSUlTdmElMkZXQWpsb2ZobmpYUiUyQkZWOVlDTDlXOGNCWkhCT0YzNUoxQnJqZGg&gdpr=0&gdpr_consent=&lac=y:0
+[-122877701ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877698ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877586ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877583ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877581ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877580ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877579ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122877578ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-122873799ms] [LOG] Braze: Tentativa 1 @ :0
+[-122873799ms] [LOG] Braze: Status da permissão de push: default @ :0
+[-122873798ms] [LOG] Braze: Usuário ainda não decidiu sobre notificações push. Solicitando... @ :2
+[-122873194ms] [WARNING] [TikTok Pixel] - Missing 'content_id' paramter
+Issue: The 'content_id' parameter isn't being received. This is required for Video Shopping Ads (VSA).
+Suggestion: Include the 'content_id' parameter in your source code. This is required for Video Shopping Ads (VSA). See https://ads.tiktok.com/help/article/standard-events-parameters?redirected=2 for more information. @ https://analytics.tiktok.com/i18n/pixel/static/main.MTIwMGUyODI1MA.js:0
+[-6672199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6657197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6645163ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6644567ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6642204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6632183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6627197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6615156ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6614554ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6612183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6597199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6585149ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6584550ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6582195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6572202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6567211ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6555133ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6554535ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6552191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6537203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6525121ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6524525ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6522204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6512201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6507204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6495118ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6494518ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6492202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6477200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6465116ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6464522ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6462187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6452194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6447206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6435117ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6434504ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6432194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6417206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6405116ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6404491ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6402191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6392202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6387206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6375108ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6374479ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6372207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6357201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6345101ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6344455ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6342208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6332194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6327201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6315090ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6314461ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6312208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6297205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6285079ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6284449ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6282194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6272185ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6267207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6255066ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6254443ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6252198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6237195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6225054ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6224426ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6222206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6212205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6207204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6195040ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6194411ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6192207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6177197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6165032ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6164404ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6162206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6152201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6147199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6135026ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6134397ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6132205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6117201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6105009ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6104383ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6102206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6092204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6087205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6074999ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6074369ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6072196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6057204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6044987ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6044361ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6042204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6032202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6027192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6014986ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6014348ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-6012202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5997196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5984968ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5984345ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5982203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5972188ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5967203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5954957ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5954333ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5952200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5937197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5924949ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5924321ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5922191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5912186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5907203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5894937ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5894313ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5892192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5877203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5864936ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5864308ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5862196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5852198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5847195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5834910ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5834302ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5832192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5817203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5804919ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5804297ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5802200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5792204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5787202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5774904ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5774279ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5772200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5757208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5744899ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5744272ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5742201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5732202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5727207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5714897ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5714271ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5712198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5697197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5684871ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5684260ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5682203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5672203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5667196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5654877ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5654248ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5652195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5637198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5624864ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5624237ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5622197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5612182ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5607199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5594842ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5594216ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5592194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5577198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5564843ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5564214ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5562197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5552199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5547203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5534827ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5534212ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5532205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5517205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5504821ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5504197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5502197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5492205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5487197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5474810ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5474196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5472199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5457197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5444799ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5444187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5442196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5432194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5427198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5414785ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5414176ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5412203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5397201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5384781ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5384172ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5382194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5372204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5367206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5354766ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5354156ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5352195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5337201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5324755ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5324150ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5322195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5312189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5307201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5294749ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5294135ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5292199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5277202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5264743ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5264132ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5262194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5252191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5247206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5234726ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5234115ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5232208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5217204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5204724ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5204114ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5202193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5192198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5187194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5174724ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5174111ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5172195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5157210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5144709ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5144094ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5142197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5132194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5127209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5114693ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5114077ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5112196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5097196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5084694ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5084064ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5082195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5072181ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5067198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5054677ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5054056ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5052195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5037196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5024663ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5024047ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5022203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5012192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-5007181ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4994664ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4994031ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4992201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4977192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4964645ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4964032ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4962210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4952206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4947198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4934633ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4934018ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4932205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4917208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4904628ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4904018ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4902205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4892187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4887187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4874611ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4874017ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4872203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4857199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4844604ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4844008ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4842198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4832186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4827186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4814598ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4814002ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4812205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4797203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4784586ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4783989ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4782195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4772192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4767190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4754573ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4753971ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4752192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4737184ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4724567ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4723970ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4722201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4712201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4707185ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4694567ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4693968ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4692195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4677205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4664544ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4663962ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4662193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4652190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4647204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4634542ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4633962ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4632201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4617203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4604529ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4603952ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4602203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4592187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4587188ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4574515ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4573940ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4572203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4557194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4544504ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4543924ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4542197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4532196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4527195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4514491ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4513908ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4512203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4497201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4484489ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4483908ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4482207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4472192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4467189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4454475ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4453898ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4452200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4437201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4424469ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4423890ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4422202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4412188ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4407195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4394467ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4393888ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4392200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4377199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4364449ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4363870ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4362197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4352199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4347203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4334448ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4333854ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4332210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4317207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4304434ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4303840ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4302198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4292196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4287197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4274419ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4273824ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4272197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4257196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4244418ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4243825ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4242198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4232200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4227200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4214403ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4213806ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4212200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4197203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4184401ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4183804ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4182196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4172198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4167200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4154398ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4153807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4152197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4137199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4124391ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4123797ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4122205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4112203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4107190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4094371ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4093790ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4092206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4077196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4064380ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4063785ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4062199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4052202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4047197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4034378ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4033780ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4032197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4017203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4004376ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4003782ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-4002194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3992199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3987203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3974364ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3973772ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3972206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3957192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3944353ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3943757ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3942189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3932192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3927197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3914333ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3913744ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3912197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3897206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3884334ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3883740ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3882198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3872180ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3867194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3854322ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3853729ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3852192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3837196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3824307ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3823722ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3822194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3812201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3807194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3794304ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3793710ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3792197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3777201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3764294ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3763710ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3762204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3752193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3747183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3734286ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3733706ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3732202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3717198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3704272ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3703694ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3702189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3692195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3687196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3674272ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3673681ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3672195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3657191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3644261ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3643664ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3642193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3632203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3627191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3614255ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3613656ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3612204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3597205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3584241ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3583646ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3582190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3572207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3567194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3554237ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3553640ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3552198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3537200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3524231ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3523635ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3522200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3512195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3507191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3494211ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3493627ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3492199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3477194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3464203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3463623ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3462192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3452194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3447206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3434191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3433611ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3432203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3417193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3404179ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3403602ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3402210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3392200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3387193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3374175ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3373598ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3372202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3357210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3344163ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3343582ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3342206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3332197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3327207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3314156ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3313574ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3312194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3297209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3284141ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3283561ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3282200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3272192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3267182ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3254129ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3253554ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3252210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3237190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3224124ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3223543ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3222179ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3212200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3207181ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3194112ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3193531ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3192201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3177205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3164110ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3163520ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3162198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3152185ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3147205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3134101ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3133504ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3132202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3117205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3104093ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3103498ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3102184ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3092201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3087194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3074091ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3073497ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3072199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3057203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3044078ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3043485ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3042194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3032201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3027201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3014065ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3013467ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-3012199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2997201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2984059ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2983466ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2982199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2972204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2967200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2954050ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2953440ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2952208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2937198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2924044ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2923435ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2922200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2912190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2907186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2894040ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2893424ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2892200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2877202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2864032ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2863407ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2862191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2852195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2847200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2834028ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2833404ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2832198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2817198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2804011ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2803396ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2802201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2792197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2787205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2773997ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2773387ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2772197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2757195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2743994ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2743380ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2742204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2732199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2727198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2713982ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2713375ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2712205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2697199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2683978ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2683366ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2682183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2672196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2667192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2653964ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2653353ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2652196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2637209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2623961ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2623352ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2622180ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2612207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2607199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2593950ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2593335ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2592195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2577199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2563933ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2563335ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2562195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2552187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2547196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2533932ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2533321ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2532197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2517183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2503917ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2503302ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2502205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2492192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2487207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2473910ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2473293ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2472199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2457197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2443899ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2443290ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2442191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2432191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2427206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2413898ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2413290ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2412193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2397209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2383900ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2383287ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2382191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2372194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2367198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2353898ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2353288ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2352189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2337195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2323884ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2323275ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2322207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2312195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2307194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2293868ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2293259ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2292196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2277208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2263875ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2263248ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2262202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2252184ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2247195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2233861ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2233239ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2232210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2217208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2203846ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2203232ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2202198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2192206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2187205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2173835ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2173224ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2172202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2157208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2143825ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2143211ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2142203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2132193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2127211ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2113815ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2113202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2112199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2097201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2083812ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2083196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2082204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2072195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2067199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2053798ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2053183ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2052196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2037201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2023800ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2023174ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2022204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2012206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-2007202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1993784ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1993151ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1992201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1977205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1963758ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1963147ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1962204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1952205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1947205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1933762ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1933135ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1932190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1917203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1903751ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1903125ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1902188ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1892206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1887189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1873738ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1873111ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1872202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1857188ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1843727ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1843099ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1842202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1832192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1827208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1813717ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1813089ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1812198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1797202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1783708ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1783075ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1782201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1772194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1767199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1753706ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1753061ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1752204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1737202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1723705ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1723058ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1722195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1712202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1707209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1693698ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1693058ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1692202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1677204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1663688ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1663049ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1662204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1652194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1647194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1633682ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1633044ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1632186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1617207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1603673ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1603031ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1602203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1592187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1587198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1573672ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1573017ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1572198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1557199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1543663ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1543002ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1542201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1532198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1527200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1513650ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1512998ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1512200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1497201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1483636ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1482994ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1482197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1472198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1467200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1453628ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1452984ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1452200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1437199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1423618ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1422983ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1422201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1412194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1407204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1393612ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1392965ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1392197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1377197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1363605ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1362963ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1362204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1352196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1347202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1333596ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1332954ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1332202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1317201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1303587ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1302946ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1302199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1292190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1287173ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1273585ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1272939ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1272203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1257194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1243572ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1242939ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1242189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1232187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1227203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1213573ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1212927ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1212210ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1197200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1183559ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1182918ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1182200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1172192ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1167190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1153560ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1152917ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1152194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1137195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1123555ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1122912ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1122193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1112196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1107211ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1093542ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1092897ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1092194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1077194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1063532ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1062893ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1062203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1052194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1047208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1033528ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1032886ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1032196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1017195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1003522ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1002879ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[-1002196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -992205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -987189ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -973507ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -972863ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -972194ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -957209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -943500ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -942874ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -942200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -932196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -927208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -913487ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -912861ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -912208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -897208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -883487ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -882862ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -882209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -872191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -867195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -853478ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -852858ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -852197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -837196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -823469ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -822846ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -822191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -812204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -807202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -793461ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -792834ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -792204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -777205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -763455ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -762833ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -762204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -752196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -747208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -733438ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -732829ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -732204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -717205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -703439ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -702815ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -702205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -692208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -687191ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -673426ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -672771ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -672196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -657199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -643415ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -642790ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -642208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -632199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -627208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -613407ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -612763ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -612202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -597203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -583393ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -582766ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -582201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -572204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -567206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -553390ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -552757ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -552201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -537204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -523378ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -522752ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -522206ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -512204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -507205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -493374ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -492735ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -492202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -477203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -463354ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -462729ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -462187ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -452193ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -447204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -433342ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -432703ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -432204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -417197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -403343ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -402698ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -402200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -392204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -387209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -373330ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -372689ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -372207ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -357205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -343316ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -342683ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -342195ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -332185ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -327200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -313302ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -312672ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -312201ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -297186ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -283294ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -282663ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -282197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -272196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -267209ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -253269ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -252655ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -252203ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -237208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -223264ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -222650ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -222197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -212204ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -207205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -193271ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -192646ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -192197ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -177199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -163270ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -162639ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -162202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -152184ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -147208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -133263ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -132620ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -132200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -117199ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -103249ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -102619ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[ -102200ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -92190ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -87196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -73241ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -72614ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -72205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -57202ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -43243ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -42602ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -42198ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -32205ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -27196ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -13241ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -12587ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  -12208ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[    2804ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   16774ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   17430ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   17807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   27799ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   32805ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   46785ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   47443ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   47806ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   62806ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   69706ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   76791ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   77460ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   78047ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   80605ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   87807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[   92792ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  106795ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  107476ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  107798ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  121007ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  122798ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  136811ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  137486ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  137795ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  147817ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  152798ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  166828ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  167505ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  167803ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  182808ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  196831ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  197512ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  197807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  207807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  212807ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  226838ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  227527ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  227805ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  242804ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  256854ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  257528ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0
+[  257806ms] [LOG] INFO: no event type specified. The valid types are: deleteCookie,sendGzuid,readCookie,writeCookie @ https://gzuis.grupozap.com/main.js:0

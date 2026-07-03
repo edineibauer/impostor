@@ -1,0 +1,107 @@
+[-129285567ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://ad.doubleclick.net/ccm/s/collect?auid=1821836752.1780347244&gtm=45E92e6710h2v871008076za204zd871008076xea:0
+[-129284528ms] [WARNING] Notifications permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ https://www.clubefii.com.br/fiis/BARI11?id_msg=1123595#comentarios:0
+[-129284128ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://www.google.com.br/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&dma=0&npa=0&gcd=13l3l3l3l1l1&tid=G-G7GCPGCHBP&cid=R8mVpuXZGalzYu8C77YgNR1x4heZ9cYFNyIKnbj0Emc%3D.1780347244&gtm=45g91e66u1v878992300z8871008076z99252658445za20kzb871008076zd871008076&tag_exp=115938466~115938469~118032361~118032361~119027224~119576881~119576885~119576891~119576895&_is_sw=f15s0t3&_tu=BA&gap.gtb=2&aip=1&z=948122413:0
+[-129286263ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286257ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286018ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286015ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286011ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286010ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286007ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129286006ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129285196ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 543521756428016. @ https://connect.facebook.net/en_US/fbevents.js:187
+[-129285174ms] [LOG] LeadTracking initialized @ https://d335luupugsy2.cloudfront.net/js/loader-scripts/9936a649-b225-473f-b17f-229df5983b17-loader.js:0
+[-129285171ms] [LOG] TrafficSourceCookie initialized @ https://d335luupugsy2.cloudfront.net/js/loader-scripts/9936a649-b225-473f-b17f-229df5983b17-loader.js:0
+[-129284775ms] [LOG] GTM: Track! @ https://cdn.clubefii.com.br/js/scripts.js?v=89:1084
+[-129284756ms] [LOG] === Inicializando Slider View Accumulator === @ :4
+[-129284756ms] [LOG] ✓ DataLayer listener configurado @ :2
+[-129284756ms] [LOG] ✓ Exit listeners configurados @ :4
+[-129284756ms] [LOG] === Sistema pronto === @ :4
+[-129283822ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283816ms] [WARNING] MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283695ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283693ms] [WARNING] ObjectMultiplex - orphaned data for stream "app-init-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283691ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283690ms] [WARNING] ObjectMultiplex - orphaned data for stream "background-liveness" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283688ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283685ms] [WARNING] ObjectMultiplex - malformed chunk without name "[object Object]" @ chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/contentscript.js:14082
+[-129283650ms] [LOG] FormIntegration; ver.2.0.0 initialized @ https://d335luupugsy2.cloudfront.net/js/loader-scripts/9936a649-b225-473f-b17f-229df5983b17-loader.js:0
+[-129283649ms] [LOG] [RDTracker] initialized @ https://d335luupugsy2.cloudfront.net/js/loader-scripts/9936a649-b225-473f-b17f-229df5983b17-loader.js:0
+[-106879892ms] [LOG] Nenhuma visualização para enviar @ :0
+[-55443586ms] [LOG] Nenhuma visualização para enviar @ :0
+[-42417775ms] [LOG] Nenhuma visualização para enviar @ :0
+[-33036251ms] [LOG] Nenhuma visualização para enviar @ :0
+[      63ms] TypeError: Cannot read properties of null (reading 'style')
+    at calcMenu (https://www.clubefii.com.br/fiis/BARI11?id_msg=1123595:2893:50)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)
+[      63ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Invalid or unexpected token
+    at b (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:866)
+    at He (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:48496)
+    at S.append (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:49847)
+    at Object.success (<anonymous>:81:62)
+    at c (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:28447)
+    at Object.fireWith [as resolveWith] (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:29192)
+    at l (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:80176)
+    at XMLHttpRequest.<anonymous> (https://cdn.clubefii.com.br/js/jquery-cookie-mask.js:2:82630)

@@ -23,7 +23,11 @@ let localState = {
     votingRound: 0,
     starterPlayerIndex: 0, // Who starts talking each round
     currentScreen: null, // Track current screen for restoration
-    previousImpostors: [] // Track who was impostor in previous round (for weighted selection)
+    previousImpostors: [], // Track who was impostor in previous round (for weighted selection)
+    questionsMode: false, // Questions mode: app shows a preset question each talking round
+    roundQuestions: [], // Shuffled questions for the current round
+    questionIndex: 0, // Current question being shown
+    impostorHints: {} // Hints for impostors in bad speaking positions (impostorKnows mode)
 };
 
 // STORAGE
@@ -49,7 +53,11 @@ function loadLocalState() {
                 if (localState.starterPlayerIndex === undefined) localState.starterPlayerIndex = 0;
                 if (!localState.currentScreen) localState.currentScreen = 'screen-game';
                 if (!localState.previousImpostors) localState.previousImpostors = [];
-                return true; 
+                if (localState.questionsMode === undefined) localState.questionsMode = false;
+                if (!localState.roundQuestions) localState.roundQuestions = [];
+                if (!localState.questionIndex) localState.questionIndex = 0;
+                if (!localState.impostorHints) localState.impostorHints = {};
+                return true;
             } else {
                 // Load settings even if game not in progress
                 localState.playerCount = loaded.playerCount || 4;
@@ -58,6 +66,7 @@ function loadLocalState() {
                 localState.maxPoints = loaded.maxPoints || null;
                 localState.allCategories = loaded.allCategories !== undefined ? loaded.allCategories : true;
                 localState.selectedCategories = loaded.selectedCategories || [];
+                localState.questionsMode = loaded.questionsMode === true;
             }
         }
     } catch (e) {}
@@ -136,7 +145,9 @@ function showWordDirectly() {
     }
     
     const isImpostor = localState.impostorIndices.includes(localState.currentPlayerIndex);
-    
+
+    updateWordHint(isImpostor);
+
     if (isImpostor) {
         if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
@@ -191,6 +202,12 @@ function applySettingsToUI() {
     const toggle = document.getElementById('toggle-impostor-knows');
     if (toggle) {
         toggle.classList.toggle('active', localState.impostorKnows);
+    }
+
+    // Apply questions mode toggle
+    const questionsToggle = document.getElementById('toggle-questions-mode');
+    if (questionsToggle) {
+        questionsToggle.classList.toggle('active', localState.questionsMode);
     }
     
     // Apply all categories toggle
@@ -326,6 +343,13 @@ function toggleImpostorKnows() {
     toggle.classList.toggle('active', localState.impostorKnows);
 }
 
+function toggleQuestionsMode() {
+    const toggle = document.getElementById('toggle-questions-mode');
+    if (!toggle) return;
+    localState.questionsMode = !localState.questionsMode;
+    toggle.classList.toggle('active', localState.questionsMode);
+}
+
 function generatePlayerInputs() {
     const container = document.getElementById('player-inputs');
     if (!container) return;
@@ -339,23 +363,76 @@ function generatePlayerInputs() {
 }
 
 // FIND SIMILAR WORD
-function findSimilarWord(originalWord, category) {
+// tier: 0 = closest (hardest for the group, easiest for the impostor to blend in),
+//       1 = medium, 2 = farthest (impostor realizes sooner). Omit for random.
+function findSimilarWord(originalWord, category, tier) {
     const categories = getWordCategories();
     const categoryData = categories.find(c => c.category === category);
-    
+
     if (categoryData && categoryData.similar && categoryData.similar[originalWord]) {
         const similarOptions = categoryData.similar[originalWord];
-        return similarOptions[Math.floor(Math.random() * similarOptions.length)];
+        if (tier === undefined || tier === null) {
+            return similarOptions[Math.floor(Math.random() * similarOptions.length)];
+        }
+        const idx = Math.max(0, Math.min(similarOptions.length - 1, tier));
+        return similarOptions[idx];
     }
-    
+
     if (categoryData) {
         const otherWords = categoryData.words.filter(w => w !== originalWord);
         if (otherWords.length > 0) {
             return otherWords[Math.floor(Math.random() * otherWords.length)];
         }
     }
-    
+
     return originalWord;
+}
+
+// GENERIC QUESTIONS (fallback when the category has none — EN/ES word lists)
+const genericQuestionsByLang = {
+    en: [
+        'Where do you usually see this?',
+        'How often does this show up in your life?',
+        'Would you give this as a gift? To whom?',
+        'Is it more for kids or adults?',
+        'What feeling does it give you?',
+        'Is it cheap or expensive?',
+        'What would you use together with it?',
+        'What time of year does it show up most?'
+    ],
+    es: [
+        '¿Dónde sueles ver esto?',
+        '¿Con qué frecuencia aparece en tu vida?',
+        '¿Lo regalarías? ¿A quién?',
+        '¿Es más de niños o de adultos?',
+        '¿Qué sentimiento te provoca?',
+        '¿Es caro o barato?',
+        '¿Qué usarías junto con esto?',
+        '¿En qué época del año aparece más?'
+    ]
+};
+
+function getGenericQuestions() {
+    if (currentLang === 'pt' && typeof genericQuestionsPT !== 'undefined') return genericQuestionsPT;
+    return genericQuestionsByLang[currentLang] || genericQuestionsByLang.en;
+}
+
+// Speaking position of a player in the current round (0 = first to talk)
+function speakingPosition(playerIdx) {
+    const n = localState.players.length;
+    return (playerIdx - localState.starterPlayerIndex + n) % n;
+}
+
+// Difficulty tier based on the impostor's speaking position.
+// Talking early is hard for the impostor → closer word (tier 0).
+// Talking late means he heard everyone → farther word (tier 2).
+function impostorTierByPosition(minPosition) {
+    const n = localState.players.length;
+    if (n <= 1) return 1;
+    const frac = minPosition / (n - 1);
+    if (frac <= 0.34) return 0;
+    if (frac <= 0.67) return 1;
+    return 2;
 }
 
 // START LOCAL GAME
@@ -411,7 +488,17 @@ function startRound() {
     localState.actualImpostorCount = Math.floor(Math.random() * localState.maxImpostors) + 1;
     localState.impostorIndices = [];
     localState.similarWords = {};
+    localState.impostorHints = {};
     localState.votingRound = 0;
+
+    // Questions mode: prepare shuffled questions for this round
+    localState.roundQuestions = [];
+    localState.questionIndex = 0;
+    if (localState.questionsMode) {
+        let qs = categoryData.questions;
+        if (!qs || !qs.length) qs = getGenericQuestions();
+        if (qs && qs.length) localState.roundQuestions = shuffle(qs);
+    }
     
     // Weighted impostor selection - previous impostors have half the chance
     const indices = [...Array(localState.players.length).keys()];
@@ -440,13 +527,30 @@ function startRound() {
     }
     
     localState.impostorIndices = selectedImpostors;
-    
-    // Generate ONE similar word for ALL impostors (so they can identify each other)
-    let impostorWord = null;
+
+    // Position-based difficulty: the earliest-speaking impostor defines the tier,
+    // so a badly positioned impostor (talks first) gets help.
+    const minImpostorPos = Math.min(...selectedImpostors.map(idx => speakingPosition(idx)));
+
     if (!localState.impostorKnows) {
-        impostorWord = findSimilarWord(localState.word, localState.category);
+        // Generate ONE similar word for ALL impostors (so they can identify each other).
+        // Early speaker → closest word (blends in naturally); late speaker → farther word.
+        const tier = impostorTierByPosition(minImpostorPos);
+        const impostorWord = findSimilarWord(localState.word, localState.category, tier);
         selectedImpostors.forEach(impostorIdx => {
             localState.similarWords[impostorIdx] = impostorWord;
+        });
+    } else {
+        // Impostor knows he is the impostor: if he talks 1st or 2nd, he gets a hint
+        // (a word close to the secret one) to compensate for the bad position.
+        selectedImpostors.forEach(impostorIdx => {
+            const pos = speakingPosition(impostorIdx);
+            if (pos <= 1) {
+                const hint = findSimilarWord(localState.word, localState.category, pos === 0 ? 0 : 1);
+                if (hint && hint !== localState.word) {
+                    localState.impostorHints[impostorIdx] = hint;
+                }
+            }
         });
     }
     
@@ -473,16 +577,30 @@ function showPlayerTurn() {
     showScreen('screen-turn');
 }
 
+function updateWordHint(isImpostor) {
+    const hintEl = document.getElementById('word-hint');
+    if (!hintEl) return;
+    const hint = localState.impostorHints ? localState.impostorHints[localState.currentPlayerIndex] : null;
+    if (isImpostor && localState.impostorKnows && hint) {
+        hintEl.textContent = t('hintSimilarTo') + ': ' + hint;
+        hintEl.style.display = 'block';
+    } else {
+        hintEl.style.display = 'none';
+    }
+}
+
 function showWord() {
     const isImpostor = localState.impostorIndices.includes(localState.currentPlayerIndex);
     const wordText = document.getElementById('word-text');
     const categoryTag = document.getElementById('category-tag');
     const wordDisplay = document.getElementById('word-display');
-    
+
     wordDisplay.classList.remove('word-reveal-animation');
     void wordDisplay.offsetWidth;
     wordDisplay.classList.add('word-reveal-animation');
-    
+
+    updateWordHint(isImpostor);
+
     if (isImpostor) {
         if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
@@ -535,10 +653,45 @@ function showGameScreen() {
         starterInfo.innerHTML = '<span style="color:var(--primary)">🎤 ' + starterName + '</span> ' + t('startsTalking');
         starterInfo.style.display = 'block';
     }
-    
+
+    renderQuestionBox();
     updateGamePlayersList();
     saveLocalState('screen-game');
     showScreen('screen-game');
+}
+
+// QUESTIONS MODE - render current question on the game screen
+function renderQuestionBox() {
+    const box = document.getElementById('question-box');
+    if (!box) return;
+    if (!localState.questionsMode || !localState.roundQuestions || localState.roundQuestions.length === 0) {
+        box.style.display = 'none';
+        return;
+    }
+    const total = localState.roundQuestions.length;
+    const idx = localState.questionIndex % total;
+    const question = localState.roundQuestions[idx];
+    box.style.display = 'block';
+    box.innerHTML = `
+        <div style="font-size:.65rem;letter-spacing:2px;color:var(--text-dim);margin-bottom:6px">❓ ${t('questionLabel')} ${localState.questionIndex + 1}</div>
+        <div style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:12px">${question}</div>
+        <button class="btn btn-secondary" onclick="nextQuestion()" style="margin:0;padding:10px;font-size:.75rem">${t('nextQuestion')}</button>
+    `;
+}
+
+function nextQuestion() {
+    localState.questionIndex++;
+    // Reshuffle when all questions were used, avoiding immediate repetition
+    if (localState.questionIndex % localState.roundQuestions.length === 0) {
+        const lastQuestion = localState.roundQuestions[localState.roundQuestions.length - 1];
+        let reshuffled = shuffle(localState.roundQuestions);
+        if (reshuffled[0] === lastQuestion && reshuffled.length > 1) {
+            reshuffled.push(reshuffled.shift());
+        }
+        localState.roundQuestions = reshuffled;
+    }
+    saveLocalState('screen-game');
+    renderQuestionBox();
 }
 
 function updateGamePlayersList() {
@@ -864,7 +1017,8 @@ function resetGame() {
         impostorKnows: localState.impostorKnows,
         maxPoints: localState.maxPoints,
         allCategories: localState.allCategories,
-        selectedCategories: localState.selectedCategories.slice()
+        selectedCategories: localState.selectedCategories.slice(),
+        questionsMode: localState.questionsMode
     };
     
     // Reset game state but keep settings
@@ -883,12 +1037,18 @@ function resetGame() {
         gameInProgress: false, 
         eliminatedPlayers: [], 
         revealedImpostors: [],
-        impostorKnows: savedSettings.impostorKnows, 
-        similarWords: {}, 
-        maxPoints: savedSettings.maxPoints, 
-        allCategories: savedSettings.allCategories, 
-        selectedCategories: savedSettings.selectedCategories, 
-        votingRound: 0
+        impostorKnows: savedSettings.impostorKnows,
+        similarWords: {},
+        maxPoints: savedSettings.maxPoints,
+        allCategories: savedSettings.allCategories,
+        selectedCategories: savedSettings.selectedCategories,
+        votingRound: 0,
+        starterPlayerIndex: 0,
+        previousImpostors: [],
+        questionsMode: savedSettings.questionsMode,
+        roundQuestions: [],
+        questionIndex: 0,
+        impostorHints: {}
     };
     
     clearLocalState();
