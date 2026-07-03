@@ -138,31 +138,84 @@ function startQsTurn() {
 // mede se a TELA aponta para o teto ou para o chão via beta/gamma.
 // faceValue = cos(beta)·cos(gamma): +1 tela para cima, -1 tela para baixo,
 // ~0 na posição neutra (celular em pé na testa).
+//
+// Anti-falso-positivo (máquina de estados):
+// - Começa TRAVADO: só arma depois do celular ficar em pé (|face|<0.35)
+//   por 600ms seguidos — manusear/posicionar o aparelho não dispara nada.
+// - Armado, o disparo exige sustentar a inclinação por 250ms:
+//   para cima basta inclinação moderada (face>0.6, o dono não pode ver a tela);
+//   para baixo exige virar BEM para baixo (face<-0.85).
+// - Após disparar, trava de novo até voltar ao neutro.
 let qsOrientationHandler = null;
-let qsTiltArmed = true;
+const QS_TILT = {
+    NEUTRAL_ZONE: 0.35,   // |face| abaixo disso conta como "em pé"
+    ARM_MS: 600,          // tempo em pé para armar
+    UP_THRESHOLD: 0.6,    // tela para o teto = acertou
+    DOWN_THRESHOLD: -0.85, // tela BEM para o chão = passar
+    HOLD_MS: 250          // tempo sustentado para confirmar o gesto
+};
+let qsTilt = { phase: 'lock', neutralSince: null, pending: null, pendingSince: null };
+
+function qsSetTiltStatus(armed) {
+    const el = document.getElementById('qs-tilt-status');
+    if (!el) return;
+    if (armed) {
+        el.textContent = t('qsTiltReady');
+        el.style.color = 'var(--success)';
+    } else {
+        el.textContent = t('qsTiltLock');
+        el.style.color = 'var(--text-dim)';
+    }
+}
+
+function qsHandleTilt(face, now) {
+    if (qsTilt.phase === 'lock') {
+        if (Math.abs(face) < QS_TILT.NEUTRAL_ZONE) {
+            if (qsTilt.neutralSince === null) qsTilt.neutralSince = now;
+            else if (now - qsTilt.neutralSince >= QS_TILT.ARM_MS) {
+                qsTilt.phase = 'armed';
+                qsTilt.pending = null;
+                qsSetTiltStatus(true);
+            }
+        } else {
+            qsTilt.neutralSince = null;
+        }
+        return;
+    }
+
+    // armado
+    const dir = face > QS_TILT.UP_THRESHOLD ? 'up' : (face < QS_TILT.DOWN_THRESHOLD ? 'down' : null);
+    if (!dir) {
+        qsTilt.pending = null;
+        return;
+    }
+    if (qsTilt.pending !== dir) {
+        qsTilt.pending = dir;
+        qsTilt.pendingSince = now;
+        return;
+    }
+    if (now - qsTilt.pendingSince >= QS_TILT.HOLD_MS) {
+        qsTilt.phase = 'lock';
+        qsTilt.neutralSince = null;
+        qsTilt.pending = null;
+        qsSetTiltStatus(false);
+        const ok = dir === 'up';
+        qsFlash(ok);
+        qsMark(ok);
+    }
+}
 
 function qsEnableTilt() {
     if (typeof DeviceOrientationEvent === 'undefined') return;
 
     const attach = () => {
-        qsTiltArmed = true;
+        qsTilt = { phase: 'lock', neutralSince: null, pending: null, pendingSince: null };
+        qsSetTiltStatus(false);
         qsOrientationHandler = (e) => {
             if (!qsState.playing || e.beta === null || e.gamma === null) return;
             const rad = Math.PI / 180;
             const face = Math.cos(e.beta * rad) * Math.cos(e.gamma * rad);
-            if (qsTiltArmed) {
-                if (face > 0.5) {          // tela virada para o teto = acertou
-                    qsTiltArmed = false;
-                    qsFlash(true);
-                    qsMark(true);
-                } else if (face < -0.5) {  // tela virada para o chão = passar
-                    qsTiltArmed = false;
-                    qsFlash(false);
-                    qsMark(false);
-                }
-            } else if (Math.abs(face) < 0.25) {
-                qsTiltArmed = true;        // voltou à posição neutra: rearma
-            }
+            qsHandleTilt(face, Date.now());
         };
         window.addEventListener('deviceorientation', qsOrientationHandler);
     };

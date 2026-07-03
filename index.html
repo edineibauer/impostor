@@ -588,11 +588,12 @@
         <!-- QUEM SOU EU: PLAY -->
         <div id="screen-qs-play" class="screen">
             <div style="text-align:center;font-size:2rem;font-family:'Bebas Neue',sans-serif" id="qs-timer">60s</div>
+            <div id="qs-tilt-status" style="text-align:center;font-size:.72rem;margin:4px 0 8px;color:var(--text-dim)"></div>
             <div class="card" style="text-align:center;padding:30px 10px">
                 <div class="category-tag" id="qs-category" style="margin-bottom:14px"></div>
                 <div id="qs-word" style="font-size:2.6rem;font-family:'Bebas Neue',sans-serif;letter-spacing:3px;line-height:1.1;word-break:break-word">PALAVRA</div>
             </div>
-            <p style="text-align:center;color:var(--text-dim);font-size:.65rem;margin-bottom:10px" data-i18n="qsTiltHint">📱 Vire a tela para CIMA = acertou · para BAIXO = passar</p>
+            <p style="text-align:center;color:var(--text-dim);font-size:.65rem;margin-bottom:10px" data-i18n="qsTiltHint">📱 Em pé arma o sensor · CIMA = acertou · BEM pra BAIXO = passar</p>
             <button class="btn btn-success" onclick="qsMark(true)" style="padding:22px;font-size:1.1rem" data-i18n="qsGotIt">✓ ACERTOU</button>
             <button class="btn btn-warning" onclick="qsMark(false)" style="padding:16px" data-i18n="qsSkip">↷ PASSAR</button>
             <div id="qs-flash" style="display:none;position:fixed;inset:0;z-index:99;align-items:center;justify-content:center;font-size:8rem;color:#fff;font-family:'Bebas Neue',sans-serif"></div>

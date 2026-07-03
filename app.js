@@ -135,16 +135,28 @@ function goBack() {
         'screen-lang': null, // Don't allow back from language selection
         'screen-mode': null, // Exit app
         'screen-qs-setup': 'screen-mode',
-        'screen-qs-turn': null,
-        'screen-qs-play': null,
-        'screen-qs-result': null,
+        'screen-qs-turn': 'screen-qs-setup',
+        'screen-qs-play': null, // special handling below - stops the running turn
+        'screen-qs-result': 'screen-mode',
         'screen-qs-end': 'screen-mode',
         'screen-vl-setup': 'screen-mode',
-        'screen-vl-turn': null,
-        'screen-vl-secret': null,
-        'screen-vl-telling': null,
+        'screen-vl-turn': 'screen-vl-setup',
+        'screen-vl-secret': 'screen-vl-turn',
+        'screen-vl-telling': 'screen-vl-turn',
         'screen-vl-end': 'screen-mode'
     };
+
+    // Quem Sou Eu: back during a running turn stops it cleanly and returns
+    // to the turn screen (the player can restart)
+    if (currentScreenId === 'screen-qs-play') {
+        if (typeof qsState !== 'undefined') {
+            if (qsState.timerId) { clearInterval(qsState.timerId); qsState.timerId = null; }
+            qsState.playing = false;
+        }
+        if (typeof qsDisableTilt === 'function') qsDisableTilt();
+        showScreen('screen-qs-turn');
+        return true;
+    }
     
     // Special handling for lobby - leave room
     if (currentScreenId === 'screen-lobby') {
@@ -173,7 +185,16 @@ function goBack() {
         document.getElementById(prevScreen).classList.add('active');
         return true;
     }
-    
+
+    // Fallback: nunca fechar o app fora do hub. Qualquer tela local sem rota
+    // de volta cai no menu de jogos; só o hub (screen-mode) encerra o app.
+    // Telas do jogo ONLINE ficam de fora para não derrubar o jogador da sala.
+    const onlineInGame = ['screen-online-word', 'screen-online-vote', 'screen-online-result', 'screen-online-round-end', 'screen-online-game-over'];
+    if (currentScreenId && !onlineInGame.includes(currentScreenId)) {
+        showScreen('screen-mode');
+        return true;
+    }
+
     return false;
 }
 
