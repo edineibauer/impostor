@@ -109,6 +109,8 @@ const translations = {
         qsInstructions: "Segure o celular na testa com a palavra virada para o grupo. Os outros dão dicas sem falar a palavra. Acertou? Toque em ACERTOU e vem outra. Difícil demais? PASSAR. Cada acerto vale 1 ponto.",
         qsHoldForehead: "Pegue o celular e segure na testa, com a tela virada para o grupo",
         qsStart: "▶️ COMEÇAR",
+        qsTiltHint: "📱 Vire a tela para CIMA = acertou · para BAIXO = passar",
+        qsTiltExplain: "📱 Acertou? Vire a tela para <strong style='color:var(--success)'>CIMA (teto)</strong>.<br>Quer pular? Vire para <strong style='color:var(--warning)'>BAIXO (chão)</strong>.<br>Funciona em pé ou deitado — ou use os botões.",
         qsGotIt: "✓ ACERTOU",
         qsSkip: "↷ PASSAR",
         qsTimeUp: "⏰ TEMPO!",
@@ -303,6 +305,8 @@ const translations = {
         qsInstructions: "Hold the phone on your forehead with the word facing the group. The others give hints without saying the word. Got it? Tap GOT IT for the next one. Too hard? SKIP. Each hit is worth 1 point.",
         qsHoldForehead: "Take the phone and hold it on your forehead, screen facing the group",
         qsStart: "▶️ START",
+        qsTiltHint: "📱 Tilt the screen UP = got it · DOWN = skip",
+        qsTiltExplain: "📱 Got it? Tilt the screen <strong style='color:var(--success)'>UP (ceiling)</strong>.<br>Want to skip? Tilt it <strong style='color:var(--warning)'>DOWN (floor)</strong>.<br>Works in portrait or landscape — or use the buttons.",
         qsGotIt: "✓ GOT IT",
         qsSkip: "↷ SKIP",
         qsTimeUp: "⏰ TIME!",
@@ -497,6 +501,8 @@ const translations = {
         qsInstructions: "Sostén el celular en la frente con la palabra hacia el grupo. Los demás dan pistas sin decir la palabra. ¿Acertaste? Toca ACERTÉ y viene otra. ¿Muy difícil? PASAR. Cada acierto vale 1 punto.",
         qsHoldForehead: "Toma el celular y sostenlo en la frente, con la pantalla hacia el grupo",
         qsStart: "▶️ COMENZAR",
+        qsTiltHint: "📱 Inclina la pantalla hacia ARRIBA = acertaste · hacia ABAJO = pasar",
+        qsTiltExplain: "📱 ¿Acertaste? Inclina la pantalla hacia <strong style='color:var(--success)'>ARRIBA (techo)</strong>.<br>¿Quieres pasar? Inclínala hacia <strong style='color:var(--warning)'>ABAJO (suelo)</strong>.<br>Funciona vertical u horizontal — o usa los botones.",
         qsGotIt: "✓ ACERTÉ",
         qsSkip: "↷ PASAR",
         qsTimeUp: "⏰ ¡TIEMPO!",
@@ -594,7 +600,7 @@ function applyTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const text = t(key);
-        if (key === 'instructions') {
+        if (key === 'instructions' || key === 'qsTiltExplain') {
             el.innerHTML = text;
         } else {
             el.textContent = text;

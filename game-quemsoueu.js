@@ -126,11 +126,72 @@ function startQsTurn() {
     qsNextWord();
     showScreen('screen-qs-play');
     qsUpdateTimer();
+    qsEnableTilt(); // chamado num gesto do usuário (necessário para permissão no iOS)
     qsState.timerId = setInterval(() => {
         qsState.timeLeft--;
         qsUpdateTimer();
         if (qsState.timeLeft <= 0) endQsTurn();
     }, 1000);
+}
+
+// TILT CONTROLS — funciona em qualquer orientação (retrato ou paisagem):
+// mede se a TELA aponta para o teto ou para o chão via beta/gamma.
+// faceValue = cos(beta)·cos(gamma): +1 tela para cima, -1 tela para baixo,
+// ~0 na posição neutra (celular em pé na testa).
+let qsOrientationHandler = null;
+let qsTiltArmed = true;
+
+function qsEnableTilt() {
+    if (typeof DeviceOrientationEvent === 'undefined') return;
+
+    const attach = () => {
+        qsTiltArmed = true;
+        qsOrientationHandler = (e) => {
+            if (!qsState.playing || e.beta === null || e.gamma === null) return;
+            const rad = Math.PI / 180;
+            const face = Math.cos(e.beta * rad) * Math.cos(e.gamma * rad);
+            if (qsTiltArmed) {
+                if (face > 0.5) {          // tela virada para o teto = acertou
+                    qsTiltArmed = false;
+                    qsFlash(true);
+                    qsMark(true);
+                } else if (face < -0.5) {  // tela virada para o chão = passar
+                    qsTiltArmed = false;
+                    qsFlash(false);
+                    qsMark(false);
+                }
+            } else if (Math.abs(face) < 0.25) {
+                qsTiltArmed = true;        // voltou à posição neutra: rearma
+            }
+        };
+        window.addEventListener('deviceorientation', qsOrientationHandler);
+    };
+
+    // iOS 13+ exige permissão a partir de um gesto do usuário
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+            .then(p => { if (p === 'granted') attach(); })
+            .catch(() => {});
+    } else {
+        attach();
+    }
+}
+
+function qsDisableTilt() {
+    if (qsOrientationHandler) {
+        window.removeEventListener('deviceorientation', qsOrientationHandler);
+        qsOrientationHandler = null;
+    }
+}
+
+// Flash de feedback em tela cheia (verde = acertou, laranja = passou)
+function qsFlash(ok) {
+    const el = document.getElementById('qs-flash');
+    if (!el) return;
+    el.textContent = ok ? '✓' : '↷';
+    el.style.background = ok ? 'rgba(0,200,100,0.85)' : 'rgba(255,170,0,0.85)';
+    el.style.display = 'flex';
+    setTimeout(() => { el.style.display = 'none'; }, 350);
 }
 
 function qsUpdateTimer() {
@@ -159,6 +220,7 @@ function qsMark(ok) {
 function endQsTurn() {
     if (qsState.timerId) { clearInterval(qsState.timerId); qsState.timerId = null; }
     qsState.playing = false;
+    qsDisableTilt();
 
     const name = qsState.players[qsState.currentPlayerIdx];
     const hits = qsState.turnWords.filter(w => w.ok);
