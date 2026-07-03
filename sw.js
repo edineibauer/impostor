@@ -1,4 +1,4 @@
-const CACHE_NAME = 'impostor-v11';
+const CACHE_NAME = 'impostor-v12';
 const urlsToCache = [
     './',
     './index.html',
@@ -47,24 +47,35 @@ self.addEventListener('fetch', event => {
         return;
     }
     
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    return response;
+    // Network-first: com internet, sempre serve a versão mais recente e
+    // atualiza o cache; sem internet, cai no cache (offline continua ok).
+    // Imagens ficam cache-first (não mudam e são pesadas).
+    const isImage = event.request.destination === 'image' || /\.(png|jpg|jpeg|webp|ico)(\?|$)/.test(event.request.url);
+
+    if (isImage) {
+        event.respondWith(
+            caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+                if (response && response.status === 200 && response.type === 'basic') {
+                    const copy = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
                 }
-                return fetch(event.request).then(response => {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
-                    }
-                    const responseToCache = response.clone();
-                    caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, responseToCache);
-                    });
-                    return response;
-                });
-            }).catch(() => {
-                return caches.match('./index.html');
+                return response;
+            }))
+        );
+        return;
+    }
+
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+                if (response && response.status === 200 && response.type === 'basic') {
+                    const copy = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+                }
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request).then(cached => cached || caches.match('./index.html'));
             })
     );
 });
