@@ -252,7 +252,16 @@
                 <p class="subtitle" data-i18n="localMode">MODO LOCAL</p>
             </div>
             <div class="card"><h2 class="card-title" data-i18n="players">👥 Jogadores</h2><div class="number-selector" id="player-selector"></div></div>
-            <div class="card"><h2 class="card-title" data-i18n="maxImpostors">🎭 Máx. Impostores</h2><div class="number-selector" id="impostor-selector"></div><p class="impostor-count-info" data-i18n="impostorInfo">Pode ter de 1 até o máximo selecionado</p></div>
+            <div class="card">
+                <h2 class="card-title" data-i18n="maxImpostors">🎭 Impostores</h2>
+                <div class="number-selector" id="impostor-selector"></div>
+                <p class="impostor-count-info" data-i18n="impostorInfo">Quantidade de impostores da partida</p>
+                <div class="toggle-option">
+                    <span data-i18n="surpriseImpostors">Quantidade surpresa</span>
+                    <div class="toggle-switch" id="toggle-impostor-surprise" onclick="toggleImpostorSurprise()"></div>
+                </div>
+                <p class="impostor-count-info" data-i18n="surpriseImpostorsInfo">Ativado: sorteia de 1 até o número escolhido (ninguém sabe quantos são)</p>
+            </div>
             <div class="card">
                 <h2 class="card-title" data-i18n="impostorMode">🔮 Modo Impostor</h2>
                 <div class="toggle-option">

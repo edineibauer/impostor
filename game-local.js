@@ -27,7 +27,9 @@ let localState = {
     questionsMode: false, // Questions mode: app shows a preset question each talking round
     roundQuestions: [], // Shuffled questions for the current round
     questionIndex: 0, // Current question being shown
-    impostorHints: {} // Hints for impostors in bad speaking positions (impostorKnows mode)
+    impostorHints: {}, // Hints for impostors in bad speaking positions (impostorKnows mode)
+    impostorSurprise: false, // false = exactly N impostors; true = random from 1 to N
+    roundPoints: {} // Points earned by each player in the current round (auto scoring)
 };
 
 // STORAGE
@@ -57,6 +59,8 @@ function loadLocalState() {
                 if (!localState.roundQuestions) localState.roundQuestions = [];
                 if (!localState.questionIndex) localState.questionIndex = 0;
                 if (!localState.impostorHints) localState.impostorHints = {};
+                if (localState.impostorSurprise === undefined) localState.impostorSurprise = false;
+                if (!localState.roundPoints) localState.roundPoints = {};
                 return true;
             } else {
                 // Load settings even if game not in progress
@@ -67,6 +71,7 @@ function loadLocalState() {
                 localState.allCategories = loaded.allCategories !== undefined ? loaded.allCategories : true;
                 localState.selectedCategories = loaded.selectedCategories || [];
                 localState.questionsMode = loaded.questionsMode === true;
+                localState.impostorSurprise = loaded.impostorSurprise === true;
             }
         }
     } catch (e) {}
@@ -209,6 +214,12 @@ function applySettingsToUI() {
     if (questionsToggle) {
         questionsToggle.classList.toggle('active', localState.questionsMode);
     }
+
+    // Apply impostor surprise toggle
+    const surpriseToggle = document.getElementById('toggle-impostor-surprise');
+    if (surpriseToggle) {
+        surpriseToggle.classList.toggle('active', localState.impostorSurprise);
+    }
     
     // Apply all categories toggle
     const allCatToggle = document.getElementById('toggle-all-categories');
@@ -350,6 +361,13 @@ function toggleQuestionsMode() {
     toggle.classList.toggle('active', localState.questionsMode);
 }
 
+function toggleImpostorSurprise() {
+    const toggle = document.getElementById('toggle-impostor-surprise');
+    if (!toggle) return;
+    localState.impostorSurprise = !localState.impostorSurprise;
+    toggle.classList.toggle('active', localState.impostorSurprise);
+}
+
 function generatePlayerInputs() {
     const container = document.getElementById('player-inputs');
     if (!container) return;
@@ -485,11 +503,15 @@ function startRound() {
     }
     
     localState.category = categoryData.category;
-    localState.actualImpostorCount = Math.floor(Math.random() * localState.maxImpostors) + 1;
+    // Exact count by default; "surprise" mode draws from 1 to the selected number
+    localState.actualImpostorCount = localState.impostorSurprise
+        ? Math.floor(Math.random() * localState.maxImpostors) + 1
+        : localState.maxImpostors;
     localState.impostorIndices = [];
     localState.similarWords = {};
     localState.impostorHints = {};
     localState.votingRound = 0;
+    localState.roundPoints = {};
 
     // Questions mode: prepare shuffled questions for this round
     localState.roundQuestions = [];
@@ -647,7 +669,9 @@ function nextPlayer() {
 function showGameScreen() {
     document.getElementById('game-round-num').textContent = localState.round;
     document.getElementById('total-players').textContent = localState.players.length;
-    const impostorDisplay = localState.maxImpostors > 1 ? '1-' + localState.maxImpostors : '1';
+    const impostorDisplay = localState.impostorSurprise && localState.maxImpostors > 1
+        ? '1-' + localState.maxImpostors
+        : String(localState.maxImpostors);
     document.getElementById('impostor-count-display').textContent = impostorDisplay;
     
     // Show who starts talking this round
@@ -707,49 +731,165 @@ function updateGamePlayersList() {
     }).join('');
 }
 
-// VOTING SYSTEM
+// VOTING SYSTEM — each active player casts a named vote, the most voted is
+// eliminated, ties are settled by luck (the app draws one of the tied players).
+let voteSession = null; // { order, pos, votes: {voterIdx: targetIdx}, result }
+
+function activePlayerIndices() {
+    return localState.players.map((_, idx) => idx).filter(idx => !localState.eliminatedPlayers.includes(idx));
+}
+
+// AUTO SCORING — points are tracked per round for the end-of-round summary
+function addPoints(name, delta) {
+    localState.scores[name] = (localState.scores[name] || 0) + delta;
+    localState.roundPoints[name] = (localState.roundPoints[name] || 0) + delta;
+}
+
+function buildRoundPointsHTML() {
+    const entries = Object.entries(localState.roundPoints || {}).filter(([, d]) => d !== 0);
+    if (!entries.length) return '';
+    entries.sort((a, b) => b[1] - a[1]);
+    const chips = entries.map(([name, d]) =>
+        `<span style="display:inline-block;margin:3px;padding:5px 12px;border-radius:20px;font-size:.75rem;background:${d > 0 ? 'rgba(0,200,100,0.12)' : 'rgba(255,68,68,0.12)'};color:${d > 0 ? 'var(--success)' : '#ff4444'}">${name} ${d > 0 ? '+' : ''}${d}</span>`
+    ).join('');
+    return `<div class="section-title">✨ ${t('roundPointsTitle')}</div><div style="margin:6px 0 4px">${chips}</div>`;
+}
+
 function showVoteScreen() {
-    const activePlayers = localState.players.filter((_, idx) => !localState.eliminatedPlayers.includes(idx));
-    
-    if (activePlayers.length <= localState.actualImpostorCount - localState.revealedImpostors.length) {
+    const active = activePlayerIndices();
+
+    if (active.length <= localState.actualImpostorCount - localState.revealedImpostors.length) {
         showToast('Não há jogadores suficientes!');
         return;
     }
-    
-    let playerButtonsHTML = localState.players.map((name, idx) => {
-        const isEliminated = localState.eliminatedPlayers.includes(idx);
-        return '<button class="player-vote-btn' + (isEliminated ? ' eliminated' : '') + '" onclick="votePlayer(' + idx + ')" ' + (isEliminated ? 'disabled' : '') + '>' + name + '</button>';
-    }).join('');
-    
+
+    voteSession = { order: active.slice(), pos: 0, votes: {}, result: null };
+    renderVoterTurn();
+}
+
+function renderVoterTurn() {
+    const voterIdx = voteSession.order[voteSession.pos];
+    const voterName = localState.players[voterIdx];
+    const targets = activePlayerIndices().filter(idx => idx !== voterIdx);
+
+    const buttonsHTML = targets.map(idx =>
+        `<button class="player-vote-btn" onclick="registerVote(${voterIdx}, ${idx})">${localState.players[idx]}</button>`
+    ).join('');
+
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
-                <h3>${t('whoIsImpostor')}</h3>
-                <p style="color:var(--text-dim);font-size:.75rem;margin-bottom:14px">${t('chooseWhoYouThink')}</p>
-                <div class="player-vote-list">${playerButtonsHTML}</div>
-                <button class="btn btn-secondary" onclick="closeOverlay()" style="margin-top:18px">${t('cancel')}</button>
+                <h3>🗳️ ${t('votingTitle')}</h3>
+                <p style="color:var(--text-dim);font-size:.7rem;margin:4px 0 10px">${voteSession.pos + 1} / ${voteSession.order.length}</p>
+                <p style="font-size:1rem;margin-bottom:14px">${t('whoVotes').replace('{name}', `<strong style="color:var(--primary)">${voterName}</strong>`)}</p>
+                <div class="player-vote-list">${buttonsHTML}</div>
+                <button class="btn btn-secondary" onclick="cancelVoting()" style="margin-top:18px">${t('cancel')}</button>
             </div>
         </div>
     `;
 }
 
-function votePlayer(playerIndex) {
+function registerVote(voterIdx, targetIdx) {
+    voteSession.votes[voterIdx] = targetIdx;
+    voteSession.pos++;
+    if (voteSession.pos >= voteSession.order.length) {
+        showVoteTally();
+    } else {
+        renderVoterTurn();
+    }
+}
+
+function cancelVoting() {
+    voteSession = null;
+    closeOverlay();
+}
+
+function showVoteTally() {
+    const counts = {};
+    Object.values(voteSession.votes).forEach(target => {
+        counts[target] = (counts[target] || 0) + 1;
+    });
+    const maxVotes = Math.max(...Object.values(counts));
+    const topTargets = Object.keys(counts).map(Number).filter(idx => counts[idx] === maxVotes);
+    const isTie = topTargets.length > 1;
+    const eliminatedIdx = topTargets[Math.floor(Math.random() * topTargets.length)];
+    voteSession.result = { eliminatedIdx };
+
+    const votesListHTML = voteSession.order.map(voterIdx => {
+        const targetIdx = voteSession.votes[voterIdx];
+        return `<p style="font-size:.8rem;margin:3px 0"><span style="color:var(--text-dim)">${localState.players[voterIdx]}</span> → <strong>${localState.players[targetIdx]}</strong></p>`;
+    }).join('');
+
+    const countsHTML = Object.keys(counts).map(Number).sort((a, b) => counts[b] - counts[a]).map(idx =>
+        `<span style="display:inline-block;margin:3px;padding:5px 12px;border-radius:20px;font-size:.75rem;background:rgba(255,255,255,0.06)">${localState.players[idx]}: <strong>${counts[idx]}</strong></span>`
+    ).join('');
+
+    let tieHTML = '';
+    if (isTie) {
+        const tiedNames = topTargets.map(idx => localState.players[idx]).join(', ');
+        tieHTML = `<p style="color:var(--warning);font-size:.85rem;margin:12px 0">⚖️ ${t('tieTitle')} (${tiedNames})<br>🪙 ${t('tieBreakLuck')} <strong>${localState.players[eliminatedIdx]}</strong></p>`;
+    }
+
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                <h3>📊 ${t('voteSummaryTitle')}</h3>
+                <div style="margin:12px 0">${votesListHTML}</div>
+                <div style="margin:10px 0">${countsHTML}</div>
+                ${tieHTML}
+                <button class="btn btn-danger" onclick="confirmElimination()" style="opacity:1;margin-top:12px">${t('eliminateBtn')} ${localState.players[eliminatedIdx]}</button>
+                <button class="btn btn-secondary" onclick="cancelVoting()" style="margin-top:8px">${t('cancel')}</button>
+            </div>
+        </div>
+    `;
+}
+
+function confirmElimination() {
+    const eliminatedIdx = voteSession.result.eliminatedIdx;
+    const votersForTarget = voteSession.order.filter(v => voteSession.votes[v] === eliminatedIdx);
+    voteSession = null;
+    executeElimination(eliminatedIdx, votersForTarget);
+}
+
+function executeElimination(playerIndex, votersForTarget) {
     const playerName = localState.players[playerIndex];
     const isImpostor = localState.impostorIndices.includes(playerIndex);
-    
+
     localState.eliminatedPlayers.push(playerIndex);
     localState.votingRound++;
-    
+
     if (isImpostor) {
         localState.revealedImpostors.push(playerIndex);
+        // +1 for each innocent who voted for the impostor
+        votersForTarget.forEach(voterIdx => {
+            if (!localState.impostorIndices.includes(voterIdx)) {
+                addPoints(localState.players[voterIdx], 1);
+            }
+        });
+    } else {
+        // Innocent eliminated: each hidden impostor fooled the group, +1
+        localState.impostorIndices
+            .filter(idx => !localState.eliminatedPlayers.includes(idx))
+            .forEach(idx => addPoints(localState.players[idx], 1));
     }
-    
+
+    const active = activePlayerIndices();
+    const hiddenImpostors = localState.impostorIndices.filter(idx => !localState.eliminatedPlayers.includes(idx)).length;
+    const activeInnocents = active.filter(idx => !localState.impostorIndices.includes(idx)).length;
+    const allImpostorsFound = localState.actualImpostorCount - localState.revealedImpostors.length === 0;
+
+    if (isImpostor && allImpostorsFound) {
+        // Innocents win: +2 for each innocent still in the game
+        active.filter(idx => !localState.impostorIndices.includes(idx))
+            .forEach(idx => addPoints(localState.players[idx], 2));
+    }
+
     saveLocalState('screen-game'); // Save with game screen as fallback
-    
-    const remainingIndices = localState.players.map((_, idx) => idx).filter(idx => !localState.eliminatedPlayers.includes(idx));
-    const allRemainingAreImpostors = remainingIndices.length > 0 && remainingIndices.every(idx => localState.impostorIndices.includes(idx));
-    
-    if (allRemainingAreImpostors && !isImpostor) {
+
+    // Impostors win when they reach parity with the innocents
+    if (!isImpostor && hiddenImpostors > 0 && hiddenImpostors >= activeInnocents) {
+        localState.impostorIndices.forEach(idx => addPoints(localState.players[idx], 4));
+        saveLocalState('screen-game');
         showVoteResultWithImpostorWin(playerName);
     } else {
         showVoteResult(playerName, isImpostor, playerIndex);
@@ -776,31 +916,22 @@ function voteResultHTML(playerName, wasImpostor) {
 function showVoteResult(playerName, wasImpostor, playerIndex) {
     const remainingImpostors = localState.actualImpostorCount - localState.revealedImpostors.length;
     const allImpostorsFound = remainingImpostors === 0;
-    
+
     let resultHTML = voteResultHTML(playerName, wasImpostor);
-    
-    // Only show score controls if maxPoints is set
-    let scoreSection = '';
-    if (localState.maxPoints) {
-        let scoreControlsHTML = buildScoreControls();
-        scoreSection = `
-            <div class="section-title">${t('adjustPoints')}</div>
-            <div class="score-controls">${scoreControlsHTML}</div>
-        `;
-    }
-    
+    const pointsSection = buildRoundPointsHTML();
+
     let buttonsHTML = '';
     if (allImpostorsFound) {
         buttonsHTML = `<button class="btn btn-primary" onclick="closeOverlay();showRoundSummary();" style="margin-top:14px">${t('seeRoundSummary')}</button>`;
     } else {
         buttonsHTML = `<button class="btn btn-warning" onclick="closeOverlay();showVoteScreen();" style="margin-top:14px">${t('continueVoting')}</button>`;
     }
-    
+
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
                 ${resultHTML}
-                ${scoreSection}
+                ${pointsSection}
                 ${buttonsHTML}
             </div>
         </div>
@@ -811,22 +942,12 @@ function showVoteResultWithImpostorWin(playerName) {
     let resultHTML = `<div class="result-icon">❌</div><h3 style="color:#ff4444">${t('wrong')}</h3>
         <p style="font-size:1.1rem;margin:14px 0"><strong>${playerName}</strong> ${t('wasInnocent')}</p>
         <p style="color:var(--warning);font-size:.85rem;margin-top:10px">🎭 ${t('impostorWins')}</p>`;
-    
-    // Only show score controls if maxPoints is set
-    let scoreSection = '';
-    if (localState.maxPoints) {
-        let scoreControlsHTML = buildScoreControls();
-        scoreSection = `
-            <div class="section-title">${t('adjustPoints')}</div>
-            <div class="score-controls">${scoreControlsHTML}</div>
-        `;
-    }
-    
+
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
                 ${resultHTML}
-                ${scoreSection}
+                ${buildRoundPointsHTML()}
                 <button class="btn btn-primary" onclick="closeOverlay();showImpostorWins();" style="margin-top:14px">${t('seeRoundSummary')}</button>
             </div>
         </div>
@@ -839,18 +960,13 @@ function showImpostorWins() {
     
     // Check for winner (only if maxPoints is set)
     if (localState.maxPoints && checkForWinner()) return;
-    
-    // Only show ranking if maxPoints is set
-    let rankingSection = '';
-    if (localState.maxPoints) {
-        const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-        const rankingHTML = buildRankingHTML(sorted);
-        rankingSection = `
-            <div class="section-title">🏆 RANKING</div>
-            <ul class="ranking-list">${rankingHTML}</ul>
-        `;
-    }
-    
+
+    const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
+    const rankingSection = `
+        <div class="section-title">🏆 RANKING</div>
+        <ul class="ranking-list">${buildRankingHTML(sorted)}</ul>
+    `;
+
     let similarWordsInfo = '';
     if (!localState.impostorKnows && Object.keys(localState.similarWords).length > 0) {
         const similarList = localState.impostorIndices.map(idx => {
@@ -860,7 +976,7 @@ function showImpostorWins() {
         }).join(', ');
         similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">${t('impostorWords')}: ${similarList}</p>`;
     }
-    
+
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
@@ -871,26 +987,13 @@ function showImpostorWins() {
                 <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
                 <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${localState.word}</strong></p>
                 ${similarWordsInfo}
+                ${buildRoundPointsHTML()}
                 ${rankingSection}
+                <p style="font-size:.65rem;color:var(--text-dim);margin-top:8px">${t('scoringLegend')}</p>
                 <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
             </div>
         </div>
     `;
-}
-
-function buildScoreControls() {
-    return localState.players.map(name => {
-        const safeId = name.replace(/[^a-zA-Z0-9]/g, '_');
-        const escapedName = name.replace(/'/g, "\\'");
-        return `<div class="score-player">
-            <span class="score-player-name">${name}</span>
-            <div class="score-btns">
-                <button class="score-btn minus" onclick="adjustScore('${escapedName}', -1)">−</button>
-                <span class="score-value" id="score-${safeId}">${localState.scores[name] || 0}</span>
-                <button class="score-btn plus" onclick="adjustScore('${escapedName}', 1)">+</button>
-            </div>
-        </div>`;
-    }).join('');
 }
 
 function buildRankingHTML(sorted) {
@@ -921,17 +1024,12 @@ function showRoundSummary() {
         similarWordsInfo = `<p style="font-size:.75rem;color:var(--text-dim);margin-top:8px">${t('impostorWords')}: ${similarList}</p>`;
     }
     
-    // Build content based on whether we have scoring enabled
-    let rankingSection = '';
-    if (localState.maxPoints) {
-        const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
-        const rankingHTML = buildRankingHTML(sorted);
-        rankingSection = `
-            <div class="section-title">🏆 RANKING</div>
-            <ul class="ranking-list">${rankingHTML}</ul>
-        `;
-    }
-    
+    const sorted = Object.entries(localState.scores).sort((a, b) => b[1] - a[1]);
+    const rankingSection = `
+        <div class="section-title">🏆 RANKING</div>
+        <ul class="ranking-list">${buildRankingHTML(sorted)}</ul>
+    `;
+
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
             <div class="confirm-box">
@@ -940,18 +1038,13 @@ function showRoundSummary() {
                 <p style="font-size:1.2rem;color:var(--accent);margin:10px 0;font-family:'Bebas Neue',sans-serif;letter-spacing:2px">${impostorNames.join(', ')}</p>
                 <p style="margin:14px 0;font-size:.85rem">${t('word')} <strong style="color:var(--success)">${localState.word}</strong></p>
                 ${similarWordsInfo}
+                ${buildRoundPointsHTML()}
                 ${rankingSection}
+                <p style="font-size:.65rem;color:var(--text-dim);margin-top:8px">${t('scoringLegend')}</p>
                 <button class="btn btn-primary" onclick="closeOverlay();newRound();" style="margin-top:14px">${t('nextRound')}</button>
             </div>
         </div>
     `;
-}
-
-function adjustScore(name, delta) {
-    localState.scores[name] = (localState.scores[name] || 0) + delta;
-    const el = document.getElementById('score-' + name.replace(/[^a-zA-Z0-9]/g, '_'));
-    if (el) el.textContent = localState.scores[name];
-    saveLocalState();
 }
 
 function checkForWinner() {
@@ -1022,7 +1115,8 @@ function resetGame() {
         maxPoints: localState.maxPoints,
         allCategories: localState.allCategories,
         selectedCategories: localState.selectedCategories.slice(),
-        questionsMode: localState.questionsMode
+        questionsMode: localState.questionsMode,
+        impostorSurprise: localState.impostorSurprise
     };
     
     // Reset game state but keep settings
@@ -1052,7 +1146,9 @@ function resetGame() {
         questionsMode: savedSettings.questionsMode,
         roundQuestions: [],
         questionIndex: 0,
-        impostorHints: {}
+        impostorHints: {},
+        impostorSurprise: savedSettings.impostorSurprise,
+        roundPoints: {}
     };
     
     clearLocalState();
