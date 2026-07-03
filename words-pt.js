@@ -20,7 +20,7 @@ const genericQuestionsPT = [
     'Que sentimento isso te traz?',
     'Quanto isso custa, mais ou menos?',
     'O que você usaria junto com isso?',
-    'Em que época do ano isso aparece mais?'
+    'Qual foi a última vez que você viu um desses?'
 ];
 
 const animalQuestionsPT = [
@@ -29,14 +29,14 @@ const animalQuestionsPT = [
     'Que nome você daria se tivesse um?',
     'O que você faria se encontrasse um na sua frente?',
     'Compare o tamanho dele com outra coisa',
-    'Como ele se locomove?',
+    'Que filme ou desenho tem um desses?',
     'Que outro animal vive perto dele?',
     'Onde você viu um de verdade pela última vez?'
 ];
 
 const comidaQuestionsPT = [
     'Com o que você come isso?',
-    'Em qual refeição isso aparece?',
+    'Em que momento você costuma comer isso?',
     'Onde você costuma comer isso?',
     'Quem você conhece que prepara isso bem?',
     'Em que ocasião você comeu isso pela última vez?',
@@ -49,7 +49,7 @@ const objetoQuestionsPT = [
     'Em que lugar da casa isso costuma ficar?',
     'Com que frequência você usa isso?',
     'Quanto isso custa, mais ou menos?',
-    'De que material isso é feito?',
+    'Onde você compraria um desses?',
     'Onde você conseguiu o seu?',
     'Compare o tamanho disso com outro objeto',
     'Pra quem você emprestaria isso?',
@@ -307,12 +307,12 @@ const wordCategoriesPT = [
         questions: [
             'Em que festa esse doce aparece?',
             'Onde você comeu isso pela última vez?',
-            'O que acontece se deixar isso no sol?',
+            'Em que situação você compraria isso?',
             'Quem você conhece que faz isso bem?',
             'Com que outro doce isso combina?',
             'Onde você compra isso?',
             'Quem na sua família mais gosta disso?',
-            'Como se guarda isso?'
+            'Quando foi a última vez que você comeu isso?'
         ]
     },
     {
@@ -373,9 +373,9 @@ const wordCategoriesPT = [
         },
         questions: [
             'Onde se pratica esse esporte?',
-            'Quantas pessoas jogam ao mesmo tempo?',
+            'Com quem você jogaria isso?',
             'O que você precisa pra jogar, além da bola?',
-            'Que parte do corpo mais se usa?',
+            'Qual o momento mais emocionante desse esporte?',
             'Onde você jogou isso pela última vez?',
             'Que atleta famoso você associa a esse esporte?',
             'Que roupa se usa pra jogar isso?',
@@ -443,7 +443,7 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que estilo de música isso aparece?',
-            'Como se toca isso?',
+            'Que música você imagina sendo tocada nele?',
             'Como você carregaria isso pra um show?',
             'Quanto tempo leva pra aprender a tocar?',
             'Em que tipo de evento isso aparece?',
@@ -539,7 +539,7 @@ const wordCategoriesPT = [
             'Pra onde você iria com ele?',
             'Quando foi a última vez que você andou nisso?',
             'Que barulho ele faz?',
-            'O que precisa pra poder conduzir isso?',
+            'Pra que tipo de viagem ele é ideal?',
             'Onde ele fica guardado?'
         ]
     },
@@ -680,7 +680,7 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que ocasião você usa isso?',
-            'Em que parte do corpo se usa?',
+            'Quando foi a última vez que você usou uma dessas?',
             'Em que época do ano você usa mais?',
             'Com que look você usaria isso?',
             'Com que outra peça isso combina?',
@@ -742,7 +742,7 @@ const wordCategoriesPT = [
             'SMARTWATCH': ['RELÓGIO', 'PULSEIRA', 'CELULAR']
         },
         questions: [
-            'Em que parte do corpo isso se usa?',
+            'Quando foi a última vez que você usou um?',
             'Com que frequência você usa?',
             'Pra que serve, além de enfeitar?',
             'Quanto custa um, mais ou menos?',
@@ -1030,10 +1030,10 @@ const wordCategoriesPT = [
         },
         questions: [
             'Pra que serve isso na cozinha?',
-            'O que acontece se isso for ao fogo?',
+            'Que prato você prepararia usando isso?',
             'De que material costuma ser?',
             'Com que frequência você usa?',
-            'Como você lava isso?',
+            'Quem cuida disso na sua casa?',
             'Em que momento da refeição isso aparece?',
             'Onde isso fica guardado?',
             'O que acontece se isso cair no chão?'
@@ -1105,13 +1105,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Pra que serve essa parte do corpo?',
-            'Quantas dessa parte a gente tem?',
+            'Em que situação você mais usa essa parte?',
             'Perto de que outra parte ela fica?',
             'O que acontece quando ela machuca?',
             'O que você usa pra cuidar dela?',
             'O que você consegue fazer com ela?',
             'Que acessório ou roupa se usa nela?',
-            'Como ela se mexe?'
+            'Que atividade fica impossível sem ela?'
         ]
     },
     {
@@ -1142,7 +1142,7 @@ const wordCategoriesPT = [
             'Que música toca nessa festa?',
             'O que você veste pra ir?',
             'Que presente combina com essa data?',
-            'Em que mês costuma acontecer?',
+            'Qual a melhor lembrança que você tem dessa data?',
             'Quem você chamaria pra essa festa?',
             'Como é a decoração?',
             'Qual foi a última vez que você foi numa dessas?'
@@ -1174,7 +1174,7 @@ const wordCategoriesPT = [
         },
         questions: [
             'Com quem você jogaria isso?',
-            'Com quantas pessoas se joga?',
+            'Qual a parte mais difícil desse jogo?',
             'Como você fica jogando isso?',
             'Que idade tem quem mais joga isso?',
             'Desde quando você conhece esse jogo?',
@@ -1220,7 +1220,7 @@ const wordCategoriesPT = [
             'Que sentimento isso desperta?',
             'Pra que idade isso é indicado?',
             'Que nota de 0 a 10 você dá?',
-            'De que época é?',
+            'Que cena disso você lembra até hoje?',
             'Pra quem você recomendaria?',
             'Que outro filme ou série parece com esse?',
             'Você assistiu com quem?'
@@ -1261,7 +1261,7 @@ const wordCategoriesPT = [
             'Como ele reagiria numa emergência?',
             'Quem você conhece que ama esse personagem?',
             'Como é a voz dele?',
-            'De que cor ele é?',
+            'O que ele faria se estivesse aqui agora?',
             'Com quem ele anda junto?'
         ]
     }
