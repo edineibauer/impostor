@@ -448,20 +448,20 @@ const genericQuestionsByLang = {
     en: [
         'Where do you usually see this?',
         'How often does this show up in your life?',
-        'Would you give this as a gift? To whom?',
-        'Is it more for kids or adults?',
+        'Who would you give this as a gift to?',
+        'What kind of person likes this the most?',
         'What feeling does it give you?',
-        'Is it cheap or expensive?',
+        'How much does it cost, more or less?',
         'What would you use together with it?',
         'What time of year does it show up most?'
     ],
     es: [
         '¿Dónde sueles ver esto?',
         '¿Con qué frecuencia aparece en tu vida?',
-        '¿Lo regalarías? ¿A quién?',
-        '¿Es más de niños o de adultos?',
+        '¿A quién le regalarías esto?',
+        '¿Qué tipo de persona disfruta más de esto?',
         '¿Qué sentimiento te provoca?',
-        '¿Es caro o barato?',
+        '¿Cuánto cuesta, más o menos?',
         '¿Qué usarías junto con esto?',
         '¿En qué época del año aparece más?'
     ]
@@ -771,7 +771,8 @@ function renderQuestionBox() {
     box.style.display = 'block';
     box.innerHTML = `
         <div style="font-size:.65rem;letter-spacing:2px;color:var(--text-dim);margin-bottom:6px">❓ ${t('questionLabel')} ${localState.questionIndex + 1}</div>
-        <div style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:12px">${question}</div>
+        <div style="font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:8px">${question}</div>
+        <div style="font-size:.65rem;color:var(--warning);margin-bottom:12px">🚫 ${t('noRepeatRule')}</div>
         <button class="btn btn-secondary" onclick="nextQuestion()" style="margin:0;padding:10px;font-size:.75rem">${t('nextQuestion')}</button>
     `;
 }

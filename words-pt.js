@@ -15,10 +15,10 @@
 const genericQuestionsPT = [
     'Onde você costuma ver isso?',
     'Com que frequência isso aparece na sua vida?',
-    'Você daria isso de presente? Para quem?',
-    'Isso combina mais com criança ou com adulto?',
+    'Pra quem você daria isso de presente?',
+    'Que tipo de pessoa mais gosta disso?',
     'Que sentimento isso te traz?',
-    'Isso é caro ou barato?',
+    'Quanto isso custa, mais ou menos?',
     'O que você usaria junto com isso?',
     'Em que época do ano isso aparece mais?'
 ];
@@ -26,12 +26,12 @@ const genericQuestionsPT = [
 const animalQuestionsPT = [
     'Onde esse ser vive?',
     'O que ele come?',
-    'Você teria um em casa?',
-    'Ele te dá mais medo ou mais vontade de fazer carinho?',
-    'Ele é maior ou menor que um cachorro?',
-    'Ele é mais rápido ou mais lento que você?',
+    'Que nome você daria se tivesse um?',
+    'O que você faria se encontrasse um na sua frente?',
+    'Compare o tamanho dele com outra coisa',
+    'Como ele se locomove?',
     'Que outro animal vive perto dele?',
-    'Você já viu um de verdade? Onde?'
+    'Onde você viu um de verdade pela última vez?'
 ];
 
 const comidaQuestionsPT = [
@@ -39,10 +39,10 @@ const comidaQuestionsPT = [
     'Em qual refeição isso aparece?',
     'Onde você costuma comer isso?',
     'Quem você conhece que prepara isso bem?',
-    'É comida de dia comum ou de ocasião especial?',
+    'Em que ocasião você comeu isso pela última vez?',
     'O que você bebe junto com isso?',
-    'Come com a mão ou com talher?',
-    'Combina mais com calor ou com frio?'
+    'O que não pode faltar junto com isso?',
+    'Que outra comida combina com essa?'
 ];
 
 const objetoQuestionsPT = [
@@ -50,9 +50,9 @@ const objetoQuestionsPT = [
     'Com que frequência você usa isso?',
     'Quanto isso custa, mais ou menos?',
     'De que material isso é feito?',
-    'O seu foi comprado ou ganhado?',
-    'Cabe na sua mão ou é maior que você?',
-    'Você empresta isso pra alguém?',
+    'Onde você conseguiu o seu?',
+    'Compare o tamanho disso com outro objeto',
+    'Pra quem você emprestaria isso?',
     'O que acontece se isso quebrar ou sumir?'
 ];
 
@@ -61,10 +61,10 @@ const lugarQuestionsPT = [
     'Com quem você costuma ir a esse lugar?',
     'Com que frequência você vai?',
     'O que você leva quando vai pra lá?',
-    'É um lugar barulhento ou silencioso?',
-    'Você vai mais de dia ou de noite?',
+    'Que sons você ouve nesse lugar?',
+    'Quando foi a última vez que você foi?',
     'Que cheiro tem esse lugar?',
-    'Criança gosta de ir nesse lugar?'
+    'O que uma criança faria nesse lugar?'
 ];
 
 const wordCategoriesPT = [
@@ -101,11 +101,11 @@ const wordCategoriesPT = [
         questions: [
             'Com o que você come essa fruta?',
             'Que bebida dá pra fazer com ela?',
-            'Você come com casca ou sem casca?',
-            'Ela é mais doce ou mais azeda?',
+            'Como você prepara ela pra comer?',
+            'Com que outra fruta ela parece?',
             'Em que momento do dia você comeria?',
             'Onde você compra essa fruta?',
-            'Ela cabe na palma da sua mão?',
+            'Compare o tamanho dela com outra coisa',
             'Que sobremesa leva essa fruta?'
         ]
     },
@@ -306,13 +306,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que festa esse doce aparece?',
-            'Você come isso com colher ou com a mão?',
-            'Derrete ou não derrete?',
+            'Onde você comeu isso pela última vez?',
+            'O que acontece se deixar isso no sol?',
             'Quem você conhece que faz isso bem?',
-            'Combina com bolo de aniversário?',
-            'Você compraria isso na padaria ou no mercado?',
-            'É mais de criança ou de adulto?',
-            'Dá pra guardar na geladeira?'
+            'Com que outro doce isso combina?',
+            'Onde você compra isso?',
+            'Quem na sua família mais gosta disso?',
+            'Como se guarda isso?'
         ]
     },
     {
@@ -343,12 +343,12 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que momento do dia você bebe isso?',
-            'Você prefere quente ou gelado?',
+            'Como você prefere beber isso?',
             'Com que comida isso combina?',
-            'É pra todo dia ou pra ocasião especial?',
-            'Criança pode beber?',
-            'Você bebe em copo, xícara ou garrafa?',
-            'Combina com festa ou com descanso?',
+            'Quando foi a última vez que você bebeu isso?',
+            'Pra quem você serviria isso?',
+            'Onde você costuma beber isso?',
+            'Em que situação isso combina?',
             'Onde você compraria isso?'
         ]
     },
@@ -375,10 +375,10 @@ const wordCategoriesPT = [
             'Onde se pratica esse esporte?',
             'Quantas pessoas jogam ao mesmo tempo?',
             'O que você precisa pra jogar, além da bola?',
-            'Usa mais a mão ou o pé?',
-            'Você já jogou isso na escola?',
-            'É mais assistido na TV ou jogado com amigos?',
-            'É jogo de time ou dá pra jogar em dupla?',
+            'Que parte do corpo mais se usa?',
+            'Onde você jogou isso pela última vez?',
+            'Que atleta famoso você associa a esse esporte?',
+            'Que roupa se usa pra jogar isso?',
             'Que parte do corpo cansa mais?'
         ]
     },
@@ -409,11 +409,11 @@ const wordCategoriesPT = [
         questions: [
             'Onde se pratica isso?',
             'Que roupa ou equipamento precisa?',
-            'É mais de força ou de fôlego?',
-            'Você faria isso de manhã cedo?',
-            'Sua ou não sua muito?',
-            'Precisa de professor pra começar?',
-            'É perigoso se fizer errado?',
+            'O que mais cansa nesse esporte?',
+            'Em que horário você praticaria isso?',
+            'Como você fica depois de praticar isso?',
+            'Como alguém começa a praticar isso?',
+            'O que pode dar errado praticando isso?',
             'Que tipo de pessoa você imagina praticando?'
         ]
     },
@@ -443,13 +443,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que estilo de música isso aparece?',
-            'Toca com a mão, com baqueta ou com sopro?',
-            'É pesado de carregar?',
-            'É fácil ou difícil de aprender?',
-            'Aparece em festa junina, igreja ou show de rock?',
+            'Como se toca isso?',
+            'Como você carregaria isso pra um show?',
+            'Quanto tempo leva pra aprender a tocar?',
+            'Em que tipo de evento isso aparece?',
             'Que famoso você imagina tocando isso?',
-            'Faz som grave ou agudo?',
-            'Cabe numa mochila?'
+            'Que outro instrumento combina com ele?',
+            'Compare o tamanho dele com outro objeto'
         ]
     },
     {
@@ -497,11 +497,11 @@ const wordCategoriesPT = [
             'Onde essa pessoa trabalha?',
             'Que roupa ela usa no trabalho?',
             'Que ferramenta ou objeto ela mais usa?',
-            'Você já precisou dessa pessoa?',
-            'Ela trabalha mais de dia ou de noite?',
-            'Precisa de faculdade pra ser isso?',
-            'É um trabalho mais de força ou de conversa?',
-            'Criança costuma sonhar em ser isso?'
+            'Quando foi a última vez que você precisou dessa pessoa?',
+            'Como é a rotina de trabalho dela?',
+            'O que precisa estudar pra ser isso?',
+            'Qual a parte mais difícil desse trabalho?',
+            'Que tipo de criança sonha em ser isso?'
         ]
     },
     {
@@ -535,12 +535,12 @@ const wordCategoriesPT = [
         questions: [
             'Quando você usaria isso?',
             'Quantas pessoas cabem dentro?',
-            'É rápido ou lento?',
-            'Anda na terra, na água ou no ar?',
-            'Você já andou nisso?',
-            'Faz muito barulho?',
-            'Precisa de habilitação pra conduzir?',
-            'Cabe na sua garagem?'
+            'Compare a velocidade dele com outro transporte',
+            'Pra onde você iria com ele?',
+            'Quando foi a última vez que você andou nisso?',
+            'Que barulho ele faz?',
+            'O que precisa pra poder conduzir isso?',
+            'Onde ele fica guardado?'
         ]
     },
     {
@@ -570,12 +570,12 @@ const wordCategoriesPT = [
         questions: [
             'Em que cômodo isso costuma ficar?',
             'O que você guarda ou coloca nele?',
-            'Dá pra sentar ou deitar nele?',
-            'É pesado de mudar de lugar?',
+            'O que as pessoas fazem nele?',
+            'Quantas pessoas precisam pra carregar ele?',
             'De que material costuma ser?',
-            'Toda casa tem um?',
-            'Fica encostado na parede?',
-            'Criança sobe nele?'
+            'Quem você conhece que tem um bonito?',
+            'Em que posição do cômodo ele fica?',
+            'O que uma criança faria com ele?'
         ]
     },
     {
@@ -604,13 +604,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que cômodo isso fica?',
-            'Você usa isso todo dia?',
-            'Esquenta, esfria ou nenhum dos dois?',
-            'Faz barulho quando liga?',
-            'É grande ou cabe em cima da pia?',
+            'Com que frequência você usa?',
+            'O que você coloca dentro dele?',
+            'Que barulho ele faz?',
+            'Compare o tamanho dele com outro eletrodoméstico',
             'O que acontece se ele quebrar?',
-            'Gasta muita energia?',
-            'Sua casa tem um?'
+            'Quanto custa um novo, mais ou menos?',
+            'Quem você conhece que usa muito isso?'
         ]
     },
     {
@@ -640,11 +640,11 @@ const wordCategoriesPT = [
         questions: [
             'Onde isso fica na sua casa?',
             'Você usa isso quantas vezes por dia?',
-            'Tem tela ou não tem?',
-            'Precisa de tomada ou usa bateria?',
-            'Cabe no bolso?',
+            'Com que outro aparelho ele funciona junto?',
+            'O que você faz quando ele trava ou para de funcionar?',
+            'Compare o tamanho dele com outro objeto',
             'Quanto custa, mais ou menos?',
-            'Criança usa isso?',
+            'Quem mais usa isso na sua casa?',
             'O que você faria se ele quebrasse hoje?'
         ]
     },
@@ -680,13 +680,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que ocasião você usa isso?',
-            'Usa na parte de cima ou de baixo do corpo?',
-            'Combina mais com calor ou com frio?',
-            'Você usaria isso numa festa?',
+            'Em que parte do corpo se usa?',
+            'Em que época do ano você usa mais?',
+            'Com que look você usaria isso?',
             'Com que outra peça isso combina?',
             'Você tem quantos desses?',
-            'Passa ferro nisso?',
-            'Usa por cima ou por baixo de outra roupa?'
+            'Como você cuida dessa peça?',
+            'Qual a cor do seu?'
         ]
     },
     {
@@ -706,13 +706,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que ocasião você usa isso?',
-            'É confortável ou aperta?',
-            'Usa com meia ou sem meia?',
-            'Serve pra praia?',
-            'Serve pra fazer esporte?',
-            'Faz barulho quando anda?',
-            'É fácil de calçar com pressa?',
-            'Você usaria isso o dia inteiro?'
+            'Como seu pé fica depois de um dia inteiro com ele?',
+            'Com que roupa isso combina?',
+            'Em que lugar você NÃO usaria isso?',
+            'O que dá pra fazer calçando isso?',
+            'Que barulho ele faz quando você anda?',
+            'Quanto tempo você leva pra calçar ele?',
+            'Quantos pares desses você tem?'
         ]
     },
     {
@@ -743,13 +743,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Em que parte do corpo isso se usa?',
-            'Você usa isso todo dia?',
-            'É mais enfeite ou mais utilidade?',
-            'Custa caro?',
-            'Você já perdeu um desses?',
-            'Combina com festa ou com dia a dia?',
+            'Com que frequência você usa?',
+            'Pra que serve, além de enfeitar?',
+            'Quanto custa um, mais ou menos?',
+            'Onde você guarda o seu?',
+            'Em que ocasião você usaria?',
             'Dá de presente pra quem?',
-            'Homem e mulher usam igual?'
+            'Quem você conhece que usa um?'
         ]
     },
     {
@@ -781,11 +781,11 @@ const wordCategoriesPT = [
             'O que você faz nesse lugar?',
             'Quanto tempo por dia você passa nele?',
             'Que móvel não pode faltar nele?',
-            'É dentro ou fora da casa?',
-            'Visita entra nesse lugar?',
-            'É o lugar mais quente ou mais fresco da casa?',
+            'O que dá pra ver quando você está nele?',
+            'Quem da casa mais usa esse lugar?',
+            'Que cheiro tem esse lugar?',
             'O que se guarda nesse lugar?',
-            'Toda casa tem um desses?'
+            'Descreva como é esse lugar na sua casa'
         ]
     },
     {
@@ -847,12 +847,12 @@ const wordCategoriesPT = [
         questions: [
             'O que você faria nesse lugar?',
             'Que roupa combina com esse lugar?',
-            'Tem água nesse lugar?',
-            'Faz calor ou frio lá?',
+            'O que dá pra ouvir nesse lugar?',
+            'Como é o clima lá?',
             'Você levaria quem pra conhecer?',
-            'Dá pra passar o dia inteiro lá?',
+            'Quanto tempo você passaria lá?',
             'Que animal vive nesse lugar?',
-            'Fica perto ou longe de onde você mora?'
+            'Quanto tempo de viagem até um lugar desses?'
         ]
     },
     {
@@ -881,12 +881,12 @@ const wordCategoriesPT = [
         questions: [
             'O que você faz quando o tempo está assim?',
             'Que roupa combina com isso?',
-            'Isso te deixa feliz ou de mau humor?',
-            'Acontece muito na sua cidade?',
-            'É perigoso?',
-            'Faz barulho?',
+            'Como você se sente quando está assim?',
+            'Em que lugar do mundo isso acontece muito?',
+            'O que pode acontecer de ruim quando está assim?',
+            'Que som isso faz?',
             'Em que época do ano isso acontece mais?',
-            'Dá pra sair de casa quando está assim?'
+            'Pra onde você iria num dia assim?'
         ]
     },
     {
@@ -917,13 +917,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Pra que você usa isso na escola?',
-            'Cabe no estojo?',
-            'Você empresta isso pro colega?',
-            'Acaba, gasta ou dura pra sempre?',
+            'Onde você guarda isso?',
+            'O que você faz quando alguém pega e não devolve?',
+            'Quanto tempo dura o seu?',
             'De que cor costuma ser o seu?',
-            'Você já perdeu um desses?',
-            'Adulto também usa no trabalho?',
-            'Custa caro na papelaria?'
+            'Quantos desses você já perdeu na vida?',
+            'Quem usa isso além de estudante?',
+            'Quanto custa um, mais ou menos?'
         ]
     },
     {
@@ -954,14 +954,14 @@ const wordCategoriesPT = [
             'BOLHA DE SABÃO': ['BALÃO', 'PIPA', 'SLIME']
         },
         questions: [
-            'Brinca dentro ou fora de casa?',
-            'Brinca sozinho ou precisa de mais gente?',
-            'Você teve um desses na infância?',
-            'É de menino, de menina ou dos dois?',
-            'Precisa de pilha ou bateria?',
-            'Suja as mãos?',
-            'Dá pra brincar na chuva?',
-            'Cabe numa caixa de sapato?'
+            'Onde você brincava com isso?',
+            'Com quantas pessoas dá pra brincar?',
+            'Como era o seu na infância?',
+            'Que idade tem quem mais brinca com isso?',
+            'O que precisa pra brincar com isso?',
+            'Como você fica depois de brincar com isso?',
+            'Em que lugar é melhor brincar com isso?',
+            'Compare o tamanho dele com outra coisa'
         ]
     },
     {
@@ -992,11 +992,11 @@ const wordCategoriesPT = [
             'Pra que serve isso?',
             'Quem costuma usar isso?',
             'Onde isso fica guardado na sua casa?',
-            'É perigoso pra criança?',
-            'Faz barulho quando usa?',
-            'Usa dentro ou fora de casa?',
-            'É pesado?',
-            'Você sabe usar isso direito?'
+            'O que pode dar errado usando isso?',
+            'Que barulho isso faz?',
+            'Em que situação você usou isso pela última vez?',
+            'Compare o peso disso com outro objeto',
+            'Quem te ensinou a usar isso?'
         ]
     },
     {
@@ -1030,13 +1030,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Pra que serve isso na cozinha?',
-            'Vai ao fogo ou não pode?',
+            'O que acontece se isso for ao fogo?',
             'De que material costuma ser?',
-            'Você usa isso todo dia?',
-            'Lava na mão ou pode na lava-louças?',
-            'Usa pra cozinhar ou pra servir?',
-            'Cabe na gaveta?',
-            'Quebra se cair no chão?'
+            'Com que frequência você usa?',
+            'Como você lava isso?',
+            'Em que momento da refeição isso aparece?',
+            'Onde isso fica guardado?',
+            'O que acontece se isso cair no chão?'
         ]
     },
     {
@@ -1064,11 +1064,11 @@ const wordCategoriesPT = [
         questions: [
             'O que na sua casa tem essa cor?',
             'Que comida tem essa cor?',
-            'Você usaria uma roupa dessa cor?',
+            'Que peça de roupa você tem nessa cor?',
             'Que sentimento essa cor passa?',
-            'É uma cor mais clara ou mais escura?',
+            'Que outra cor combina com ela?',
             'Que animal tem essa cor?',
-            'Combina com festa ou com dia a dia?',
+            'Em que ocasião você usaria essa cor?',
             'Que time ou bandeira usa essa cor?'
         ]
     },
@@ -1105,13 +1105,13 @@ const wordCategoriesPT = [
         },
         questions: [
             'Pra que serve essa parte do corpo?',
-            'Temos uma ou duas dela?',
-            'Fica mais pra cima ou mais pra baixo?',
-            'Dói muito quando machuca?',
+            'Quantas dessa parte a gente tem?',
+            'Perto de que outra parte ela fica?',
+            'O que acontece quando ela machuca?',
             'O que você usa pra cuidar dela?',
-            'Dá pra ver ou fica escondida pela roupa?',
-            'Alguma roupa ou acessório se usa nela?',
-            'Ela se mexe sozinha?'
+            'O que você consegue fazer com ela?',
+            'Que acessório ou roupa se usa nela?',
+            'Como ela se mexe?'
         ]
     },
     {
@@ -1141,10 +1141,10 @@ const wordCategoriesPT = [
             'O que se come nessa data?',
             'Que música toca nessa festa?',
             'O que você veste pra ir?',
-            'Tem presente envolvido?',
-            'Acontece uma vez por ano ou quando quiser?',
-            'É mais em família ou com amigos?',
-            'Tem decoração especial?',
+            'Que presente combina com essa data?',
+            'Em que mês costuma acontecer?',
+            'Quem você chamaria pra essa festa?',
+            'Como é a decoração?',
             'Qual foi a última vez que você foi numa dessas?'
         ]
     },
@@ -1173,13 +1173,13 @@ const wordCategoriesPT = [
             'MORTAL KOMBAT': ['STREET FIGHTER', 'GOD OF WAR', 'FREE FIRE']
         },
         questions: [
-            'Joga mais no celular, no computador ou no console?',
-            'Joga sozinho ou com amigos?',
-            'É um jogo mais calmo ou mais agitado?',
-            'Criança pode jogar?',
+            'Com quem você jogaria isso?',
+            'Com quantas pessoas se joga?',
+            'Como você fica jogando isso?',
+            'Que idade tem quem mais joga isso?',
             'Desde quando você conhece esse jogo?',
-            'A partida é rápida ou demora?',
-            'Precisa de internet pra jogar?',
+            'Quanto tempo dura uma partida?',
+            'O que precisa pra jogar isso?',
             'Que tipo de pessoa você imagina jogando?'
         ]
     },
@@ -1216,13 +1216,13 @@ const wordCategoriesPT = [
             'ONE PIECE': ['NARUTO', 'DRAGON BALL', 'POKEMON']
         },
         questions: [
-            'É melhor assistir no cinema ou em casa?',
-            'É pra rir, pra chorar ou pra ficar tenso?',
-            'Criança pode assistir?',
-            'Você assistiria de novo?',
-            'É antigo ou recente?',
+            'Onde você assistiu isso?',
+            'Que sentimento isso desperta?',
+            'Pra que idade isso é indicado?',
+            'Que nota de 0 a 10 você dá?',
+            'De que época é?',
             'Pra quem você recomendaria?',
-            'Tem continuação?',
+            'Que outro filme ou série parece com esse?',
             'Você assistiu com quem?'
         ]
     },
@@ -1255,14 +1255,14 @@ const wordCategoriesPT = [
             'CASCÃO': ['CEBOLINHA', 'MÔNICA', 'MAGALI']
         },
         questions: [
-            'É pessoa, bicho ou outra coisa?',
+            'Descreva um detalhe do visual dele',
             'Qual a principal característica dele?',
-            'Ele te faz rir?',
-            'É mais herói ou mais atrapalhado?',
-            'Criança de hoje conhece ele?',
-            'Ele fala ou só faz barulho?',
+            'Qual a cena mais marcante dele?',
+            'Como ele reagiria numa emergência?',
+            'Quem você conhece que ama esse personagem?',
+            'Como é a voz dele?',
             'De que cor ele é?',
-            'Ele tem um melhor amigo?'
+            'Com quem ele anda junto?'
         ]
     }
 ];
