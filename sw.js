@@ -1,10 +1,12 @@
-const CACHE_NAME = 'impostor-v5';
+const CACHE_NAME = 'impostor-v6';
 const urlsToCache = [
     './',
     './index.html',
     './app.js',
     './game-local.js',
     './game-online.js',
+    './game-quemsoueu.js',
+    './game-verdade.js',
     './i18n.js',
     './words-pt.js',
     './words-en.js',

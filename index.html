@@ -239,6 +239,21 @@
                     </button>
                 </div>
             </div>
+            <div class="card">
+                <h2 class="card-title" data-i18n="gamesMenu">🎲 Mais Jogos</h2>
+                <div class="mode-selector">
+                    <button class="mode-btn" onclick="showQsSetup()">
+                        <div class="mode-icon">🙆</div>
+                        <div class="mode-title" data-i18n="qsTitle">QUEM SOU EU</div>
+                        <div class="mode-desc" data-i18n="qsMenuDesc">Celular na testa: os outros dão dicas e você adivinha a palavra contra o relógio.</div>
+                    </button>
+                    <button class="mode-btn" onclick="showVlSetup()">
+                        <div class="mode-icon">🤥</div>
+                        <div class="mode-title" data-i18n="vlTitle">VERDADE OU MENTIRA</div>
+                        <div class="mode-desc" data-i18n="vlMenuDesc">Conte uma história real ou inventada sobre o tema sorteado. O grupo descobre?</div>
+                    </button>
+                </div>
+            </div>
             <button class="settings-btn" onclick="showSettings()">⚙️</button>
         </div>
 
@@ -269,6 +284,19 @@
                     <div class="toggle-switch active" id="toggle-impostor-knows" onclick="toggleImpostorKnows()"></div>
                 </div>
                 <p class="impostor-count-info" data-i18n="impostorModeInfo">Se desativado, impostor recebe palavra similar</p>
+                <div class="toggle-option">
+                    <span data-i18n="mrWhiteMode">Mr. White (sem palavra nenhuma)</span>
+                    <div class="toggle-switch" id="toggle-mr-white" onclick="toggleMrWhite()"></div>
+                </div>
+                <p class="impostor-count-info" data-i18n="mrWhiteModeInfo">Papel extra que não recebe palavra e improvisa tudo. Ao ser pego, tenta adivinhar a palavra. Precisa de 5+ jogadores</p>
+            </div>
+            <div class="card">
+                <h2 class="card-title" data-i18n="punishMode">🎪 Modo Castigo</h2>
+                <div class="toggle-option">
+                    <span data-i18n="punishModeToggle">Castigo para eliminado injustamente</span>
+                    <div class="toggle-switch" id="toggle-punish" onclick="togglePunish()"></div>
+                </div>
+                <p class="impostor-count-info" data-i18n="punishModeInfo">Inocente eliminado por engano recebe um desafio leve sorteado pelo app</p>
             </div>
             <div class="card">
                 <h2 class="card-title" data-i18n="questionsMode">❓ Modo Perguntas</h2>
@@ -515,6 +543,109 @@
             </div>
             <button class="btn btn-primary" onclick="resetGame()" data-i18n="playAgain">🔄 JOGAR NOVAMENTE</button>
         </div>
+
+        <!-- QUEM SOU EU: SETUP -->
+        <div id="screen-qs-setup" class="screen">
+            <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+            <div class="logo">
+                <img src="icon-192.png" alt="" class="logo-icon">
+                <h1 data-i18n="qsTitle">QUEM SOU EU</h1>
+                <p class="subtitle" data-i18n="qsSubtitle">Celular na testa, dicas e correria</p>
+            </div>
+            <div class="card"><h2 class="card-title" data-i18n="players">👥 Jogadores</h2><div class="number-selector" id="qs-player-selector"></div></div>
+            <div class="card"><h2 class="card-title" data-i18n="qsTime">⏱️ Tempo por Rodada</h2><div class="number-selector" id="qs-time-selector"></div></div>
+            <div class="card"><h2 class="card-title" data-i18n="qsRounds">🔁 Rodadas</h2><div class="number-selector" id="qs-rounds-selector"></div></div>
+            <div class="card"><h2 class="card-title" data-i18n="names">📝 Nomes</h2><div id="qs-player-inputs"></div></div>
+            <button class="btn btn-primary" onclick="startQsGame()" data-i18n="startGame">🎮 INICIAR JOGO</button>
+            <div class="card" style="margin-top:25px;opacity:.8"><h2 class="card-title" data-i18n="howToPlay">📖 Como Jogar</h2><p style="font-size:.68rem;line-height:1.8;color:var(--text-dim)" data-i18n="qsInstructions">Segure o celular na testa com a palavra virada para o grupo. Os outros dão dicas sem falar a palavra. Acertou? Toque em ACERTOU e vem outra. Difícil demais? PASSAR. Cada acerto vale 1 ponto.</p></div>
+        </div>
+
+        <!-- QUEM SOU EU: TURN -->
+        <div id="screen-qs-turn" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1><span data-i18n="round">RODADA</span> <span id="qs-turn-round">1</span></h1></div>
+            <div class="player-turn-card"><div class="player-turn-name" id="qs-turn-player">JOGADOR</div><p class="player-turn-instruction" data-i18n="qsHoldForehead">Pegue o celular e segure na testa, com a tela virada para o grupo</p></div>
+            <button class="btn btn-primary" onclick="startQsTurn()" data-i18n="qsStart">▶️ COMEÇAR</button>
+        </div>
+
+        <!-- QUEM SOU EU: PLAY -->
+        <div id="screen-qs-play" class="screen" style="display:flex;flex-direction:column;justify-content:center">
+            <div style="text-align:center;font-size:2rem;font-family:'Bebas Neue',sans-serif" id="qs-timer">60s</div>
+            <div class="card" style="text-align:center;padding:30px 10px">
+                <div class="category-tag" id="qs-category" style="margin-bottom:14px"></div>
+                <div id="qs-word" style="font-size:2.6rem;font-family:'Bebas Neue',sans-serif;letter-spacing:3px;line-height:1.1;word-break:break-word">PALAVRA</div>
+            </div>
+            <button class="btn btn-success" onclick="qsMark(true)" style="padding:22px;font-size:1.1rem" data-i18n="qsGotIt">✓ ACERTOU</button>
+            <button class="btn btn-warning" onclick="qsMark(false)" style="padding:16px" data-i18n="qsSkip">↷ PASSAR</button>
+        </div>
+
+        <!-- QUEM SOU EU: TURN RESULT -->
+        <div id="screen-qs-result" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="qsTimeUp">⏰ TEMPO!</h1></div>
+            <div class="card" style="text-align:center">
+                <h3 id="qs-result-player" style="font-size:1.3rem"></h3>
+                <div id="qs-result-score" style="font-size:2.5rem;color:var(--success);font-family:'Bebas Neue',sans-serif;margin:10px 0">+0</div>
+                <div id="qs-result-words"></div>
+            </div>
+            <button class="btn btn-primary" onclick="qsNextTurn()" data-i18n="qsNextPlayer">➜ PRÓXIMO JOGADOR</button>
+        </div>
+
+        <!-- QUEM SOU EU: END -->
+        <div id="screen-qs-end" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="gameOver">🎉 FIM DE JOGO</h1></div>
+            <div class="card"><h2 class="card-title" data-i18n="finalRanking">🏆 RANKING FINAL</h2><ul id="qs-final-ranking" class="ranking-list"></ul></div>
+            <button class="btn btn-primary" onclick="qsPlayAgain()" data-i18n="playAgain">🔄 JOGAR NOVAMENTE</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-mode')" data-i18n="backToMenu">← MENU DE JOGOS</button>
+        </div>
+
+        <!-- VERDADE OU MENTIRA: SETUP -->
+        <div id="screen-vl-setup" class="screen">
+            <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+            <div class="logo">
+                <img src="icon-192.png" alt="" class="logo-icon">
+                <h1 data-i18n="vlTitle">VERDADE OU MENTIRA</h1>
+                <p class="subtitle" data-i18n="vlSubtitle">Conte uma história. Eles descobrem se é real?</p>
+            </div>
+            <div class="card"><h2 class="card-title" data-i18n="players">👥 Jogadores</h2><div class="number-selector" id="vl-player-selector"></div></div>
+            <div class="card"><h2 class="card-title" data-i18n="names">📝 Nomes</h2><div id="vl-player-inputs"></div></div>
+            <button class="btn btn-primary" onclick="startVlGame()" data-i18n="startGame">🎮 INICIAR JOGO</button>
+            <div class="card" style="margin-top:25px;opacity:.8"><h2 class="card-title" data-i18n="howToPlay">📖 Como Jogar</h2><p style="font-size:.68rem;line-height:1.8;color:var(--text-dim)" data-i18n="vlInstructions">Na sua vez, o app manda (em segredo) você contar uma história VERDADEIRA ou INVENTADA sobre um tema. Conte com convicção! Depois todos votam. Quem acerta ganha 1 ponto; você ganha 1 ponto por cada pessoa enganada.</p></div>
+        </div>
+
+        <!-- VERDADE OU MENTIRA: TURN -->
+        <div id="screen-vl-turn" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1><span data-i18n="round">RODADA</span> <span id="vl-turn-round">1</span></h1></div>
+            <div class="player-turn-card"><div class="player-turn-name" id="vl-turn-player">JOGADOR</div><p class="player-turn-instruction" data-i18n="vlPickPhone">Pegue o celular sem mostrar a tela para ninguém</p></div>
+            <button class="btn btn-primary" onclick="showVlSecret()" data-i18n="vlSeeMission">🤫 VER MISSÃO SECRETA</button>
+        </div>
+
+        <!-- VERDADE OU MENTIRA: SECRET -->
+        <div id="screen-vl-secret" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="vlYourMission">SUA MISSÃO</h1></div>
+            <div class="card" style="text-align:center;padding:26px 14px">
+                <div id="vl-mission" style="font-size:1.6rem;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;margin-bottom:14px"></div>
+                <div id="vl-theme" style="font-size:1rem;line-height:1.4"></div>
+            </div>
+            <p style="text-align:center;color:var(--text-dim);font-size:.7rem;margin-bottom:18px" data-i18n="vlKeepSecret">Memorize e não deixe ninguém ver!</p>
+            <button class="btn btn-success" onclick="showVlTelling()" data-i18n="gotItNext">✓ ENTENDI</button>
+        </div>
+
+        <!-- VERDADE OU MENTIRA: TELLING -->
+        <div id="screen-vl-telling" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="vlStoryTime">🎙️ HORA DA HISTÓRIA</h1></div>
+            <div class="card" style="text-align:center">
+                <p style="font-size:1rem;line-height:1.5"><strong id="vl-telling-player" style="color:var(--primary)"></strong> <span data-i18n="vlIsTelling">está contando a história...</span></p>
+                <p style="font-size:.75rem;color:var(--text-dim);margin-top:12px" data-i18n="vlAskQuestions">O grupo pode fazer perguntas para testar os detalhes!</p>
+            </div>
+            <button class="btn btn-warning" onclick="startVlVoting()" data-i18n="vlOpenVote">🗳️ ABRIR VOTAÇÃO</button>
+        </div>
+
+        <!-- VERDADE OU MENTIRA: END -->
+        <div id="screen-vl-end" class="screen">
+            <div class="mini-logo"><img src="icon-192.png" alt=""><h1 data-i18n="gameOver">🎉 FIM DE JOGO</h1></div>
+            <div class="card"><h2 class="card-title" data-i18n="finalRanking">🏆 RANKING FINAL</h2><ul id="vl-final-ranking" class="ranking-list"></ul></div>
+            <button class="btn btn-primary" onclick="vlPlayAgain()" data-i18n="playAgain">🔄 JOGAR NOVAMENTE</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-mode')" data-i18n="backToMenu">← MENU DE JOGOS</button>
+        </div>
     </div>
     <div class="toast" id="toast"></div>
     <div id="overlay-container"></div>
@@ -532,6 +663,8 @@
     <script src="words-es.js"></script>
     <script src="game-local.js"></script>
     <script src="game-online.js"></script>
+    <script src="game-quemsoueu.js"></script>
+    <script src="game-verdade.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

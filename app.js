@@ -132,7 +132,17 @@ function goBack() {
         'screen-online-game-over': null,
         'screen-settings': 'screen-mode',
         'screen-lang': null, // Don't allow back from language selection
-        'screen-mode': null // Exit app
+        'screen-mode': null, // Exit app
+        'screen-qs-setup': 'screen-mode',
+        'screen-qs-turn': null,
+        'screen-qs-play': null,
+        'screen-qs-result': null,
+        'screen-qs-end': 'screen-mode',
+        'screen-vl-setup': 'screen-mode',
+        'screen-vl-turn': null,
+        'screen-vl-secret': null,
+        'screen-vl-telling': null,
+        'screen-vl-end': 'screen-mode'
     };
     
     // Special handling for lobby - leave room

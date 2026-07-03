@@ -29,7 +29,10 @@ let localState = {
     questionIndex: 0, // Current question being shown
     impostorHints: {}, // Hints for impostors in bad speaking positions (impostorKnows mode)
     impostorSurprise: false, // false = exactly N impostors; true = random from 1 to N
-    roundPoints: {} // Points earned by each player in the current round (auto scoring)
+    roundPoints: {}, // Points earned by each player in the current round (auto scoring)
+    mrWhiteMode: false, // Optional extra role: gets NO word at all (needs 5+ players)
+    mrWhiteIndex: null, // Player index holding the Mr. White role this round
+    punishMode: false // Optional: eliminated innocents draw a light challenge
 };
 
 // STORAGE
@@ -61,6 +64,9 @@ function loadLocalState() {
                 if (!localState.impostorHints) localState.impostorHints = {};
                 if (localState.impostorSurprise === undefined) localState.impostorSurprise = false;
                 if (!localState.roundPoints) localState.roundPoints = {};
+                if (localState.mrWhiteMode === undefined) localState.mrWhiteMode = false;
+                if (localState.mrWhiteIndex === undefined) localState.mrWhiteIndex = null;
+                if (localState.punishMode === undefined) localState.punishMode = false;
                 return true;
             } else {
                 // Load settings even if game not in progress
@@ -72,6 +78,8 @@ function loadLocalState() {
                 localState.selectedCategories = loaded.selectedCategories || [];
                 localState.questionsMode = loaded.questionsMode === true;
                 localState.impostorSurprise = loaded.impostorSurprise === true;
+                localState.mrWhiteMode = loaded.mrWhiteMode === true;
+                localState.punishMode = loaded.punishMode === true;
             }
         }
     } catch (e) {}
@@ -154,7 +162,12 @@ function showWordDirectly() {
     const hintShown = updateWordHint(isImpostor);
 
     if (isImpostor) {
-        if (localState.impostorKnows) {
+        if (localState.currentPlayerIndex === localState.mrWhiteIndex) {
+            // Mr. White: no word, no category — pure improvisation
+            wordText.textContent = t('mrWhiteCard');
+            wordText.className = 'word-text is-impostor';
+            categoryTag.style.display = 'none';
+        } else if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
             wordText.className = 'word-text is-impostor';
             categoryTag.textContent = localState.category;
@@ -219,6 +232,16 @@ function applySettingsToUI() {
     const surpriseToggle = document.getElementById('toggle-impostor-surprise');
     if (surpriseToggle) {
         surpriseToggle.classList.toggle('active', localState.impostorSurprise);
+    }
+
+    // Apply Mr. White and punishment toggles
+    const mrWhiteToggle = document.getElementById('toggle-mr-white');
+    if (mrWhiteToggle) {
+        mrWhiteToggle.classList.toggle('active', localState.mrWhiteMode);
+    }
+    const punishToggle = document.getElementById('toggle-punish');
+    if (punishToggle) {
+        punishToggle.classList.toggle('active', localState.punishMode);
     }
     
     // Apply all categories toggle
@@ -368,6 +391,20 @@ function toggleImpostorSurprise() {
     toggle.classList.toggle('active', localState.impostorSurprise);
 }
 
+function toggleMrWhite() {
+    const toggle = document.getElementById('toggle-mr-white');
+    if (!toggle) return;
+    localState.mrWhiteMode = !localState.mrWhiteMode;
+    toggle.classList.toggle('active', localState.mrWhiteMode);
+}
+
+function togglePunish() {
+    const toggle = document.getElementById('toggle-punish');
+    if (!toggle) return;
+    localState.punishMode = !localState.punishMode;
+    toggle.classList.toggle('active', localState.punishMode);
+}
+
 function generatePlayerInputs() {
     const container = document.getElementById('player-inputs');
     if (!container) return;
@@ -507,6 +544,14 @@ function startRound() {
     localState.actualImpostorCount = localState.impostorSurprise
         ? Math.floor(Math.random() * localState.maxImpostors) + 1
         : localState.maxImpostors;
+
+    // Mr. White needs 5+ players and takes one special slot, so cap the
+    // impostor count to keep the innocents in clear majority
+    const mrWhiteActive = localState.mrWhiteMode && localState.players.length >= 5;
+    if (mrWhiteActive) {
+        const maxSpecials = Math.floor((localState.players.length - 1) / 2);
+        localState.actualImpostorCount = Math.max(1, Math.min(localState.actualImpostorCount, maxSpecials - 1));
+    }
     localState.impostorIndices = [];
     localState.similarWords = {};
     localState.impostorHints = {};
@@ -548,7 +593,21 @@ function startRound() {
         }
     }
     
-    localState.impostorIndices = selectedImpostors;
+    localState.impostorIndices = selectedImpostors.slice();
+
+    // Mr. White: an extra special player who gets NO word at all.
+    // He counts as an impostor for voting/win purposes and never starts talking.
+    localState.mrWhiteIndex = null;
+    if (mrWhiteActive) {
+        const candidates = indices.filter(idx => !selectedImpostors.includes(idx));
+        const mrWhiteIdx = candidates[Math.floor(Math.random() * candidates.length)];
+        localState.mrWhiteIndex = mrWhiteIdx;
+        localState.impostorIndices.push(mrWhiteIdx);
+        localState.actualImpostorCount++;
+        if (localState.starterPlayerIndex === mrWhiteIdx) {
+            localState.starterPlayerIndex = (localState.starterPlayerIndex + 1) % localState.players.length;
+        }
+    }
 
     // Position-based difficulty: the earliest-speaking impostor defines the tier,
     // so a badly positioned impostor (talks first) gets help.
@@ -605,6 +664,11 @@ function showPlayerTurn() {
 function updateWordHint(isImpostor) {
     const hintEl = document.getElementById('word-hint');
     if (!hintEl) return false;
+    if (isImpostor && localState.currentPlayerIndex === localState.mrWhiteIndex) {
+        hintEl.textContent = t('mrWhiteInfo');
+        hintEl.style.display = 'block';
+        return true;
+    }
     const hint = localState.impostorHints ? localState.impostorHints[localState.currentPlayerIndex] : null;
     if (isImpostor && localState.impostorKnows && hint) {
         hintEl.textContent = t('hintSimilarTo') + ': ' + hint;
@@ -628,7 +692,12 @@ function showWord() {
     const hintShown = updateWordHint(isImpostor);
 
     if (isImpostor) {
-        if (localState.impostorKnows) {
+        if (localState.currentPlayerIndex === localState.mrWhiteIndex) {
+            // Mr. White: no word, no category — pure improvisation
+            wordText.textContent = t('mrWhiteCard');
+            wordText.className = 'word-text is-impostor';
+            categoryTag.style.display = 'none';
+        } else if (localState.impostorKnows) {
             wordText.textContent = t('impostor');
             wordText.className = 'word-text is-impostor';
             categoryTag.textContent = localState.category;
@@ -878,13 +947,14 @@ function executeElimination(playerIndex, votersForTarget) {
     const activeInnocents = active.filter(idx => !localState.impostorIndices.includes(idx)).length;
     const allImpostorsFound = localState.actualImpostorCount - localState.revealedImpostors.length === 0;
 
-    if (isImpostor && allImpostorsFound) {
-        // Innocents win: +2 for each innocent still in the game
-        active.filter(idx => !localState.impostorIndices.includes(idx))
-            .forEach(idx => addPoints(localState.players[idx], 2));
-    }
-
     saveLocalState('screen-game'); // Save with game screen as fallback
+
+    // Final guess: the LAST impostor caught (or Mr. White, whenever caught)
+    // gets one shot at the secret word. The innocents' win bonus is decided there.
+    if (isImpostor && (allImpostorsFound || playerIndex === localState.mrWhiteIndex)) {
+        showImpostorGuess(playerIndex);
+        return;
+    }
 
     // Impostors win when they reach parity with the innocents
     if (!isImpostor && hiddenImpostors > 0 && hiddenImpostors >= activeInnocents) {
@@ -894,6 +964,133 @@ function executeElimination(playerIndex, votersForTarget) {
     } else {
         showVoteResult(playerName, isImpostor, playerIndex);
     }
+}
+
+// FINAL GUESS — one chance to steal the round by naming the secret word
+function showImpostorGuess(playerIndex) {
+    const playerName = localState.players[playerIndex];
+    const categories = getWordCategories();
+    const categoryData = categories.find(c => c.category === localState.category);
+    const decoyPool = (categoryData ? categoryData.words : []).filter(w => w !== localState.word);
+    const options = shuffle([localState.word, ...shuffle(decoyPool).slice(0, 5)]);
+
+    const buttonsHTML = options.map(w =>
+        `<button class="player-vote-btn" onclick="resolveImpostorGuess(${playerIndex}, '${w.replace(/'/g, "\\'")}')">${w}</button>`
+    ).join('');
+
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                <div class="result-icon">🎯</div>
+                <h3 style="color:var(--warning)">${t('finalGuessTitle')}</h3>
+                <p style="font-size:.9rem;margin:12px 0">${t('finalGuessPrompt').replace('{name}', `<strong>${playerName}</strong>`)}</p>
+                <div class="player-vote-list">${buttonsHTML}</div>
+            </div>
+        </div>
+    `;
+}
+
+function resolveImpostorGuess(playerIndex, guess) {
+    const playerName = localState.players[playerIndex];
+    const correct = guess === localState.word;
+    const allImpostorsFound = localState.actualImpostorCount - localState.revealedImpostors.length === 0;
+
+    if (correct) {
+        addPoints(playerName, 3);
+    } else if (allImpostorsFound) {
+        // Innocents only collect the win bonus if the last impostor misses
+        activePlayerIndices()
+            .filter(idx => !localState.impostorIndices.includes(idx))
+            .forEach(idx => addPoints(localState.players[idx], 2));
+    }
+    saveLocalState('screen-game');
+
+    const resultHTML = correct
+        ? `<div class="result-icon">🎯</div><h3 style="color:var(--warning)">${t('guessRight').replace('{name}', playerName)}</h3>`
+        : `<div class="result-icon">🙈</div><h3 style="color:var(--success)">${t('guessWrong')}</h3>
+           <p style="font-size:1.1rem;margin:12px 0">${t('word')} <strong style="color:var(--success)">${localState.word}</strong></p>`;
+
+    const nextBtn = allImpostorsFound
+        ? `<button class="btn btn-primary" onclick="closeOverlay();showRoundSummary();" style="margin-top:14px">${t('seeRoundSummary')}</button>`
+        : `<button class="btn btn-warning" onclick="closeOverlay();showVoteScreen();" style="margin-top:14px">${t('continueVoting')}</button>`;
+
+    document.getElementById('overlay-container').innerHTML = `
+        <div class="confirm-overlay">
+            <div class="confirm-box">
+                ${resultHTML}
+                ${buildRoundPointsHTML()}
+                ${nextBtn}
+            </div>
+        </div>
+    `;
+}
+
+// PUNISHMENT MODE — a light challenge for the wrongly eliminated innocent
+const punishmentsByLang = {
+    pt: [
+        'Fale como um robô até a próxima votação',
+        'Elogie exageradamente o jogador à sua direita',
+        'Conte uma história constrangedora sua (rapidinho)',
+        'Fique 2 rodadas sem poder cruzar os braços',
+        'Imite um animal escolhido pelo grupo por 10 segundos',
+        'Fale cantando até a próxima rodada',
+        'Faça 5 agachamentos agora',
+        'Deixe o grupo escolher um apelido seu até o fim do jogo',
+        'Mande um áudio de 10 segundos cantando no grupo da família (ou pague uma prenda escolhida pelo grupo)',
+        'Fale com sotaque escolhido pelo grupo até a próxima votação',
+        'Declare seu amor dramaticamente para alguém da roda',
+        'Fique de pé até a próxima eliminação',
+        'Conte sua última vergonha alheia',
+        'Imite alguém da roda até acertarem quem é',
+        'Dance 10 segundos sem música',
+        'Só pode responder com perguntas até a próxima rodada',
+        'Faça sua melhor cara de choro por 10 segundos',
+        'Diga 3 qualidades do jogador que te eliminou',
+        'Fale sussurrando até a próxima votação',
+        'Mostre a última foto da sua galeria (se puder!)',
+        'Faça uma pose de estátua até alguém rir',
+        'Invente uma rima com o nome de cada jogador da roda',
+        'Peça desculpas de joelhos por ter sido eliminado',
+        'Segure a risada: o grupo tem 15 segundos pra te fazer rir',
+        'Fale tudo em terceira pessoa até a próxima rodada',
+        'Imite um apresentador de telejornal narrando sua eliminação',
+        'Faça 10 segundos de mímica de um filme até alguém acertar',
+        'Troque de lugar com quem o grupo mandar'
+    ],
+    en: [
+        'Talk like a robot until the next vote',
+        'Give an over-the-top compliment to the player on your right',
+        'Tell an embarrassing story about yourself',
+        'Do 5 squats right now',
+        'Imitate an animal chosen by the group for 10 seconds',
+        'Sing everything you say until the next round',
+        'Let the group pick a nickname for you until the game ends',
+        'Dance for 10 seconds without music',
+        'Only answer with questions until the next round',
+        'Hold a statue pose until someone laughs'
+    ],
+    es: [
+        'Habla como un robot hasta la próxima votación',
+        'Haz un cumplido exagerado al jugador de tu derecha',
+        'Cuenta una historia vergonzosa tuya',
+        'Haz 5 sentadillas ahora',
+        'Imita un animal elegido por el grupo por 10 segundos',
+        'Canta todo lo que digas hasta la próxima ronda',
+        'Deja que el grupo te elija un apodo hasta el final',
+        'Baila 10 segundos sin música',
+        'Solo puedes responder con preguntas hasta la próxima ronda',
+        'Haz pose de estatua hasta que alguien se ría'
+    ]
+};
+
+function buildPunishmentHTML(playerName) {
+    if (!localState.punishMode) return '';
+    const bank = punishmentsByLang[currentLang] || punishmentsByLang.pt;
+    const punishment = bank[Math.floor(Math.random() * bank.length)];
+    return `<div style="margin:12px 0;padding:12px;border:2px dashed var(--accent);border-radius:10px">
+        <p style="font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:6px">🎪 ${t('punishFor')} ${playerName}</p>
+        <p style="font-size:.85rem;line-height:1.4">${punishment}</p>
+    </div>`;
 }
 
 function voteResultHTML(playerName, wasImpostor) {
@@ -918,6 +1115,7 @@ function showVoteResult(playerName, wasImpostor, playerIndex) {
     const allImpostorsFound = remainingImpostors === 0;
 
     let resultHTML = voteResultHTML(playerName, wasImpostor);
+    if (!wasImpostor) resultHTML += buildPunishmentHTML(playerName);
     const pointsSection = buildRoundPointsHTML();
 
     let buttonsHTML = '';
@@ -942,6 +1140,7 @@ function showVoteResultWithImpostorWin(playerName) {
     let resultHTML = `<div class="result-icon">❌</div><h3 style="color:#ff4444">${t('wrong')}</h3>
         <p style="font-size:1.1rem;margin:14px 0"><strong>${playerName}</strong> ${t('wasInnocent')}</p>
         <p style="color:var(--warning);font-size:.85rem;margin-top:10px">🎭 ${t('impostorWins')}</p>`;
+    resultHTML += buildPunishmentHTML(playerName);
 
     document.getElementById('overlay-container').innerHTML = `
         <div class="confirm-overlay">
@@ -955,7 +1154,7 @@ function showVoteResultWithImpostorWin(playerName) {
 }
 
 function showImpostorWins() {
-    const impostorNames = localState.impostorIndices.map(i => localState.players[i]);
+    const impostorNames = localState.impostorIndices.map(i => localState.players[i] + (i === localState.mrWhiteIndex ? ' 🤍' : ''));
     const impostorLabel = localState.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
     
     // Check for winner (only if maxPoints is set)
@@ -1008,7 +1207,7 @@ function buildRankingHTML(sorted) {
 }
 
 function showRoundSummary() {
-    const impostorNames = localState.impostorIndices.map(i => localState.players[i]);
+    const impostorNames = localState.impostorIndices.map(i => localState.players[i] + (i === localState.mrWhiteIndex ? ' 🤍' : ''));
     const impostorLabel = localState.actualImpostorCount > 1 ? t('impostorsWere') : t('impostorWas');
     
     // Check for winner (only if maxPoints is set)
@@ -1116,7 +1315,9 @@ function resetGame() {
         allCategories: localState.allCategories,
         selectedCategories: localState.selectedCategories.slice(),
         questionsMode: localState.questionsMode,
-        impostorSurprise: localState.impostorSurprise
+        impostorSurprise: localState.impostorSurprise,
+        mrWhiteMode: localState.mrWhiteMode,
+        punishMode: localState.punishMode
     };
     
     // Reset game state but keep settings
@@ -1148,7 +1349,10 @@ function resetGame() {
         questionIndex: 0,
         impostorHints: {},
         impostorSurprise: savedSettings.impostorSurprise,
-        roundPoints: {}
+        roundPoints: {},
+        mrWhiteMode: savedSettings.mrWhiteMode,
+        mrWhiteIndex: null,
+        punishMode: savedSettings.punishMode
     };
     
     clearLocalState();
