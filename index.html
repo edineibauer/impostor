@@ -73,6 +73,7 @@
         .player-turn-name{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;color:var(--accent);letter-spacing:4px;margin-bottom:8px}
         .player-turn-instruction{font-size:.75rem;color:var(--text-dim)}
         .screen{display:none;animation:fade-in .4s ease-out}
+        #screen-qs-play.active{display:flex;flex-direction:column;justify-content:center}
         .screen.active{display:block}
         @keyframes fade-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         .word-reveal-animation{animation:reveal-word .5s ease-out}
@@ -220,6 +221,37 @@
         <!-- MODE SELECT SCREEN -->
         <div id="screen-mode" class="screen">
             <div class="logo">
+                <img src="icon-192.png" alt="Jogos da Galera" class="logo-icon">
+                <h1 data-i18n="hubTitle">JOGOS DA GALERA</h1>
+                <p class="subtitle" data-i18n="hubSubtitle">Escolha o jogo da rodada</p>
+            </div>
+            <div class="card">
+                <h2 class="card-title" data-i18n="chooseGame">🎮 Escolha o Jogo</h2>
+                <div class="mode-selector">
+                    <button class="mode-btn" onclick="showScreen('screen-impostor-menu')">
+                        <div class="mode-icon">🎭</div>
+                        <div class="mode-title" data-i18n="title">O IMPOSTOR</div>
+                        <div class="mode-desc" data-i18n="impostorMenuDesc">Todos recebem a mesma palavra, menos o impostor. Descubram quem está fingindo!</div>
+                    </button>
+                    <button class="mode-btn" onclick="showQsSetup()">
+                        <div class="mode-icon">🙆</div>
+                        <div class="mode-title" data-i18n="qsTitle">QUEM SOU EU</div>
+                        <div class="mode-desc" data-i18n="qsMenuDesc">Celular na testa: os outros dão dicas e você adivinha a palavra contra o relógio.</div>
+                    </button>
+                    <button class="mode-btn" onclick="showVlSetup()">
+                        <div class="mode-icon">🤥</div>
+                        <div class="mode-title" data-i18n="vlTitle">VERDADE OU MENTIRA</div>
+                        <div class="mode-desc" data-i18n="vlMenuDesc">Conte uma história real ou inventada sobre o tema sorteado. O grupo descobre?</div>
+                    </button>
+                </div>
+            </div>
+            <button class="settings-btn" onclick="showSettings()">⚙️</button>
+        </div>
+
+        <!-- IMPOSTOR: MODE SELECTION (local/online) -->
+        <div id="screen-impostor-menu" class="screen">
+            <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+            <div class="logo">
                 <img src="icon-192.png" alt="O Impostor" class="logo-icon">
                 <h1 data-i18n="title">O IMPOSTOR</h1>
                 <p class="subtitle" data-i18n="subtitle">Jogo de dedução social por palavras</p>
@@ -239,27 +271,12 @@
                     </button>
                 </div>
             </div>
-            <div class="card">
-                <h2 class="card-title" data-i18n="gamesMenu">🎲 Mais Jogos</h2>
-                <div class="mode-selector">
-                    <button class="mode-btn" onclick="showQsSetup()">
-                        <div class="mode-icon">🙆</div>
-                        <div class="mode-title" data-i18n="qsTitle">QUEM SOU EU</div>
-                        <div class="mode-desc" data-i18n="qsMenuDesc">Celular na testa: os outros dão dicas e você adivinha a palavra contra o relógio.</div>
-                    </button>
-                    <button class="mode-btn" onclick="showVlSetup()">
-                        <div class="mode-icon">🤥</div>
-                        <div class="mode-title" data-i18n="vlTitle">VERDADE OU MENTIRA</div>
-                        <div class="mode-desc" data-i18n="vlMenuDesc">Conte uma história real ou inventada sobre o tema sorteado. O grupo descobre?</div>
-                    </button>
-                </div>
-            </div>
             <button class="settings-btn" onclick="showSettings()">⚙️</button>
         </div>
 
         <!-- LOCAL MODE: HOME SCREEN -->
         <div id="screen-home" class="screen">
-            <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+            <button class="back-btn" onclick="showScreen('screen-impostor-menu')">←</button>
             <button class="settings-btn" onclick="showSettings()">⚙️</button>
             <div class="logo">
                 <img src="icon-192.png" alt="O Impostor" class="logo-icon">
@@ -365,7 +382,7 @@
 
         <!-- ONLINE MODE: CREATE/JOIN SCREEN -->
         <div id="screen-online-menu" class="screen">
-            <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+            <button class="back-btn" onclick="showScreen('screen-impostor-menu')">←</button>
             <div class="logo">
                 <img src="icon-192.png" alt="O Impostor" class="logo-icon">
                 <h1 data-i18n="title">O IMPOSTOR</h1>
@@ -568,7 +585,7 @@
         </div>
 
         <!-- QUEM SOU EU: PLAY -->
-        <div id="screen-qs-play" class="screen" style="display:flex;flex-direction:column;justify-content:center">
+        <div id="screen-qs-play" class="screen">
             <div style="text-align:center;font-size:2rem;font-family:'Bebas Neue',sans-serif" id="qs-timer">60s</div>
             <div class="card" style="text-align:center;padding:30px 10px">
                 <div class="category-tag" id="qs-category" style="margin-bottom:14px"></div>

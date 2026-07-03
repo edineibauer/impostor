@@ -115,8 +115,9 @@ function goBack() {
     
     // Define back navigation map
     const backMap = {
-        'screen-home': 'screen-mode',
-        'screen-online-menu': 'screen-mode',
+        'screen-impostor-menu': 'screen-mode',
+        'screen-home': 'screen-impostor-menu',
+        'screen-online-menu': 'screen-impostor-menu',
         'screen-join': 'screen-online-menu',
         'screen-create': 'screen-online-menu',
         'screen-lobby': null, // Special handling - leave room
